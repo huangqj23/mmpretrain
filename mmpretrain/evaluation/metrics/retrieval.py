@@ -179,7 +179,7 @@ class RetrievalRecall(BaseMetric):
                     sample_target) in enumerate(zip(pred, target)):
                 sample_pred = np.array(to_tensor(sample_pred).cpu())
                 sample_target = np.array(to_tensor(sample_target).cpu())
-                recalls[i] = int(np.in1d(sample_pred[:k], sample_target).max())
+                recalls[i] = int(np.isin(sample_pred[:k], sample_target).max())
             results.append(recalls.mean() * 100)
         return results
 
@@ -378,7 +378,7 @@ def _calculateAp_for_sample(pred, target, mode):
     num_preds = len(pred)
 
     # TODO: use ``torch.isin`` in torch1.10.
-    positive_ranks = np.arange(num_preds)[np.in1d(pred, target)]
+    positive_ranks = np.arange(num_preds)[np.isin(pred, target)]
 
     ap = 0
     for i, rank in enumerate(positive_ranks):
