@@ -1,49 +1,44 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
+# Converted from configs/vision_transformer/vit-large-p32_64xb64_in1k-384px.py by industrial-vision tools/convert_configs.py
 from mmengine.config import read_base
 
-from mmpretrain.datasets import (CenterCrop, LoadImageFromFile, PackInputs,
-                                 RandomFlip, RandomResizedCrop, ResizeEdge)
-from mmpretrain.models import CrossEntropyLoss
-
 with read_base():
-    from .._base_.datasets.imagenet_bs64_pil_resize import *
-    from .._base_.default_runtime import *
-    from .._base_.models.vit_base_p16 import *
-    from .._base_.schedules.imagenet_bs4096_adamw import *
+    from .._base_.models.vit_large_p32 import *  # noqa: F401,F403
+    from .._base_.datasets.imagenet_bs64_pil_resize_autoaug import *  # noqa: F401,F403
+    from .._base_.schedules.imagenet_bs4096_AdamW import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
 
 # model setting
-model.update(
-    backbone=dict(arch='l', img_size=384, patch_size=32),
-    head=dict(in_channels=1024, topk=(1, 5)))
-
-model.head.loss = dict(type=CrossEntropyLoss, loss_weight=1.0)
+model.merge(dict(backbone=dict(img_size=384)))
 
 # dataset setting
-data_preprocessor.update(
+data_preprocessor.merge(dict(
     mean=[127.5, 127.5, 127.5],
     std=[127.5, 127.5, 127.5],
     # convert image from BGR to RGB
     to_rgb=True,
-)
+))
 
 train_pipeline = [
-    dict(type=LoadImageFromFile),
-    dict(type=RandomResizedCrop, scale=384, backend='pillow'),
-    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
-    dict(type=PackInputs),
+    dict(type='LoadImageFromFile'),
+    dict(type='RandomResizedCrop', scale=384, backend='pillow'),
+    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type='PackInputs'),
 ]
 
 test_pipeline = [
-    dict(type=LoadImageFromFile),
-    dict(type=ResizeEdge, scale=384, edge='short', backend='pillow'),
-    dict(type=CenterCrop, crop_size=384),
-    dict(type=PackInputs),
+    dict(type='LoadImageFromFile'),
+    dict(type='ResizeEdge', scale=384, edge='short', backend='pillow'),
+    dict(type='CenterCrop', crop_size=384),
+    dict(type='PackInputs'),
 ]
 
-train_dataloader.update(dataset=dict(pipeline=train_pipeline))
-val_dataloader.update(dataset=dict(pipeline=test_pipeline))
-test_dataloader.update(dataset=dict(pipeline=test_pipeline))
+train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))
+val_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))
+test_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))
 
 # schedule setting
-optim_wrapper.update(clip_grad=dict(max_norm=1.0))
+optim_wrapper.merge(dict(clip_grad=dict(max_norm=1.0)))
+if isinstance(train_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_
+    train_pipeline.pop('_delete_', None)
+if isinstance(test_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_
+    test_pipeline.pop('_delete_', None)

@@ -1,12 +1,6 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
-from mmengine.dataset import DefaultSampler
-
-from mmpretrain.datasets import CIFAR10, PackInputs, RandomCrop, RandomFlip
-from mmpretrain.evaluation import Accuracy
-
+# Converted from configs/_base_/datasets/cifar10_bs16.py by industrial-vision tools/convert_configs.py
 # dataset settings
-dataset_type = CIFAR10
+dataset_type = 'CIFAR10'
 data_preprocessor = dict(
     num_classes=10,
     # RGB format normalization parameters
@@ -16,13 +10,13 @@ data_preprocessor = dict(
     to_rgb=False)
 
 train_pipeline = [
-    dict(type=RandomCrop, crop_size=32, padding=4),
-    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
-    dict(type=PackInputs),
+    dict(type='RandomCrop', crop_size=32, padding=4),
+    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type='PackInputs'),
 ]
 
 test_pipeline = [
-    dict(type=PackInputs),
+    dict(type='PackInputs'),
 ]
 
 train_dataloader = dict(
@@ -33,7 +27,7 @@ train_dataloader = dict(
         data_root='data/cifar10',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type=DefaultSampler, shuffle=True),
+    sampler=dict(type='DefaultSampler', shuffle=True),
 )
 
 val_dataloader = dict(
@@ -44,9 +38,9 @@ val_dataloader = dict(
         data_root='data/cifar10/',
         split='test',
         pipeline=test_pipeline),
-    sampler=dict(type=DefaultSampler, shuffle=False),
+    sampler=dict(type='DefaultSampler', shuffle=False),
 )
-val_evaluator = dict(type=Accuracy, topk=(1, ))
+val_evaluator = dict(type='Accuracy', topk=(1, ))
 
 test_dataloader = val_dataloader
 test_evaluator = val_evaluator

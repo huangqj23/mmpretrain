@@ -1,36 +1,44 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
+# Converted from configs/vision_transformer/vit-base-p16_32xb128-mae_in1k.py by industrial-vision tools/convert_configs.py
 from mmengine.config import read_base
-from mmengine.model import ConstantInit, TruncNormalInit
-from torch.optim import AdamW
-
-from mmpretrain.engine import EMAHook
-from mmpretrain.models import CutMix, Mixup
 
 with read_base():
-    from .._base_.datasets.imagenet_bs64_swin_224 import *
-    from .._base_.default_runtime import *
-    from .._base_.models.vit_base_p16 import *
-    from .._base_.schedules.imagenet_bs1024_adamw_swin import *
+    from .._base_.datasets.imagenet_bs64_swin_224 import *  # noqa: F401,F403
+    from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
 
-model.update(
-    backbone=dict(drop_rate=0, drop_path_rate=0.1, init_cfg=None),
-    head=dict(loss=dict(mode='original')),
+# model settings
+model = dict(
+    type='ImageClassifier',
+    backbone=dict(
+        type='VisionTransformer',
+        arch='base',
+        img_size=224,
+        patch_size=16,
+        drop_path_rate=0.1),
+    neck=None,
+    head=dict(
+        type='VisionTransformerClsHead',
+        num_classes=1000,
+        in_channels=768,
+        loss=dict(
+            type='LabelSmoothLoss', label_smooth_val=0.1, mode='original'),
+    ),
     init_cfg=[
-        dict(type=TruncNormalInit, layer='Linear', std=.02),
-        dict(type=ConstantInit, layer='LayerNorm', val=1., bias=0.),
+        dict(type='TruncNormal', layer='Linear', std=.02),
+        dict(type='Constant', layer='LayerNorm', val=1., bias=0.),
     ],
-    train_cfg=dict(
-        augments=[dict(type=Mixup, alpha=0.8),
-                  dict(type=CutMix, alpha=1.0)]))
+    train_cfg=dict(augments=[
+        dict(type='Mixup', alpha=0.8),
+        dict(type='CutMix', alpha=1.0)
+    ]))
 
 # dataset settings
-train_dataloader.update(batch_size=128)
+train_dataloader.merge(dict(batch_size=128))
 
 # schedule settings
-optim_wrapper.update(
+optim_wrapper.merge(dict(
     optimizer=dict(
-        type=AdamW,
+        type='AdamW',
         lr=1e-4 * 4096 / 256,
         weight_decay=0.3,
         eps=1e-8,
@@ -41,12 +49,12 @@ optim_wrapper.update(
         custom_keys={
             '.cls_token': dict(decay_mult=0.0),
             '.pos_embed': dict(decay_mult=0.0)
-        }))
+        })))
 
 # runtime settings
-custom_hooks = [dict(type=EMAHook, momentum=1e-4)]
+custom_hooks = [dict(type='EMAHook', momentum=1e-4)]
 
 # NOTE: `auto_scale_lr` is for automatically scaling LR
 # based on the actual training batch size.
 # base_batch_size = (32 GPUs) x (128 samples per GPU)
-auto_scale_lr.update(base_batch_size=4096)
+auto_scale_lr.merge(dict(base_batch_size=4096))

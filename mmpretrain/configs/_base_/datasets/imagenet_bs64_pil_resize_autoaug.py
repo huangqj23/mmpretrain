@@ -1,15 +1,6 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
-from mmengine.dataset import DefaultSampler
-
-from mmpretrain.datasets import (CenterCrop, ImageNet, LoadImageFromFile,
-                                 PackInputs, RandomFlip, RandomResizedCrop,
-                                 ResizeEdge)
-from mmpretrain.datasets.transforms import AutoAugment
-from mmpretrain.evaluation import Accuracy
-
+# Converted from configs/_base_/datasets/imagenet_bs64_pil_resize_autoaug.py by industrial-vision tools/convert_configs.py
 # dataset settings
-dataset_type = ImageNet
+dataset_type = 'ImageNet'
 data_preprocessor = dict(
     num_classes=1000,
     # RGB format normalization parameters
@@ -23,31 +14,31 @@ bgr_mean = data_preprocessor['mean'][::-1]
 bgr_std = data_preprocessor['std'][::-1]
 
 train_pipeline = [
-    dict(type=LoadImageFromFile),
+    dict(type='LoadImageFromFile'),
     dict(
-        type=RandomResizedCrop,
+        type='RandomResizedCrop',
         scale=224,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
     dict(
-        type=AutoAugment,
+        type='AutoAugment',
         policies='imagenet',
         hparams=dict(
             pad_val=[round(x) for x in bgr_mean], interpolation='bicubic')),
-    dict(type=PackInputs),
+    dict(type='PackInputs'),
 ]
 
 test_pipeline = [
-    dict(type=LoadImageFromFile),
+    dict(type='LoadImageFromFile'),
     dict(
-        type=ResizeEdge,
+        type='ResizeEdge',
         scale=256,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type=CenterCrop, crop_size=224),
-    dict(type=PackInputs),
+    dict(type='CenterCrop', crop_size=224),
+    dict(type='PackInputs'),
 ]
 
 train_dataloader = dict(
@@ -58,7 +49,7 @@ train_dataloader = dict(
         data_root='data/imagenet',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type=DefaultSampler, shuffle=True),
+    sampler=dict(type='DefaultSampler', shuffle=True),
 )
 
 val_dataloader = dict(
@@ -69,9 +60,9 @@ val_dataloader = dict(
         data_root='data/imagenet',
         split='val',
         pipeline=test_pipeline),
-    sampler=dict(type=DefaultSampler, shuffle=False),
+    sampler=dict(type='DefaultSampler', shuffle=False),
 )
-val_evaluator = dict(type=Accuracy, topk=(1, 5))
+val_evaluator = dict(type='Accuracy', topk=(1, 5))
 
 # If you want standard test, please manually configure the test dataset
 test_dataloader = val_dataloader

@@ -1,5 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # This is a BETA new format config file, and the usage may change recently.
+from mmpretrain.datasets import RandomResizedCrop  # industrial-vision: 原由官方 base 转手导出
+from mmpretrain.datasets import RandAugment  # industrial-vision: 原由官方 base 转手导出
+from mmpretrain.datasets import RandomErasing  # industrial-vision: 原由官方 base 转手导出
+from mmpretrain.datasets import ResizeEdge  # industrial-vision: 原由官方 base 转手导出
+from mmpretrain.datasets import CenterCrop  # industrial-vision: 原由官方 base 转手导出
 from mmengine.config import read_base
 
 with read_base():

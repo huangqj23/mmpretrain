@@ -1,0 +1,19 @@
+# Converted from configs/poolformer/poolformer-s12_32xb128_in1k.py by industrial-vision tools/convert_configs.py
+from mmengine.config import read_base
+
+with read_base():
+    from .._base_.models.poolformer.poolformer_s12 import *  # noqa: F401,F403
+    from .._base_.datasets.imagenet_bs128_poolformer_small_224 import *  # noqa: F401,F403
+    from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
+
+# schedule settings
+optim_wrapper.merge(dict(
+    optimizer=dict(lr=4e-3),
+    clip_grad=dict(max_norm=5.0),
+))
+
+# NOTE: `auto_scale_lr` is for automatically scaling LR
+# based on the actual training batch size.
+# base_batch_size = (32 GPUs) x (128 samples per GPU)
+auto_scale_lr.merge(dict(base_batch_size=4096))

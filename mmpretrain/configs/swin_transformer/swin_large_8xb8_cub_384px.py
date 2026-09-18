@@ -1,33 +1,26 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
+# Converted from configs/swin_transformer/swin-large_8xb8_cub-384px.py by industrial-vision tools/convert_configs.py
 from mmengine.config import read_base
-from mmengine.hooks import CheckpointHook, LoggerHook
-from mmengine.model import PretrainedInit
-from torch.optim.adamw import AdamW
-
-from mmpretrain.models import ImageClassifier
 
 with read_base():
-    from .._base_.datasets.cub_bs8_384 import *
-    from .._base_.default_runtime import *
-    from .._base_.models.swin_transformer_base import *
-    from .._base_.schedules.cub_bs64 import *
+    from .._base_.models.swin_transformer.large_384 import *  # noqa: F401,F403
+    from .._base_.datasets.cub_bs8_384 import *  # noqa: F401,F403
+    from .._base_.schedules.cub_bs64 import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
 
 # model settings
 checkpoint = 'https://download.openmmlab.com/mmclassification/v0/swin-transformer/convert/swin-large_3rdparty_in21k-384px.pth'  # noqa
-
-model.update(
+model.merge(dict(
+    type='ImageClassifier',
     backbone=dict(
-        arch='large',
         init_cfg=dict(
-            type=PretrainedInit, checkpoint=checkpoint, prefix='backbone')),
-    head=dict(num_classes=200, in_channels=1536))
+            type='Pretrained', checkpoint=checkpoint, prefix='backbone')),
+    head=dict(num_classes=200, )))
 
 # schedule settings
-optim_wrapper = dict(
+optim_wrapper.merge(dict(
     optimizer=dict(
         _delete_=True,
-        type=AdamW,
+        type='AdamW',
         lr=5e-6,
         weight_decay=0.0005,
         eps=1e-8,
@@ -40,10 +33,10 @@ optim_wrapper = dict(
             '.relative_position_bias_table': dict(decay_mult=0.0)
         }),
     clip_grad=dict(max_norm=5.0),
-)
+))
 
-default_hooks = dict(
+default_hooks.merge(dict(
     # log every 20 intervals
-    logger=dict(type=LoggerHook, interval=20),
+    logger=dict(type='LoggerHook', interval=20),
     # save last three checkpoints
-    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3))
+    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))

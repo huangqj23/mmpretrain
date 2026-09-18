@@ -1,34 +1,24 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
-
+# Converted from configs/mobilenet_v3/mobilenet-v3-large_8xb128_in1k.py by industrial-vision tools/convert_configs.py
 # Refers to https://pytorch.org/blog/ml-models-torchvision-v0.9/#classification
+
 from mmengine.config import read_base
 
 with read_base():
-    from .._base_.models.mobilenet_v3_small import *
-    from .._base_.datasets.imagenet_bs128_mbv3 import *
-    from .._base_.default_runtime import *
+    from .._base_.models.mobilenet_v3.mobilenet_v3_large_imagenet import *  # noqa: F401,F403
+    from .._base_.datasets.imagenet_bs128_mbv3 import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
 
-from mmengine.optim import StepLR
-from torch.optim import RMSprop
-
-# model settings
-model.merge(
-    dict(
-        backbone=dict(arch='large'),
-        head=dict(in_channels=960, mid_channels=[1280]),
-    ))
 # schedule settings
 optim_wrapper = dict(
     optimizer=dict(
-        type=RMSprop,
+        type='RMSprop',
         lr=0.064,
         alpha=0.9,
         momentum=0.9,
         eps=0.0316,
         weight_decay=1e-5))
 
-param_scheduler = dict(type=StepLR, by_epoch=True, step_size=2, gamma=0.973)
+param_scheduler = dict(type='StepLR', by_epoch=True, step_size=2, gamma=0.973)
 
 train_cfg = dict(by_epoch=True, max_epochs=600, val_interval=1)
 val_cfg = dict()

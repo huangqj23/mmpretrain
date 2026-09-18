@@ -1,14 +1,10 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
-from mmengine.optim import MultiStepLR
-from torch.optim import SGD
-
+# Converted from configs/_base_/schedules/cifar10_bs128.py by industrial-vision tools/convert_configs.py
 # optimizer
 optim_wrapper = dict(
-    optimizer=dict(type=SGD, lr=0.1, momentum=0.9, weight_decay=0.0001))
+    optimizer=dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001))
 # learning policy
 param_scheduler = dict(
-    type=MultiStepLR, by_epoch=True, milestones=[100, 150], gamma=0.1)
+    type='MultiStepLR', by_epoch=True, milestones=[100, 150], gamma=0.1)
 
 # train, val, test setting
 train_cfg = dict(by_epoch=True, max_epochs=200, val_interval=1)

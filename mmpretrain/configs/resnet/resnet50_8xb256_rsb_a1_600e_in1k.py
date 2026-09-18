@@ -1,0 +1,60 @@
+# Converted from configs/resnet/resnet50_8xb256-rsb-a1-600e_in1k.py by industrial-vision tools/convert_configs.py
+from mmengine.config import read_base
+
+with read_base():
+    from .._base_.models.resnet50 import *  # noqa: F401,F403
+    from .._base_.datasets.imagenet_bs256_rsb_a12 import *  # noqa: F401,F403
+    from .._base_.schedules.imagenet_bs2048_rsb import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
+
+# model settings
+model.merge(dict(
+    backbone=dict(
+        norm_cfg=dict(type='SyncBN', requires_grad=True),
+        drop_path_rate=0.05,
+    ),
+    head=dict(
+        loss=dict(
+            type='LabelSmoothLoss',
+            label_smooth_val=0.1,
+            mode='original',
+            use_sigmoid=True,
+        )),
+    train_cfg=dict(augments=[
+        dict(type='Mixup', alpha=0.2),
+        dict(type='CutMix', alpha=1.0)
+    ]),
+))
+
+# dataset settings
+train_dataloader.merge(dict(sampler=dict(type='RepeatAugSampler', shuffle=True)))
+
+# schedule settings
+optim_wrapper.merge(dict(
+    optimizer=dict(weight_decay=0.01),
+    paramwise_cfg=dict(bias_decay_mult=0., norm_decay_mult=0.),
+))
+
+param_scheduler = [
+    # warm up learning rate scheduler
+    dict(
+        type='LinearLR',
+        start_factor=0.0001,
+        by_epoch=True,
+        begin=0,
+        end=5,
+        # update by iter
+        convert_to_iter_based=True),
+    # main learning rate scheduler
+    dict(
+        type='CosineAnnealingLR',
+        T_max=595,
+        eta_min=1.0e-6,
+        by_epoch=True,
+        begin=5,
+        end=600)
+]
+
+train_cfg.merge(dict(by_epoch=True, max_epochs=600))
+if isinstance(param_scheduler, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_
+    param_scheduler.pop('_delete_', None)

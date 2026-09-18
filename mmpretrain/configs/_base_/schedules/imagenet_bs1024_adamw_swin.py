@@ -1,13 +1,9 @@
-# Copyright (c) OpenMMLab. All rights reserved.
-# This is a BETA new format config file, and the usage may change recently.
-from mmengine.optim import CosineAnnealingLR, LinearLR
-from torch.optim import AdamW
-
+# Converted from configs/_base_/schedules/imagenet_bs1024_adamw_swin.py by industrial-vision tools/convert_configs.py
 # for batch in each gpu is 128, 8 gpu
 # lr = 5e-4 * 128 * 8 / 512 = 0.001
 optim_wrapper = dict(
     optimizer=dict(
-        type=AdamW,
+        type='AdamW',
         lr=5e-4 * 1024 / 512,
         weight_decay=0.05,
         eps=1e-8,
@@ -26,14 +22,14 @@ optim_wrapper = dict(
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type=LinearLR,
+        type='LinearLR',
         start_factor=1e-3,
         by_epoch=True,
         end=20,
         # update by iter
         convert_to_iter_based=True),
     # main learning rate scheduler
-    dict(type=CosineAnnealingLR, eta_min=1e-5, by_epoch=True, begin=20)
+    dict(type='CosineAnnealingLR', eta_min=1e-5, by_epoch=True, begin=20)
 ]
 
 # train, val, test setting
