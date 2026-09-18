@@ -1,6 +1,10 @@
+# Converted from configs/_base_/schedules/imagenet_bs1024_adamw_conformer.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
 optim_wrapper = dict(
     optimizer=dict(
-        type='AdamW',
+        type=AdamW,
         # for batch in each gpu is 128, 8 gpu
         # lr = 5e-4 * 128 * 8 / 512 = 0.001
         lr=5e-4 * 128 * 8 / 512,
@@ -18,14 +22,14 @@ optim_wrapper = dict(
 # learning policy
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-3,
         by_epoch=True,
         begin=0,
         end=5,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=295,
         eta_min=1e-5,
         by_epoch=True,

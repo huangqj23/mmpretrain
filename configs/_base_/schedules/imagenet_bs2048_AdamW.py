@@ -1,8 +1,12 @@
+# Converted from configs/_base_/schedules/imagenet_bs2048_AdamW.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
 # optimizer
 # In ClassyVision, the lr is set to 0.003 for bs4096.
 # In this implementation(bs2048), lr = 0.003 / 4096 * (32bs * 64gpus) = 0.0015
 optim_wrapper = dict(
-    optimizer=dict(type='AdamW', lr=0.0015, weight_decay=0.3),
+    optimizer=dict(type=AdamW, lr=0.0015, weight_decay=0.3),
     # specific to vit pretrain
     paramwise_cfg=dict(custom_keys={
         '.cls_token': dict(decay_mult=0.0),
@@ -15,7 +19,7 @@ warmup_epochs = 15  # about 10000 iterations for ImageNet-1k
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-3,
         by_epoch=True,
         end=warmup_epochs,
@@ -23,7 +27,7 @@ param_scheduler = [
         convert_to_iter_based=True),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         eta_min=1e-5,
         by_epoch=True,
         begin=warmup_epochs)

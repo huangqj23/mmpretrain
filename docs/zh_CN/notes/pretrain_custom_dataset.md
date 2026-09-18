@@ -22,7 +22,7 @@ data/custom_dataset/
 
 ## 第二步：选择一个配置文件作为模板
 
-在本教程中，我们使用 `configs/mae/mae_vit-base-p16_8xb512-amp-coslr-300e_in1k.py` 作为一个示例进行介绍。
+在本教程中，我们使用 `configs/mae/mae_vit_base_p16_8xb512_amp_coslr_300e_in1k.py` 作为一个示例进行介绍。
 首先在同一文件夹下复制一份配置文件，并将其重命名为 `mae_vit-base-p16_8xb512-amp-coslr-300e_custom.py`。
 
 ```{tip}

@@ -23,7 +23,7 @@ data/custom_dataset/
 
 ## Step-2: Choose one config as template
 
-Here, we would like to use `configs/mae/mae_vit-base-p16_8xb512-amp-coslr-300e_in1k.py` as the example. We
+Here, we would like to use `configs/mae/mae_vit_base_p16_8xb512_amp_coslr_300e_in1k.py` as the example. We
 first copy this config file to the same folder and rename it as
 `mae_vit-base-p16_8xb512-amp-coslr-300e_custom.py`.
 

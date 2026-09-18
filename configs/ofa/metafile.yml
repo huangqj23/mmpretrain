@@ -37,7 +37,7 @@ Models:
           Accuracy (testA): 90.49
           Accuracy (testB): 83.63
     Weights: https://download.openmmlab.com/mmclassification/v1/ofa/ofa-base_3rdparty_refcoco_20230418-2797d3ab.pth
-    Config: configs/ofa/ofa-base_finetuned_refcoco.py
+    Config: configs/ofa/ofa_base_finetuned_refcoco.py
     Converted From:
       Weights: https://ofa-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/refcoco_base_best.pt
       Code: https://github.com/OFA-Sys/OFA
@@ -52,7 +52,7 @@ Models:
         Metrics:
           Accuracy: 78.00   # Report from the official repo
     Weights: https://download.openmmlab.com/mmclassification/v1/ofa/ofa-base_3rdparty_coco-vqa_20230418-f38539a5.pth
-    Config: configs/ofa/ofa-base_finetuned_vqa.py
+    Config: configs/ofa/ofa_base_finetuned_vqa.py
     Converted From:
       Weights: https://ofa-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/vqa_large_best.pt
       Code: https://github.com/OFA-Sys/OFA
@@ -68,7 +68,7 @@ Models:
           BLEU-4: 42.64
           CIDER: 144.50
     Weights: https://download.openmmlab.com/mmclassification/v1/ofa/ofa-base_3rdparty_coco-caption_20230418-de18914e.pth
-    Config: configs/ofa/ofa-base_finetuned_caption.py
+    Config: configs/ofa/ofa_base_finetuned_caption.py
     Converted From:
       Weights: https://ofa-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/caption_base_best.pt
       Code: https://github.com/OFA-Sys/OFA
@@ -83,7 +83,7 @@ Models:
         Metrics:
           Accuracy: 58.32
     Weights: https://download.openmmlab.com/mmclassification/v1/ofa/ofa-base_3rdparty_pretrain_20230418-dccfc07f.pth
-    Config: configs/ofa/ofa-base_zeroshot_vqa.py
+    Config: configs/ofa/ofa_base_zeroshot_vqa.py
     Converted From:
       Weights: https://ofa-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/ofa_base.pt
       Code: https://github.com/OFA-Sys/OFA

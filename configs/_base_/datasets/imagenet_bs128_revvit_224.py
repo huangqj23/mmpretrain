@@ -1,5 +1,14 @@
+# Converted from configs/_base_/datasets/imagenet_bs128_revvit_224.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import (ColorJitter, ImageNet, PackInputs,
+                                 RandAugment, RandomErasing, RandomResizedCrop,
+                                 ResizeEdge)
+from mmpretrain.evaluation import Accuracy
+
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = ImageNet
 data_preprocessor = dict(
     num_classes=1000,
     # RGB format normalization parameters
@@ -13,15 +22,15 @@ bgr_mean = data_preprocessor['mean'][::-1]
 bgr_std = data_preprocessor['std'][::-1]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=224,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='RandAugment',
+        type=RandAugment,
         policies='timm_increasing',
         num_policies=2,
         total_level=10,
@@ -29,28 +38,28 @@ train_pipeline = [
         magnitude_std=0.5,
         hparams=dict(
             pad_val=[round(x) for x in bgr_mean], interpolation='bicubic')),
-    dict(type='ColorJitter', brightness=0.4, contrast=0.4, saturation=0.4),
+    dict(type=ColorJitter, brightness=0.4, contrast=0.4, saturation=0.4),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.25,
         mode='rand',  # should be 'pixel', but currently not supported
         min_area_ratio=0.02,
         max_area_ratio=1 / 3,
         fill_color=bgr_mean,
         fill_std=bgr_std),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=256,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs),
 ]
 
 train_dataloader = dict(
@@ -61,7 +70,7 @@ train_dataloader = dict(
         data_root='data/imagenet',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     persistent_workers=True,
 )
 
@@ -73,10 +82,10 @@ val_dataloader = dict(
         data_root='data/imagenet',
         split='val',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
-val_evaluator = dict(type='Accuracy', topk=(1, 5))
+val_evaluator = dict(type=Accuracy, topk=(1, 5))
 
 # If you want standard test, please manually configure the test dataset
 test_dataloader = val_dataloader

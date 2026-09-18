@@ -1,10 +1,14 @@
+# Converted from configs/_base_/schedules/imagenet_bs256_140e.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import MultiStepLR
+from torch.optim import SGD
+
 # optimizer
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001))
+    optimizer=dict(type=SGD, lr=0.1, momentum=0.9, weight_decay=0.0001))
 
 # learning policy
 param_scheduler = dict(
-    type='MultiStepLR', by_epoch=True, milestones=[40, 80, 120], gamma=0.1)
+    type=MultiStepLR, by_epoch=True, milestones=[40, 80, 120], gamma=0.1)
 
 # train, val, test setting
 train_cfg = dict(by_epoch=True, max_epochs=140, val_interval=1)

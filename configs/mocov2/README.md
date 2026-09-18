@@ -48,13 +48,13 @@ Prepare your dataset according to the [docs](https://mmpretrain.readthedocs.io/e
 Train:
 
 ```shell
-python tools/train.py configs/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k.py
+python tools/train.py configs/mocov2/mocov2_resnet50_8xb32_coslr_200e_in1k.py
 ```
 
 Test:
 
 ```shell
-python tools/test.py configs/mocov2/benchmarks/resnet50_8xb32-linear-steplr-100e_in1k.py https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-994c4128.pth
+python tools/test.py configs/mocov2/benchmarks/resnet50_8xb32_linear_steplr_100e_in1k.py https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-994c4128.pth
 ```
 
 <!-- [TABS-END] -->
@@ -65,13 +65,13 @@ python tools/test.py configs/mocov2/benchmarks/resnet50_8xb32-linear-steplr-100e
 
 | Model                                   | Params (M) | Flops (G) |                       Config                       |                                           Download                                           |
 | :-------------------------------------- | :--------: | :-------: | :------------------------------------------------: | :------------------------------------------------------------------------------------------: |
-| `mocov2_resnet50_8xb32-coslr-200e_in1k` |   55.93    |   4.11    | [config](mocov2_resnet50_8xb32-coslr-200e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/mocov2_resnet50_8xb32-coslr-200e_in1k_20220825-b6d23c86.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/mocov2_resnet50_8xb32-coslr-200e_in1k_20220825-b6d23c86.json) |
+| `mocov2_resnet50_8xb32-coslr-200e_in1k` |   55.93    |   4.11    | [config](mocov2_resnet50_8xb32_coslr_200e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/mocov2_resnet50_8xb32-coslr-200e_in1k_20220825-b6d23c86.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/mocov2_resnet50_8xb32-coslr-200e_in1k_20220825-b6d23c86.json) |
 
 ### Image Classification on ImageNet-1k
 
 | Model                                     |                   Pretrain                   | Params (M) | Flops (G) | Top-1 (%) |                   Config                   |                   Download                    |
 | :---------------------------------------- | :------------------------------------------: | :--------: | :-------: | :-------: | :----------------------------------------: | :-------------------------------------------: |
-| `resnet50_mocov2-pre_8xb32-linear-steplr-100e_in1k` | [MOCOV2](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/mocov2_resnet50_8xb32-coslr-200e_in1k_20220825-b6d23c86.pth) |   25.56    |   4.11    |   67.50   | [config](benchmarks/resnet50_8xb32-linear-steplr-100e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-994c4128.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-994c4128.json) |
+| `resnet50_mocov2-pre_8xb32-linear-steplr-100e_in1k` | [MOCOV2](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/mocov2_resnet50_8xb32-coslr-200e_in1k_20220825-b6d23c86.pth) |   25.56    |   4.11    |   67.50   | [config](benchmarks/resnet50_8xb32_linear_steplr_100e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-994c4128.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-994c4128.json) |
 
 ## Citation
 

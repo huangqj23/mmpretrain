@@ -62,11 +62,11 @@ Then run the following commands to train the model:
 mim train mmpretrain ${CONFIG} --work-dir ${WORK_DIR}
 
 # a specific command example
-mim train mmpretrain configs/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400.py \
+mim train mmpretrain configs/maskfeat_mvit_small_8xb32_amp_coslr_300e_k400.py \
     --work-dir work_dirs/selfsup/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400/
 
 # train with scripts
-python tools/train.py configs/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400.py \
+python tools/train.py configs/maskfeat_mvit_small_8xb32_amp_coslr_300e_k400.py \
     --work-dir work_dirs/selfsup/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400/
 ```
 
@@ -75,12 +75,12 @@ python tools/train.py configs/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400.py \
 ```bash
 # train with mim
 # a specific command examples, 8 GPUs here
-mim train mmpretrain configs/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400.py \
+mim train mmpretrain configs/maskfeat_mvit_small_8xb32_amp_coslr_300e_k400.py \
     --work-dir work_dirs/selfsup/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400/ \
     --launcher pytorch --gpus 8
 
 # train with scripts
-bash tools/dist_train.sh configs/maskfeat_mvit-small_8xb32-amp-coslr-300e_k400.py 8
+bash tools/dist_train.sh configs/maskfeat_mvit_small_8xb32_amp_coslr_300e_k400.py 8
 ```
 
 Note:
@@ -92,14 +92,14 @@ Note:
 
 ```bash
 # train with mim
-mim train mmpretrain configs/maskfeat_mvit-small_16xb32-amp-coslr-300e_k400.py \
+mim train mmpretrain configs/maskfeat_mvit_small_16xb32_amp_coslr_300e_k400.py \
     --work-dir work_dirs/selfsup/maskfeat_mvit-small_16xb32-amp-coslr-300e_k400/ \
     --launcher slurm --gpus 16 --gpus-per-node 8 \
     --partition ${PARTITION}
 
 # train with scripts
 GPUS_PER_NODE=8 GPUS=16 bash tools/slurm_train.sh ${PARTITION} maskfeat-video \
-    configs/maskfeat_mvit-small_16xb32-amp-coslr-300e_k400.py \
+    configs/maskfeat_mvit_small_16xb32_amp_coslr_300e_k400.py \
     --work-dir work_dirs/selfsup/maskfeat_mvit-small_16xb32-amp-coslr-300e_k400/
 ```
 

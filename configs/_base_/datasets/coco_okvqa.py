@@ -1,3 +1,10 @@
+# Converted from configs/_base_/datasets/coco_okvqa.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.evaluation import VQAAcc
+
 # data settings
 
 data_preprocessor = dict(
@@ -7,32 +14,32 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=384,
         interpolation='bicubic',
         backend='pillow'),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=['question_id', 'image_id'],
     ),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(480, 480),
         interpolation='bicubic',
         backend='pillow'),
     dict(
-        type='CleanCaption',
+        type=CleanCaption,
         keys=['question'],
     ),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=['question_id', 'image_id'],
     ),
@@ -49,7 +56,7 @@ train_dataloader = dict(
         'annotations/okvqa_OpenEnded_mscoco_train2014_questions.json',
         ann_file='annotations/okvqa_mscoco_train2014_annotations.json',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     persistent_workers=True,
     drop_last=True,
 )
@@ -65,11 +72,11 @@ val_dataloader = dict(
         'annotations/okvqa_OpenEnded_mscoco_val2014_questions.json',
         ann_file='annotations/okvqa_mscoco_val2014_annotations.json',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 
-val_evaluator = dict(type='VQAAcc')
+val_evaluator = dict(type=VQAAcc)
 
 test_dataloader = val_dataloader
 test_evaluator = val_evaluator

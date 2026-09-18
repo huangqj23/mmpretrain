@@ -16,7 +16,7 @@ Collections:
 Models:
   - Name: replknet-31B_3rdparty_in1k
     In Collection: RepLKNet
-    Config: configs/replknet/replknet-31B_32xb64_in1k.py
+    Config: configs/replknet/replknet_31B_32xb64_in1k.py
     Metadata:
       FLOPs: 15636547584
       Parameters: 79864168
@@ -33,7 +33,7 @@ Models:
 
   - Name: replknet-31B_3rdparty_in1k-384px
     In Collection: RepLKNet
-    Config: configs/replknet/replknet-31B_32xb64_in1k-384px.py
+    Config: configs/replknet/replknet_31B_32xb64_in1k_384px.py
     Metadata:
       FLOPs: 45952303104
       Parameters: 79864168
@@ -50,7 +50,7 @@ Models:
 
   - Name: replknet-31B_in21k-pre_3rdparty_in1k
     In Collection: RepLKNet
-    Config: configs/replknet/replknet-31B_32xb64_in1k.py
+    Config: configs/replknet/replknet_31B_32xb64_in1k.py
     Metadata:
       Training Data:
         - ImageNet-21k
@@ -70,7 +70,7 @@ Models:
 
   - Name: replknet-31B_in21k-pre_3rdparty_in1k-384px
     In Collection: RepLKNet
-    Config: configs/replknet/replknet-31B_32xb64_in1k-384px.py
+    Config: configs/replknet/replknet_31B_32xb64_in1k_384px.py
     Metadata:
       Training Data:
         - ImageNet-21k
@@ -90,7 +90,7 @@ Models:
 
   - Name: replknet-31L_in21k-pre_3rdparty_in1k-384px
     In Collection: RepLKNet
-    Config: configs/replknet/replknet-31L_32xb64_in1k-384px.py
+    Config: configs/replknet/replknet_31L_32xb64_in1k_384px.py
     Metadata:
       Training Data:
         - ImageNet-21k
@@ -110,7 +110,7 @@ Models:
 
   - Name: replknet-XL_meg73m-pre_3rdparty_in1k-320px
     In Collection: RepLKNet
-    Config: configs/replknet/replknet-XL_32xb64_in1k-320px.py
+    Config: configs/replknet/replknet_XL_32xb64_in1k_320px.py
     Metadata:
       Training Data:
         - MegData-73M

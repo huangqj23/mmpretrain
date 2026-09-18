@@ -35,7 +35,7 @@ Prepare your dataset according to the [docs](https://mmpretrain.readthedocs.io/e
 Test:
 
 ```shell
-python tools/test.py configs/otter/otter-9b_caption.py https://download.openmmlab.com/mmclassification/v1/otter/otter-9b-adapter_20230613-51c5be8d.pth
+python tools/test.py configs/otter/otter_9b_caption.py https://download.openmmlab.com/mmclassification/v1/otter/otter-9b-adapter_20230613-51c5be8d.pth
 ```
 
 <!-- [TABS-END] -->
@@ -46,7 +46,7 @@ python tools/test.py configs/otter/otter-9b_caption.py https://download.openmmla
 
 | Model                         | Params (M) |  BLEU-4  |  CIDER   |            Config             |                                                 Download                                                 |
 | :---------------------------- | :--------: | :------: | :------: | :---------------------------: | :------------------------------------------------------------------------------------------------------: |
-| `otter-9b_3rdparty_caption`\* |  8220.45   | Upcoming | Upcoming | [config](otter-9b_caption.py) | [model](https://download.openmmlab.com/mmclassification/v1/otter/otter-9b-adapter_20230613-51c5be8d.pth) |
+| `otter-9b_3rdparty_caption`\* |  8220.45   | Upcoming | Upcoming | [config](otter_9b_caption.py) | [model](https://download.openmmlab.com/mmclassification/v1/otter/otter-9b-adapter_20230613-51c5be8d.pth) |
 
 *Models with * are converted from the [official repo](https://github.com/Luodian/Otter/tree/main). The config files of these models are only for inference. We haven't reproduce the training results.*
 
@@ -54,7 +54,7 @@ python tools/test.py configs/otter/otter-9b_caption.py https://download.openmmla
 
 | Model                     | Params (M) | Accuracy |          Config           |                                                 Download                                                 |
 | :------------------------ | :--------: | :------: | :-----------------------: | :------------------------------------------------------------------------------------------------------: |
-| `otter-9b_3rdparty_vqa`\* |  8220.45   | Upcoming | [config](otter-9b_vqa.py) | [model](https://download.openmmlab.com/mmclassification/v1/otter/otter-9b-adapter_20230613-51c5be8d.pth) |
+| `otter-9b_3rdparty_vqa`\* |  8220.45   | Upcoming | [config](otter_9b_vqa.py) | [model](https://download.openmmlab.com/mmclassification/v1/otter/otter-9b-adapter_20230613-51c5be8d.pth) |
 
 *Models with * are converted from the [official repo](https://github.com/Luodian/Otter/tree/main). The config files of these models are only for inference. We haven't reproduce the training results.*
 

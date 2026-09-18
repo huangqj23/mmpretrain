@@ -25,7 +25,7 @@ Models:
         Metrics:
           Top 1 Accuracy: 40.7
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/chinese_clip/cn-clip_resnet50_3rdparty_20230519-6a2b3eb2.pth
-    Config: configs/chinese_clip/cn-clip_resnet50_zeroshot-cls_cifar100.py
+    Config: configs/chinese_clip/cn_clip_resnet50_zeroshot_cls_cifar100.py
     Converted From:
       Weights: https://clip-cn-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/clip_cn_rn50.pt
       Code: https://github.com/OFA-Sys/Chinese-CLIP
@@ -41,7 +41,7 @@ Models:
         Metrics:
           Top 1 Accuracy: 64.5
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/chinese_clip/cn-clip_vit-base-p16_3rdparty_20230519-37fbc59e.pth
-    Config: configs/chinese_clip/cn-clip_vit-base-p16_zeroshot-cls_cifar100.py
+    Config: configs/chinese_clip/cn_clip_vit_base_p16_zeroshot_cls_cifar100.py
     Converted From:
       Weights: https://clip-cn-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/clip_cn_vit-b-16.pt
       Code: https://github.com/OFA-Sys/Chinese-CLIP
@@ -57,7 +57,7 @@ Models:
         Metrics:
           Top 1 Accuracy: 74.8
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/chinese_clip/cn-clip_vit-large-p14_3rdparty_20230519-3f844503.pth
-    Config: configs/chinese_clip/cn-clip_vit-large-p14_zeroshot-cls_cifar100.py
+    Config: configs/chinese_clip/cn_clip_vit_large_p14_zeroshot_cls_cifar100.py
     Converted From:
       Weights: https://clip-cn-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/clip_cn_vit-l-14.pt
       Code: https://github.com/OFA-Sys/Chinese-CLIP
@@ -73,7 +73,7 @@ Models:
         Metrics:
           Top 1 Accuracy: 79.1
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/chinese_clip/cn-clip_vit-huge-p14_3rdparty_20230519-e4f49b00.pth
-    Config: configs/chinese_clip/cn-clip_vit-huge-p14_zeroshot-cls_cifar100.py
+    Config: configs/chinese_clip/cn_clip_vit_huge_p14_zeroshot_cls_cifar100.py
     Converted From:
       Weights: https://clip-cn-beijing.oss-cn-beijing.aliyuncs.com/checkpoints/clip_cn_vit-h-14.pt
       Code: https://github.com/OFA-Sys/Chinese-CLIP

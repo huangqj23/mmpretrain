@@ -1,56 +1,62 @@
+# Converted from configs/resnest/_randaug_policies.py by industrial-vision tools/convert_configs.py
+from mmpretrain.datasets import (AutoContrast, Brightness, ColorTransform,
+                                 Contrast, Cutout, Equalize, Invert, Posterize,
+                                 Rotate, Sharpness, Shear, Solarize,
+                                 SolarizeAdd, Translate)
+
 policies = [
-    dict(type='AutoContrast', prob=0.5),
-    dict(type='Equalize', prob=0.5),
-    dict(type='Invert', prob=0.5),
+    dict(type=AutoContrast, prob=0.5),
+    dict(type=Equalize, prob=0.5),
+    dict(type=Invert, prob=0.5),
     dict(
-        type='Rotate',
+        type=Rotate,
         magnitude_key='angle',
         magnitude_range=(0, 30),
         pad_val=0,
         prob=0.5,
         random_negative_prob=0.5),
     dict(
-        type='Posterize',
+        type=Posterize,
         magnitude_key='bits',
         magnitude_range=(0, 4),
         prob=0.5),
     dict(
-        type='Solarize',
+        type=Solarize,
         magnitude_key='thr',
         magnitude_range=(0, 256),
         prob=0.5),
     dict(
-        type='SolarizeAdd',
+        type=SolarizeAdd,
         magnitude_key='magnitude',
         magnitude_range=(0, 110),
         thr=128,
         prob=0.5),
     dict(
-        type='ColorTransform',
+        type=ColorTransform,
         magnitude_key='magnitude',
         magnitude_range=(-0.9, 0.9),
         prob=0.5,
         random_negative_prob=0.),
     dict(
-        type='Contrast',
+        type=Contrast,
         magnitude_key='magnitude',
         magnitude_range=(-0.9, 0.9),
         prob=0.5,
         random_negative_prob=0.),
     dict(
-        type='Brightness',
+        type=Brightness,
         magnitude_key='magnitude',
         magnitude_range=(-0.9, 0.9),
         prob=0.5,
         random_negative_prob=0.),
     dict(
-        type='Sharpness',
+        type=Sharpness,
         magnitude_key='magnitude',
         magnitude_range=(-0.9, 0.9),
         prob=0.5,
         random_negative_prob=0.),
     dict(
-        type='Shear',
+        type=Shear,
         magnitude_key='magnitude',
         magnitude_range=(0, 0.3),
         pad_val=0,
@@ -58,7 +64,7 @@ policies = [
         direction='horizontal',
         random_negative_prob=0.5),
     dict(
-        type='Shear',
+        type=Shear,
         magnitude_key='magnitude',
         magnitude_range=(0, 0.3),
         pad_val=0,
@@ -66,13 +72,13 @@ policies = [
         direction='vertical',
         random_negative_prob=0.5),
     dict(
-        type='Cutout',
+        type=Cutout,
         magnitude_key='shape',
         magnitude_range=(1, 41),
         pad_val=0,
         prob=0.5),
     dict(
-        type='Translate',
+        type=Translate,
         magnitude_key='magnitude',
         magnitude_range=(0, 0.3),
         pad_val=0,
@@ -81,7 +87,7 @@ policies = [
         random_negative_prob=0.5,
         interpolation='bicubic'),
     dict(
-        type='Translate',
+        type=Translate,
         magnitude_key='magnitude',
         magnitude_range=(0, 0.3),
         pad_val=0,

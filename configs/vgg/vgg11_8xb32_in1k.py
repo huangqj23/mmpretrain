@@ -1,9 +1,11 @@
-_base_ = [
-    '../_base_/models/vgg11.py',
-    '../_base_/datasets/imagenet_bs32_pil_resize.py',
-    '../_base_/schedules/imagenet_bs256.py',
-    '../_base_/default_runtime.py',
-]
+# Converted from configs/vgg/vgg11_8xb32_in1k.py by industrial-vision tools/convert_configs.py
+from mmengine.config import read_base
+
+with read_base():
+    from .._base_.models.vgg11 import *  # noqa: F401,F403
+    from .._base_.datasets.imagenet_bs32_pil_resize import *  # noqa: F401,F403
+    from .._base_.schedules.imagenet_bs256 import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
 
 # schedule settings
-optim_wrapper = dict(optimizer=dict(lr=0.01))
+optim_wrapper.merge(dict(optimizer=dict(lr=0.01)))

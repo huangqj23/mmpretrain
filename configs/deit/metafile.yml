@@ -28,7 +28,7 @@ Models:
           Top 5 Accuracy: 92.24
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-tiny_pt-4xb256_in1k_20220218-13b382a0.pth
-    Config: configs/deit/deit-tiny_4xb256_in1k.py
+    Config: configs/deit/deit_tiny_4xb256_in1k.py
   - Name: deit-tiny-distilled_3rdparty_in1k
     Metadata:
       FLOPs: 1265371776
@@ -41,7 +41,7 @@ Models:
           Top 5 Accuracy: 91.9
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-tiny-distilled_3rdparty_pt-4xb256_in1k_20211216-c429839a.pth
-    Config: configs/deit/deit-tiny-distilled_4xb256_in1k.py
+    Config: configs/deit/deit_tiny_distilled_4xb256_in1k.py
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_tiny_distilled_patch16_224-b40b3cf7.pth
       Code: https://github.com/facebookresearch/deit/blob/f5123946205daf72a88783dae94cabff98c49c55/models.py#L108
@@ -57,7 +57,7 @@ Models:
           Top 5 Accuracy: 95.06
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-small_pt-4xb256_in1k_20220218-9425b9bb.pth
-    Config: configs/deit/deit-small_4xb256_in1k.py
+    Config: configs/deit/deit_small_4xb256_in1k.py
   - Name: deit-small-distilled_3rdparty_in1k
     Metadata:
       FLOPs: 4632876288
@@ -70,7 +70,7 @@ Models:
           Top 5 Accuracy: 95.4
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-small-distilled_3rdparty_pt-4xb256_in1k_20211216-4de1d725.pth
-    Config: configs/deit/deit-small-distilled_4xb256_in1k.py
+    Config: configs/deit/deit_small_distilled_4xb256_in1k.py
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_small_distilled_patch16_224-649709d9.pth
       Code: https://github.com/facebookresearch/deit/blob/f5123946205daf72a88783dae94cabff98c49c55/models.py#L123
@@ -86,7 +86,7 @@ Models:
           Top 5 Accuracy: 95.81
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-base_pt-16xb64_in1k_20220216-db63c16c.pth
-    Config: configs/deit/deit-base_16xb64_in1k.py
+    Config: configs/deit/deit_base_16xb64_in1k.py
   - Name: deit-base_3rdparty_in1k
     Metadata:
       FLOPs: 17581972224
@@ -99,7 +99,7 @@ Models:
           Top 5 Accuracy: 95.59
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-base_3rdparty_pt-16xb64_in1k_20211124-6f40c188.pth
-    Config: configs/deit/deit-base_16xb64_in1k.py
+    Config: configs/deit/deit_base_16xb64_in1k.py
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_base_patch16_224-b5f2ef4d.pth
       Code: https://github.com/facebookresearch/deit/blob/f5123946205daf72a88783dae94cabff98c49c55/models.py#L93
@@ -115,7 +115,7 @@ Models:
           Top 5 Accuracy: 96.49
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-base-distilled_3rdparty_pt-16xb64_in1k_20211216-42891296.pth
-    Config: configs/deit/deit-base-distilled_16xb64_in1k.py
+    Config: configs/deit/deit_base_distilled_16xb64_in1k.py
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_base_distilled_patch16_224-df68dfff.pth
       Code: https://github.com/facebookresearch/deit/blob/f5123946205daf72a88783dae94cabff98c49c55/models.py#L138
@@ -131,7 +131,7 @@ Models:
           Top 5 Accuracy: 96.31
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-base_3rdparty_ft-16xb32_in1k-384px_20211124-822d02f2.pth
-    Config: configs/deit/deit-base_16xb32_in1k-384px.py
+    Config: configs/deit/deit_base_16xb32_in1k_384px.py
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_base_patch16_384-8de9b5d1.pth
       Code: https://github.com/facebookresearch/deit/blob/f5123946205daf72a88783dae94cabff98c49c55/models.py#L153
@@ -147,7 +147,7 @@ Models:
           Top 5 Accuracy: 97.35
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/deit/deit-base-distilled_3rdparty_ft-16xb32_in1k-384px_20211216-e48d6000.pth
-    Config: configs/deit/deit-base-distilled_16xb32_in1k-384px.py
+    Config: configs/deit/deit_base_distilled_16xb32_in1k_384px.py
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_base_distilled_patch16_384-d0272ac0.pth
       Code: https://github.com/facebookresearch/deit/blob/f5123946205daf72a88783dae94cabff98c49c55/models.py#L168

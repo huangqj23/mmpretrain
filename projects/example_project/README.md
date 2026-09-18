@@ -69,9 +69,9 @@ mim test mmpretrain configs/examplenet_8xb32_in1k.py --checkpoint $CHECKPOINT --
 
 |       Model        |   Pretrain   | Top-1 (%) | Top-5 (%) |                 Config                  |                Download                |
 | :----------------: | :----------: | :-------: | :-------: | :-------------------------------------: | :------------------------------------: |
-|  ExampleNet-tiny   | From scratch |   82.33   |   96.15   | [config](./mvitv2-tiny_8xb256_in1k.py)  | [model](MODEL-LINK) \| [log](LOG-LINK) |
-| ExampleNet-small\* | From scratch |   83.63   |   96.51   | [config](./mvitv2-small_8xb256_in1k.py) |          [model](MODEL-LINK)           |
-| ExampleNet-base\*  | From scratch |   84.34   |   96.86   | [config](./mvitv2-base_8xb256_in1k.py)  |          [model](MODEL-LINK)           |
+|  ExampleNet-tiny   | From scratch |   82.33   |   96.15   | [config](./mvitv2_tiny_8xb256_in1k.py)  | [model](MODEL-LINK) \| [log](LOG-LINK) |
+| ExampleNet-small\* | From scratch |   83.63   |   96.51   | [config](./mvitv2_small_8xb256_in1k.py) |          [model](MODEL-LINK)           |
+| ExampleNet-base\*  | From scratch |   84.34   |   96.86   | [config](./mvitv2_base_8xb256_in1k.py)  |          [model](MODEL-LINK)           |
 
 *Models with * are converted from the [official repo](REPO-LINK). The config files of these models are only for inference. We don't ensure these config files' training accuracy and welcome you to contribute your reproduction results.*
 

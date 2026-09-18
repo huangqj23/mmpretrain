@@ -38,7 +38,7 @@ Prepare your dataset according to the [docs](https://mmpretrain.readthedocs.io/e
 Train:
 
 ```shell
-python tools/train.py configs/itpn/itpn-pixel_hivit-base-p16_8xb512-amp-coslr-800e_in1k.py
+python tools/train.py configs/itpn/itpn_pixel_hivit_base_p16_8xb512_amp_coslr_800e_in1k.py
 ```
 
 <!-- [TABS-END] -->
@@ -49,9 +49,9 @@ python tools/train.py configs/itpn/itpn-pixel_hivit-base-p16_8xb512-amp-coslr-80
 
 | Model                                                   | Params (M) | Flops (G) |                               Config                               | Download |
 | :------------------------------------------------------ | :--------: | :-------: | :----------------------------------------------------------------: | :------: |
-| `itpn-clip-b_hivit-base-p16_8xb256-amp-coslr-800e_in1k` |   233.00   |   18.47   | [config](itpn-clip-b_hivit-base-p16_8xb256-amp-coslr-800e_in1k.py) |   N/A    |
-| `itpn-pixel_hivit-base-p16_8xb512-amp-coslr-800e_in1k`  |   103.00   |   18.47   | [config](itpn-pixel_hivit-base-p16_8xb512-amp-coslr-800e_in1k.py)  |   N/A    |
-| `itpn-pixel_hivit-large-p16_8xb512-amp-coslr-800e_in1k` |   314.00   |   63.98   | [config](itpn-pixel_hivit-large-p16_8xb512-amp-coslr-800e_in1k.py) |   N/A    |
+| `itpn-clip-b_hivit-base-p16_8xb256-amp-coslr-800e_in1k` |   233.00   |   18.47   | [config](itpn_clip_b_hivit_base_p16_8xb256_amp_coslr_800e_in1k.py) |   N/A    |
+| `itpn-pixel_hivit-base-p16_8xb512-amp-coslr-800e_in1k`  |   103.00   |   18.47   | [config](itpn_pixel_hivit_base_p16_8xb512_amp_coslr_800e_in1k.py)  |   N/A    |
+| `itpn-pixel_hivit-large-p16_8xb512-amp-coslr-800e_in1k` |   314.00   |   63.98   | [config](itpn_pixel_hivit_large_p16_8xb512_amp_coslr_800e_in1k.py) |   N/A    |
 
 ## Citation
 

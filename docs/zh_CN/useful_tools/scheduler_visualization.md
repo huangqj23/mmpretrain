@@ -35,10 +35,10 @@ python tools/visualization/vis_scheduler.py \
 
 ## 如何在开始训练前可视化学习率曲线
 
-你可以使用如下命令来绘制配置文件 `configs/swin_transformer/swin-base_16xb64_in1k.py` 将会使用的变化率曲线：
+你可以使用如下命令来绘制配置文件 `configs/swin_transformer/swin_base_16xb64_in1k.py` 将会使用的变化率曲线：
 
 ```bash
-python tools/visualization/vis_scheduler.py configs/swin_transformer/swin-base_16xb64_in1k.py --dataset-size 1281167 --ngpus 16
+python tools/visualization/vis_scheduler.py configs/swin_transformer/swin_base_16xb64_in1k.py --dataset-size 1281167 --ngpus 16
 ```
 
 <div align=center><img src="https://user-images.githubusercontent.com/26739999/226544329-cf3a3d45-6ab3-48aa-8972-2c2a58c35e62.png" style=" width: auto; height: 40%; "></div>

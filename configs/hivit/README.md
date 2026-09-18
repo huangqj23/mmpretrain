@@ -48,13 +48,13 @@ Prepare your dataset according to the [docs](https://mmpretrain.readthedocs.io/e
 Train:
 
 ```shell
-python tools/train.py configs/hivit/hivit-tiny-p16_16xb64_in1k.py
+python tools/train.py configs/hivit/hivit_tiny_p16_16xb64_in1k.py
 ```
 
 <!-- Test:
 
 ```shell
-python tools/test.py configs/hivit/hivit-tiny-p16_16xb64_in1k.py None
+python tools/test.py configs/hivit/hivit_tiny_p16_16xb64_in1k.py None
 ``` -->
 
 <!-- [TABS-END] -->
@@ -65,9 +65,9 @@ python tools/test.py configs/hivit/hivit-tiny-p16_16xb64_in1k.py None
 
 | Model                         |   Pretrain   | Params (M) | Flops (G) | Top-1 (%) |                  Config                  | Download |
 | :---------------------------- | :----------: | :--------: | :-------: | :-------: | :--------------------------------------: | :------: |
-| `hivit-tiny-p16_16xb64_in1k`  | From scratch |   19.18    |   4.60    |   82.10   | [config](hivit-tiny-p16_16xb64_in1k.py)  |   N/A    |
-| `hivit-small-p16_16xb64_in1k` | From scratch |   37.53    |   9.07    |    N/A    | [config](hivit-small-p16_16xb64_in1k.py) |   N/A    |
-| `hivit-base-p16_16xb64_in1k`  | From scratch |   79.05    |   18.47   |    N/A    | [config](hivit-base-p16_16xb64_in1k.py)  |   N/A    |
+| `hivit-tiny-p16_16xb64_in1k`  | From scratch |   19.18    |   4.60    |   82.10   | [config](hivit_tiny_p16_16xb64_in1k.py)  |   N/A    |
+| `hivit-small-p16_16xb64_in1k` | From scratch |   37.53    |   9.07    |    N/A    | [config](hivit_small_p16_16xb64_in1k.py) |   N/A    |
+| `hivit-base-p16_16xb64_in1k`  | From scratch |   79.05    |   18.47   |    N/A    | [config](hivit_base_p16_16xb64_in1k.py)  |   N/A    |
 
 ## Citation
 

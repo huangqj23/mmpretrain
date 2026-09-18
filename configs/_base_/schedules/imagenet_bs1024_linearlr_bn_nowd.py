@@ -1,13 +1,17 @@
+# Converted from configs/_base_/schedules/imagenet_bs1024_linearlr_bn_nowd.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import ConstantLR, PolyLR
+from torch.optim import SGD
+
 # optimizer
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.5, momentum=0.9, weight_decay=0.00004),
+    optimizer=dict(type=SGD, lr=0.5, momentum=0.9, weight_decay=0.00004),
     paramwise_cfg=dict(norm_decay_mult=0),
 )
 
 # learning policy
 param_scheduler = [
-    dict(type='ConstantLR', factor=0.1, by_epoch=False, begin=0, end=5000),
-    dict(type='PolyLR', eta_min=0, by_epoch=False, begin=5000)
+    dict(type=ConstantLR, factor=0.1, by_epoch=False, begin=0, end=5000),
+    dict(type=PolyLR, eta_min=0, by_epoch=False, begin=5000)
 ]
 
 # train, val, test setting

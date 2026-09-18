@@ -48,13 +48,13 @@ Prepare your dataset according to the [docs](https://mmpretrain.readthedocs.io/e
 Train:
 
 ```shell
-python tools/train.py configs/densecl/densecl_resnet50_8xb32-coslr-200e_in1k.py
+python tools/train.py configs/densecl/densecl_resnet50_8xb32_coslr_200e_in1k.py
 ```
 
 Test:
 
 ```shell
-python tools/test.py configs/densecl/benchmarks/resnet50_8xb32-linear-steplr-100e_in1k.py https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-f0f0a579.pth
+python tools/test.py configs/densecl/benchmarks/resnet50_8xb32_linear_steplr_100e_in1k.py https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-f0f0a579.pth
 ```
 
 <!-- [TABS-END] -->
@@ -65,13 +65,13 @@ python tools/test.py configs/densecl/benchmarks/resnet50_8xb32-linear-steplr-100
 
 | Model                                    | Params (M) | Flops (G) |                       Config                        |                                          Download                                          |
 | :--------------------------------------- | :--------: | :-------: | :-------------------------------------------------: | :----------------------------------------------------------------------------------------: |
-| `densecl_resnet50_8xb32-coslr-200e_in1k` |   64.85    |   4.11    | [config](densecl_resnet50_8xb32-coslr-200e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/densecl_resnet50_8xb32-coslr-200e_in1k_20220825-3078723b.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/densecl_resnet50_8xb32-coslr-200e_in1k_20220825-3078723b.json) |
+| `densecl_resnet50_8xb32-coslr-200e_in1k` |   64.85    |   4.11    | [config](densecl_resnet50_8xb32_coslr_200e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/densecl_resnet50_8xb32-coslr-200e_in1k_20220825-3078723b.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/densecl_resnet50_8xb32-coslr-200e_in1k_20220825-3078723b.json) |
 
 ### Image Classification on ImageNet-1k
 
 | Model                                     |                   Pretrain                   | Params (M) | Flops (G) | Top-1 (%) |                   Config                   |                   Download                    |
 | :---------------------------------------- | :------------------------------------------: | :--------: | :-------: | :-------: | :----------------------------------------: | :-------------------------------------------: |
-| `resnet50_densecl-pre_8xb32-linear-steplr-100e_in1k` | [DENSECL](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/densecl_resnet50_8xb32-coslr-200e_in1k_20220825-3078723b.pth) |   25.56    |   4.11    |   63.50   | [config](benchmarks/resnet50_8xb32-linear-steplr-100e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-f0f0a579.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-f0f0a579.json) |
+| `resnet50_densecl-pre_8xb32-linear-steplr-100e_in1k` | [DENSECL](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/densecl_resnet50_8xb32-coslr-200e_in1k_20220825-3078723b.pth) |   25.56    |   4.11    |   63.50   | [config](benchmarks/resnet50_8xb32_linear_steplr_100e_in1k.py) | [model](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-f0f0a579.pth) \| [log](https://download.openmmlab.com/mmselfsup/1.x/densecl/densecl_resnet50_8xb32-coslr-200e_in1k/resnet50_linear-8xb32-steplr-100e_in1k/resnet50_linear-8xb32-steplr-100e_in1k_20220825-f0f0a579.json) |
 
 ## Citation
 

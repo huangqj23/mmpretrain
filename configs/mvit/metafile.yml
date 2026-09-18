@@ -35,7 +35,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/mvit/mvitv2_models/MViTv2_T_in1k.pyth
       Code: https://github.com/facebookresearch/mvit
-    Config: configs/mvit/mvitv2-tiny_8xb256_in1k.py
+    Config: configs/mvit/mvitv2_tiny_8xb256_in1k.py
 
   - Name: mvitv2-small_3rdparty_in1k
     In Collection: MViT V2
@@ -54,7 +54,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/mvit/mvitv2_models/MViTv2_S_in1k.pyth
       Code: https://github.com/facebookresearch/mvit
-    Config: configs/mvit/mvitv2-small_8xb256_in1k.py
+    Config: configs/mvit/mvitv2_small_8xb256_in1k.py
 
   - Name: mvitv2-base_3rdparty_in1k
     In Collection: MViT V2
@@ -73,7 +73,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/mvit/mvitv2_models/MViTv2_B_in1k.pyth
       Code: https://github.com/facebookresearch/mvit
-    Config: configs/mvit/mvitv2-base_8xb256_in1k.py
+    Config: configs/mvit/mvitv2_base_8xb256_in1k.py
 
   - Name: mvitv2-large_3rdparty_in1k
     In Collection: MViT V2
@@ -92,4 +92,4 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/mvit/mvitv2_models/MViTv2_L_in1k.pyth
       Code: https://github.com/facebookresearch/mvit
-    Config: configs/mvit/mvitv2-large_8xb256_in1k.py
+    Config: configs/mvit/mvitv2_large_8xb256_in1k.py

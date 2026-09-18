@@ -75,7 +75,7 @@ Here is an example of running t-SNE visualization on MAE-ViT-base model, trained
 
 ```shell
 python tools/visualization/vis_tsne.py \
-    configs/mae/mae_vit-base-p16_8xb512-amp-coslr-800e_in1k.py \
+    configs/mae/mae_vit_base_p16_8xb512_amp_coslr_800e_in1k.py \
     --checkpoint https://download.openmmlab.com/mmselfsup/1.x/mae/mae_vit-base-p16_8xb512-fp16-coslr-800e_in1k/mae_vit-base-p16_8xb512-coslr-800e-fp16_in1k_20220825-5d81fbc4.pth \
     --test-cfg configs/_base_/datasets/imagenet_bs32.py
 ```

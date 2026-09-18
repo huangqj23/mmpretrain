@@ -49,7 +49,7 @@ Models:
         Metrics:
           Accuracy: 53.5
     Weights: https://download.openmmlab.com/mmclassification/v1/blip2/blip2-opt2.7b_3rdparty_pretrain_20230505-b51db4e1.pth
-    Config: configs/blip2/blip2-opt2.7b_8xb16_vqa.py
+    Config: configs/blip2/blip2_opt2_7b_8xb16_vqa.py
     Converted From:
       Weights: https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_opt2.7b.pth
       Code: https://github.com/salesforce/LAVIS
@@ -65,7 +65,7 @@ Models:
           BLEU-4: 32.90
           CIDER: 111.10
     Weights: https://download.openmmlab.com/mmclassification/v1/blip2/blip2-opt2.7b_3rdparty_pretrain_20230505-b51db4e1.pth
-    Config: configs/blip2/blip2-opt2.7b_8xb32_caption.py
+    Config: configs/blip2/blip2_opt2_7b_8xb32_caption.py
     Converted From:
       Weights: https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_opt2.7b.pth
       Code: https://github.com/salesforce/LAVIS

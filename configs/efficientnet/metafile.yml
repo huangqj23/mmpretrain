@@ -33,7 +33,7 @@ Models:
           Top 5 Accuracy: 93.17
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b0_3rdparty_8xb32_in1k_20220119-a7e2a0b1.pth
-    Config: configs/efficientnet/efficientnet-b0_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b0_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckpts/efficientnet-b0.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -49,7 +49,7 @@ Models:
           Top 5 Accuracy: 93.41
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b0_3rdparty_8xb32-aa_in1k_20220119-8d939117.pth
-    Config: configs/efficientnet/efficientnet-b0_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b0_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b0.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -65,7 +65,7 @@ Models:
           Top 5 Accuracy: 93.61
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b0_3rdparty_8xb32-aa-advprop_in1k_20220119-26434485.pth
-    Config: configs/efficientnet/efficientnet-b0_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b0_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b0.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -81,7 +81,7 @@ Models:
           Top 5 Accuracy: 94.00
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b0_3rdparty-ra-noisystudent_in1k_20221103-75cd08d3.pth
-    Config: configs/efficientnet/efficientnet-b0_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b0_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b0.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -97,7 +97,7 @@ Models:
           Top 5 Accuracy: 94.28
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b1_3rdparty_8xb32_in1k_20220119-002556d9.pth
-    Config: configs/efficientnet/efficientnet-b1_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b1_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckpts/efficientnet-b1.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -113,7 +113,7 @@ Models:
           Top 5 Accuracy: 94.42
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b1_3rdparty_8xb32-aa_in1k_20220119-619d8ae3.pth
-    Config: configs/efficientnet/efficientnet-b1_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b1_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b1.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -129,7 +129,7 @@ Models:
           Top 5 Accuracy: 94.43
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b1_3rdparty_8xb32-aa-advprop_in1k_20220119-5715267d.pth
-    Config: configs/efficientnet/efficientnet-b1_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b1_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b1.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -145,7 +145,7 @@ Models:
           Top 5 Accuracy: 95.83
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b1_3rdparty-ra-noisystudent_in1k_20221103-756bcbc0.pth
-    Config: configs/efficientnet/efficientnet-b1_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b1_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b1.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -161,7 +161,7 @@ Models:
           Top 5 Accuracy: 94.80
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b2_3rdparty_8xb32_in1k_20220119-ea374a30.pth
-    Config: configs/efficientnet/efficientnet-b2_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b2_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckpts/efficientnet-b2.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -177,7 +177,7 @@ Models:
           Top 5 Accuracy: 94.96
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b2_3rdparty_8xb32-aa_in1k_20220119-dd61e80b.pth
-    Config: configs/efficientnet/efficientnet-b2_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b2_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b2.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -193,7 +193,7 @@ Models:
           Top 5 Accuracy: 95.07
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b2_3rdparty_8xb32-aa-advprop_in1k_20220119-1655338a.pth
-    Config: configs/efficientnet/efficientnet-b2_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b2_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b2.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -209,7 +209,7 @@ Models:
           Top 5 Accuracy: 96.23
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b2_3rdparty-ra-noisystudent_in1k_20221103-301ed299.pth
-    Config: configs/efficientnet/efficientnet-b2_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b2_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b2.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -225,7 +225,7 @@ Models:
           Top 5 Accuracy: 95.34
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b3_3rdparty_8xb32_in1k_20220119-4b4d7487.pth
-    Config: configs/efficientnet/efficientnet-b3_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b3_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckpts/efficientnet-b3.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -241,7 +241,7 @@ Models:
           Top 5 Accuracy: 95.67
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b3_3rdparty_8xb32-aa_in1k_20220119-5b4887a0.pth
-    Config: configs/efficientnet/efficientnet-b3_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b3_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b3.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -257,7 +257,7 @@ Models:
           Top 5 Accuracy: 95.69
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b3_3rdparty_8xb32-aa-advprop_in1k_20220119-53b41118.pth
-    Config: configs/efficientnet/efficientnet-b3_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b3_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b3.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -273,7 +273,7 @@ Models:
           Top 5 Accuracy: 96.89
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b3_3rdparty-ra-noisystudent_in1k_20221103-a4ab5fd6.pth
-    Config: configs/efficientnet/efficientnet-b3_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b3_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b3.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -289,7 +289,7 @@ Models:
           Top 5 Accuracy: 96.09
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b4_3rdparty_8xb32_in1k_20220119-81fd4077.pth
-    Config: configs/efficientnet/efficientnet-b4_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b4_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckpts/efficientnet-b4.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -305,7 +305,7 @@ Models:
           Top 5 Accuracy: 96.26
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b4_3rdparty_8xb32-aa_in1k_20220119-45b8bd2b.pth
-    Config: configs/efficientnet/efficientnet-b4_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b4_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b4.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -321,7 +321,7 @@ Models:
           Top 5 Accuracy: 96.44
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b4_3rdparty_8xb32-aa-advprop_in1k_20220119-38c2238c.pth
-    Config: configs/efficientnet/efficientnet-b4_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b4_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b4.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -337,7 +337,7 @@ Models:
           Top 5 Accuracy: 97.52
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b4_3rdparty-ra-noisystudent_in1k_20221103-16ba8a2d.pth
-    Config: configs/efficientnet/efficientnet-b4_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b4_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b4.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -353,7 +353,7 @@ Models:
           Top 5 Accuracy: 96.47
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b5_3rdparty_8xb32_in1k_20220119-e9814430.pth
-    Config: configs/efficientnet/efficientnet-b5_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b5_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckpts/efficientnet-b5.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -369,7 +369,7 @@ Models:
           Top 5 Accuracy: 96.76
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b5_3rdparty_8xb32-aa_in1k_20220119-2cab8b78.pth
-    Config: configs/efficientnet/efficientnet-b5_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b5_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b5.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -385,7 +385,7 @@ Models:
           Top 5 Accuracy: 96.98
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b5_3rdparty_8xb32-aa-advprop_in1k_20220119-f57a895a.pth
-    Config: configs/efficientnet/efficientnet-b5_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b5_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b5.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -401,7 +401,7 @@ Models:
           Top 5 Accuracy: 97.75
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b5_3rdparty-ra-noisystudent_in1k_20221103-111a185f.pth
-    Config: configs/efficientnet/efficientnet-b5_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b5_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b5.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -417,7 +417,7 @@ Models:
           Top 5 Accuracy: 96.82
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b6_3rdparty_8xb32-aa_in1k_20220119-45b03310.pth
-    Config: configs/efficientnet/efficientnet-b6_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b6_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b6.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -433,7 +433,7 @@ Models:
           Top 5 Accuracy: 97.14
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b6_3rdparty_8xb32-aa-advprop_in1k_20220119-bfe3485e.pth
-    Config: configs/efficientnet/efficientnet-b6_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b6_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b6.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -449,7 +449,7 @@ Models:
           Top 5 Accuracy: 97.87
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b6_3rdparty-ra-noisystudent_in1k_20221103-7de7d2cc.pth
-    Config: configs/efficientnet/efficientnet-b6_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b6_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b6.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -465,7 +465,7 @@ Models:
           Top 5 Accuracy: 96.88
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b7_3rdparty_8xb32-aa_in1k_20220119-bf03951c.pth
-    Config: configs/efficientnet/efficientnet-b7_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b7_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/efficientnet-b7.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -481,7 +481,7 @@ Models:
           Top 5 Accuracy: 97.23
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b7_3rdparty_8xb32-aa-advprop_in1k_20220119-c6dbff10.pth
-    Config: configs/efficientnet/efficientnet-b7_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b7_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b7.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -497,7 +497,7 @@ Models:
           Top 5 Accuracy: 98.08
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b7_3rdparty-ra-noisystudent_in1k_20221103-a82894bc.pth
-    Config: configs/efficientnet/efficientnet-b7_8xb32_in1k.py
+    Config: configs/efficientnet/efficientnet_b7_8xb32_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-b7.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -513,7 +513,7 @@ Models:
           Top 5 Accuracy: 97.28
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b8_3rdparty_8xb32-aa-advprop_in1k_20220119-297ce1b7.pth
-    Config: configs/efficientnet/efficientnet-b8_8xb32-01norm_in1k.py
+    Config: configs/efficientnet/efficientnet_b8_8xb32_01norm_in1k.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/advprop/efficientnet-b8.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -529,7 +529,7 @@ Models:
           Top 5 Accuracy: 98.65
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-l2_3rdparty-ra-noisystudent_in1k_20221103-be73be13.pth
-    Config: configs/efficientnet/efficientnet-l2_8xb8_in1k-800px.py
+    Config: configs/efficientnet/efficientnet_l2_8xb8_in1k_800px.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-l2.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet
@@ -545,7 +545,7 @@ Models:
           Top 5 Accuracy: 98.55
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-l2_3rdparty-ra-noisystudent_in1k-475px_20221103-5a0d8058.pth
-    Config: configs/efficientnet/efficientnet-l2_8xb32_in1k-475px.py
+    Config: configs/efficientnet/efficientnet_l2_8xb32_in1k_475px.py
     Converted From:
       Weights: https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/noisystudent/noisy_student_efficientnet-l2_475.tar.gz
       Code: https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet

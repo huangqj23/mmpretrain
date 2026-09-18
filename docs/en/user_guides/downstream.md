@@ -35,7 +35,7 @@ Example:
 
 ```shell
 bash ./tools/benchmarks/mmdetection/mim_dist_train_c4.sh \
-  configs/byol/benchmarks/mask-rcnn_r50-c4_ms-1x_coco.py \
+  configs/byol/benchmarks/mask_rcnn_r50_c4_ms_1x_coco.py \
   https://download.openmmlab.com/mmselfsup/1.x/byol/byol_resnet50_16xb256-coslr-200e_in1k/byol_resnet50_16xb256-coslr-200e_in1k_20220825-de817331.pth 8
 ```
 
@@ -61,7 +61,7 @@ Example:
 
 ```shell
 bash ./tools/benchmarks/mmdetection/mim_dist_test.sh \
-configs/byol/benchmarks/mask-rcnn_r50_fpn_ms-1x_coco.py \
+configs/byol/benchmarks/mask_rcnn_r50_fpn_ms_1x_coco.py \
 https://download.openmmlab.com/mmselfsup/1.x/byol/byol_resnet50_16xb256-coslr-200e_in1k/byol_resnet50_16xb256-coslr-200e_in1k_20220825-de817331.pth 8
 ```
 

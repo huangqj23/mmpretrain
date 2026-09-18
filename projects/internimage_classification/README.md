@@ -34,7 +34,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 mim train mmpretrain ${CONFIG} --work-dir ${WORK_DIR}
 
 # a specific command example
-mim train mmpretrain configs/internimage-tiny_8xb128_in1k-224.py \
+mim train mmpretrain configs/internimage_tiny_8xb128_in1k_224.py \
 	--work-dir work_dirs/internimage-tiny_8xb128_in1k-224/
 ```
 
@@ -68,7 +68,7 @@ Please download the pretrain weight provided by [OpenGVLab](https://github.com/O
 mim test mmpretrain ${CONFIG} -C ${CHECKPOINT}
 
 # a specific command example
-mim test mmpretrain configs/internimage-tiny_8xb128_in1k-224.py -C /PATH/TO/internimage_t_1k_224.pth
+mim test mmpretrain configs/internimage_tiny_8xb128_in1k_224.py -C /PATH/TO/internimage_t_1k_224.pth
 ```
 
 ##### On Multiple GPUs
@@ -101,13 +101,13 @@ The accuracy of different models on ImageNet1K,
 
 |      name      | resolution |  acc@1  |  acc@5  |                          config                           |                                              weight                                               |
 | :------------: | :--------: | :-----: | :-----: | :-------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: |
-| InternImage-T  |    224     | 83.4700 | 96.5340 |  [config](./configs/internimage-tiny_8xb128_in1k-224.py)  |    [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_t_1k_224.pth)    |
-| InternImage-S  |    224     | 84.1640 | 96.9320 | [config](./configs/internimage-small_8xb128_in1k-224.py)  |    [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_s_1k_224.pth)    |
-| InternImage-B  |    224     | 84.8660 | 97.1820 |  [config](./configs/internimage-base_8xb128_in1k-224.py)  |    [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_b_1k_224.pth)    |
-| InternImage-L  |    384     | 87.7060 | 98.3820 | [config](./configs/internimage-large_8xb128_in1k-384.py)  | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_l_22kto1k_384.pth)  |
-| InternImage-XL |    384     | 88.0460 | 98.5620 | [config](./configs/internimage-xlagre_8xb128_in1k-384.py) | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_xl_22kto1k_384.pth) |
-| InternImage-H  |    640     | 89.5500 | 98.8500 |  [config](./configs/internimage-huge_8xb128_in1k-640.py)  | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_h_22kto1k_640.pth)  |
-| InternImage-G  |    512     | 90.0580 | 98.9700 | [config](./configs/internimage-giant_8xb128_in1k-512.py)  | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_g_22kto1k_512.pth)  |
+| InternImage-T  |    224     | 83.4700 | 96.5340 |  [config](./configs/internimage_tiny_8xb128_in1k_224.py)  |    [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_t_1k_224.pth)    |
+| InternImage-S  |    224     | 84.1640 | 96.9320 | [config](./configs/internimage_small_8xb128_in1k_224.py)  |    [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_s_1k_224.pth)    |
+| InternImage-B  |    224     | 84.8660 | 97.1820 |  [config](./configs/internimage_base_8xb128_in1k_224.py)  |    [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_b_1k_224.pth)    |
+| InternImage-L  |    384     | 87.7060 | 98.3820 | [config](./configs/internimage_large_8xb128_in1k_384.py)  | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_l_22kto1k_384.pth)  |
+| InternImage-XL |    384     | 88.0460 | 98.5620 | [config](./configs/internimage_xlagre_8xb128_in1k_384.py) | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_xl_22kto1k_384.pth) |
+| InternImage-H  |    640     | 89.5500 | 98.8500 |  [config](./configs/internimage_huge_8xb128_in1k_640.py)  | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_h_22kto1k_640.pth)  |
+| InternImage-G  |    512     | 90.0580 | 98.9700 | [config](./configs/internimage_giant_8xb128_in1k_512.py)  | [model](https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_g_22kto1k_512.pth)  |
 
 ## Citation
 

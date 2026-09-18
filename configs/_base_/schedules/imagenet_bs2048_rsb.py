@@ -1,11 +1,16 @@
+# Converted from configs/_base_/schedules/imagenet_bs2048_rsb.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import CosineAnnealingLR, LinearLR
+
+from mmpretrain.engine import Lamb
+
 # optimizer
-optim_wrapper = dict(optimizer=dict(type='Lamb', lr=0.005, weight_decay=0.02))
+optim_wrapper = dict(optimizer=dict(type=Lamb, lr=0.005, weight_decay=0.02))
 
 # learning policy
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=0.0001,
         by_epoch=True,
         begin=0,
@@ -14,7 +19,7 @@ param_scheduler = [
         convert_to_iter_based=True),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=95,
         eta_min=1.0e-6,
         by_epoch=True,

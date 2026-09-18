@@ -17,7 +17,7 @@ Collections:
 Models:
   - Name: mlp-mixer-base-p16_3rdparty_64xb64_in1k
     In Collection: MLP-Mixer
-    Config: configs/mlp_mixer/mlp-mixer-base-p16_64xb64_in1k.py
+    Config: configs/mlp_mixer/mlp_mixer_base_p16_64xb64_in1k.py
     Metadata:
       FLOPs: 12610000000  # 12.61 G
       Parameters: 59880000  # 59.88 M
@@ -34,7 +34,7 @@ Models:
 
   - Name: mlp-mixer-large-p16_3rdparty_64xb64_in1k
     In Collection: MLP-Mixer
-    Config: configs/mlp_mixer/mlp-mixer-large-p16_64xb64_in1k.py
+    Config: configs/mlp_mixer/mlp_mixer_large_p16_64xb64_in1k.py
     Metadata:
       FLOPs: 44570000000  # 44.57 G
       Parameters: 208200000  # 208.2 M

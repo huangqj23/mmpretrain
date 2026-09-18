@@ -30,7 +30,7 @@ Models:
           Top 1 Accuracy: 82.1
         Task: Image Classification
     Weights:
-    Config: configs/hivit/hivit-tiny-p16_16xb64_in1k.py
+    Config: configs/hivit/hivit_tiny_p16_16xb64_in1k.py
 
   - Name: hivit-small-p16_16xb64_in1k
     Metadata:
@@ -45,7 +45,7 @@ Models:
           Top 1 Accuracy:
         Task: Image Classification
     Weights:
-    Config: configs/hivit/hivit-small-p16_16xb64_in1k.py
+    Config: configs/hivit/hivit_small_p16_16xb64_in1k.py
 
   - Name: hivit-base-p16_16xb64_in1k
     Metadata:
@@ -60,4 +60,4 @@ Models:
           Top 1 Accuracy:
         Task: Image Classification
     Weights:
-    Config: configs/hivit/hivit-base-p16_16xb64_in1k.py
+    Config: configs/hivit/hivit_base_p16_16xb64_in1k.py

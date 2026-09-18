@@ -49,13 +49,13 @@ Prepare your dataset according to the [docs](https://mmpretrain.readthedocs.io/e
 Train:
 
 ```shell
-python tools/train.py configs/arcface/resnet50-arcface_8xb32_inshop.py
+python tools/train.py configs/arcface/resnet50_arcface_8xb32_inshop.py
 ```
 
 Test:
 
 ```shell
-python tools/test.py configs/arcface/resnet50-arcface_8xb32_inshop.py https://download.openmmlab.com/mmclassification/v0/arcface/resnet50-arcface_inshop_20230202-b766fe7f.pth
+python tools/test.py configs/arcface/resnet50_arcface_8xb32_inshop.py https://download.openmmlab.com/mmclassification/v0/arcface/resnet50-arcface_inshop_20230202-b766fe7f.pth
 ```
 
 <!-- [TABS-END] -->
@@ -66,7 +66,7 @@ python tools/test.py configs/arcface/resnet50-arcface_8xb32_inshop.py https://do
 
 |           Model           |                      Pretrain                      | Params(M) | Flops(G) | Recall@1 | mAP@10 |                    Config                    |                      Download                      |
 | :-----------------------: | :------------------------------------------------: | :-------: | :------: | :------: | :----: | :------------------------------------------: | :------------------------------------------------: |
-| `resnet50-arcface_inshop` | [ImageNet-21k-mill](https://download.openmmlab.com/mmclassification/v0/resnet/resnet50_3rdparty-mill_in21k_20220331-faac000b.pth) |   31.69   |  16.48   |  90.18   | 69.30  | [config](./resnet50-arcface_8xb32_inshop.py) | [model](https://download.openmmlab.com/mmclassification/v0/arcface/resnet50-arcface_inshop_20230202-b766fe7f.pth) \| [log](https://download.openmmlab.com/mmclassification/v0/arcface/resnet50-arcface_inshop_20230202-b766fe7f.log) |
+| `resnet50-arcface_inshop` | [ImageNet-21k-mill](https://download.openmmlab.com/mmclassification/v0/resnet/resnet50_3rdparty-mill_in21k_20220331-faac000b.pth) |   31.69   |  16.48   |  90.18   | 69.30  | [config](./resnet50_arcface_8xb32_inshop.py) | [model](https://download.openmmlab.com/mmclassification/v0/arcface/resnet50-arcface_inshop_20230202-b766fe7f.pth) \| [log](https://download.openmmlab.com/mmclassification/v0/arcface/resnet50-arcface_inshop_20230202-b766fe7f.log) |
 
 ## Citation
 

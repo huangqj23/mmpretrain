@@ -24,5 +24,5 @@ python tools/print_config.py \
 ## Example
 
 ```shell
-python tools/misc/verify_dataset.py configs/t2t_vit/t2t-vit-t-14_8xb64_in1k.py --out-path broken_imgs.log --phase val --num-process 8
+python tools/misc/verify_dataset.py configs/t2t_vit/t2t_vit_t_14_8xb64_in1k.py --out-path broken_imgs.log --phase val --num-process 8
 ```

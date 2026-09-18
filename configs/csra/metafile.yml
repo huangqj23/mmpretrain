@@ -26,4 +26,4 @@ Models:
           CF1: 89.16
         Task: Multi-Label Classification
     Weights: https://download.openmmlab.com/mmclassification/v0/csra/resnet101-csra_1xb16_voc07-448px_20220722-29efb40a.pth
-    Config: configs/csra/resnet101-csra_1xb16_voc07-448px.py
+    Config: configs/csra/resnet101_csra_1xb16_voc07_448px.py

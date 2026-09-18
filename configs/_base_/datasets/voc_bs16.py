@@ -1,5 +1,12 @@
+# Converted from configs/_base_/datasets/voc_bs16.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import VOC, PackInputs, RandomResizedCrop, ResizeEdge
+from mmpretrain.evaluation import VOCAveragePrecision, VOCMultiLabelMetric
+
 # dataset settings
-dataset_type = 'VOC'
+dataset_type = VOC
 data_preprocessor = dict(
     num_classes=20,
     # RGB format normalization parameters
@@ -12,18 +19,18 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=224),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=224),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='ResizeEdge', scale=256, edge='short'),
-    dict(type='CenterCrop', crop_size=224),
+    dict(type=LoadImageFromFile),
+    dict(type=ResizeEdge, scale=256, edge='short'),
+    dict(type=CenterCrop, crop_size=224),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         # `gt_label_difficult` is needed for VOC evaluation
         meta_keys=('sample_idx', 'img_path', 'ori_shape', 'img_shape',
                    'scale_factor', 'flip', 'flip_direction',
@@ -38,7 +45,7 @@ train_dataloader = dict(
         data_root='data/VOC2007',
         split='trainval',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
 )
 
 val_dataloader = dict(
@@ -49,16 +56,16 @@ val_dataloader = dict(
         data_root='data/VOC2007',
         split='test',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
 
 test_dataloader = val_dataloader
 
 # calculate precision_recall_f1 and mAP
 val_evaluator = [
-    dict(type='VOCMultiLabelMetric'),
-    dict(type='VOCMultiLabelMetric', average='micro'),
-    dict(type='VOCAveragePrecision')
+    dict(type=VOCMultiLabelMetric),
+    dict(type=VOCMultiLabelMetric, average='micro'),
+    dict(type=VOCAveragePrecision)
 ]
 
 test_dataloader = val_dataloader

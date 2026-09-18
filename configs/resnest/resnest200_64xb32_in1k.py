@@ -1,9 +1,19 @@
-_base_ = [
-    '../_base_/models/resnest200.py',
-    '../_base_/datasets/imagenet_bs32.py',
-    '../_base_/default_runtime.py',
-    './_randaug_policies.py',
-]
+# Converted from configs/resnest/resnest200_64xb32_in1k.py by industrial-vision tools/convert_configs.py
+from mmengine.config import read_base
+
+with read_base():
+    from .._base_.models.resnest200 import *  # noqa: F401,F403
+    from .._base_.datasets.imagenet_bs32 import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
+    from ._randaug_policies import *  # noqa: F401,F403
+
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import SGD
+
+from mmpretrain.datasets import (ColorJitter, EfficientNetCenterCrop,
+                                 EfficientNetRandomCrop, Lighting, PackInputs,
+                                 RandAugment)
 
 # dataset settings
 
@@ -16,40 +26,40 @@ EIGVEC = [
 ]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandAugment',
-        policies={{_base_.policies}},
+        type=RandAugment,
+        policies=policies,
         num_policies=2,
         magnitude_level=12),
-    dict(type='EfficientNetRandomCrop', scale=320, backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='ColorJitter', brightness=0.4, contrast=0.4, saturation=0.4),
+    dict(type=EfficientNetRandomCrop, scale=320, backend='pillow'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=ColorJitter, brightness=0.4, contrast=0.4, saturation=0.4),
     dict(
-        type='Lighting',
+        type=Lighting,
         eigval=EIGVAL,
         eigvec=EIGVEC,
         alphastd=0.1,
         to_rgb=False),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='EfficientNetCenterCrop', crop_size=320, backend='pillow'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=EfficientNetCenterCrop, crop_size=320, backend='pillow'),
+    dict(type=PackInputs),
 ]
 
 # schedule settings
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.8, momentum=0.9, weight_decay=1e-4),
+    optimizer=dict(type=SGD, lr=0.8, momentum=0.9, weight_decay=1e-4),
     paramwise_cfg=dict(bias_decay_mult=0., norm_decay_mult=0.),
 )
 
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-6,
         by_epoch=True,
         begin=0,
@@ -58,7 +68,7 @@ param_scheduler = [
         convert_to_iter_based=True),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=265,
         by_epoch=True,
         begin=5,
@@ -72,3 +82,7 @@ train_cfg = dict(by_epoch=True, max_epochs=270)
 # based on the actual training batch size.
 # base_batch_size = (64 GPUs) x (32 samples per GPU)
 auto_scale_lr = dict(base_batch_size=2048)
+if isinstance(train_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_
+    train_pipeline.pop('_delete_', None)
+if isinstance(test_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_
+    test_pipeline.pop('_delete_', None)

@@ -25,7 +25,7 @@ Models:
     In Collection: iTPN
     Results: null
     Weights:
-    Config: configs/itpn/itpn-clip-b_hivit-base-p16_8xb256-amp-coslr-800e_in1k.py
+    Config: configs/itpn/itpn_clip_b_hivit_base_p16_8xb256_amp_coslr_800e_in1k.py
 
   - Name: itpn-pixel_hivit-base-p16_8xb512-amp-coslr-800e_in1k
     Metadata:
@@ -36,7 +36,7 @@ Models:
     In Collection: iTPN
     Results: null
     Weights:
-    Config: configs/itpn/itpn-pixel_hivit-base-p16_8xb512-amp-coslr-800e_in1k.py
+    Config: configs/itpn/itpn_pixel_hivit_base_p16_8xb512_amp_coslr_800e_in1k.py
 
   - Name: itpn-pixel_hivit-large-p16_8xb512-amp-coslr-800e_in1k
     Metadata:
@@ -47,4 +47,4 @@ Models:
     In Collection: iTPN
     Results: null
     Weights:
-    Config: configs/itpn/itpn-pixel_hivit-large-p16_8xb512-amp-coslr-800e_in1k.py
+    Config: configs/itpn/itpn_pixel_hivit_large_p16_8xb512_amp_coslr_800e_in1k.py

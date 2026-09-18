@@ -20,8 +20,8 @@ Description of all arguments:
 
 ```shell
 # Print a complete config
-python tools/misc/print_config.py configs/t2t_vit/t2t-vit-t-14_8xb64_in1k.py
+python tools/misc/print_config.py configs/t2t_vit/t2t_vit_t_14_8xb64_in1k.py
 
 # Save the complete config to a independent config file.
-python tools/misc/print_config.py configs/t2t_vit/t2t-vit-t-14_8xb64_in1k.py > final_config.py
+python tools/misc/print_config.py configs/t2t_vit/t2t_vit_t_14_8xb64_in1k.py > final_config.py
 ```

@@ -17,7 +17,7 @@ data
 
 ### 修改分类配置
 
-我们在使用MAE预训练的ViT-base模型上运行形状偏移工具。它的配置文件为`configs/mae/benchmarks/vit-base-p16_8xb128-coslr-100e_in1k.py`，它的检查点可从[此链接](https://download.openmmlab.com/mmselfsup/1.x/mae/mae_vit-base-p16_8xb512-fp16-coslr-1600e_in1k/vit-base-p16_ft-8xb128-coslr-100e_in1k/vit-base-p16_ft-8xb128-coslr-100e_in1k_20220825-cf70aa21.pth) 下载。将原始配置中的test_pipeline, test_dataloader和test_evaluation替换为以下配置：
+我们在使用MAE预训练的ViT-base模型上运行形状偏移工具。它的配置文件为`configs/mae/benchmarks/vit_base_p16_8xb128_coslr_100e_in1k.py`，它的检查点可从[此链接](https://download.openmmlab.com/mmselfsup/1.x/mae/mae_vit-base-p16_8xb512-fp16-coslr-1600e_in1k/vit-base-p16_ft-8xb128-coslr-100e_in1k/vit-base-p16_ft-8xb128-coslr-100e_in1k_20220825-cf70aa21.pth) 下载。将原始配置中的test_pipeline, test_dataloader和test_evaluation替换为以下配置：
 
 ```python
 test_pipeline = [

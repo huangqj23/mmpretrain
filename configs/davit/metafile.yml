@@ -32,7 +32,7 @@ Models:
     Converted From:
       Weights: https://drive.google.com/file/d/1RSpi3lxKaloOL5-or20HuG975tbPwxRZ/view?usp=sharing
       Code: https://github.com/dingmyu/davit/blob/main/mmdet/mmdet/models/backbones/davit.py#L355
-    Config: configs/davit/davit-tiny_4xb256_in1k.py
+    Config: configs/davit/davit_tiny_4xb256_in1k.py
   - Name: davit-small_3rdparty_in1k
     In Collection: DaViT
     Metadata:
@@ -50,7 +50,7 @@ Models:
     Converted From:
       Weights: https://drive.google.com/file/d/1q976ruj45mt0RhO9oxhOo6EP_cmj4ahQ/view?usp=sharing
       Code: https://github.com/dingmyu/davit/blob/main/mmdet/mmdet/models/backbones/davit.py#L355
-    Config: configs/davit/davit-small_4xb256_in1k.py
+    Config: configs/davit/davit_small_4xb256_in1k.py
   - Name: davit-base_3rdparty_in1k
     In Collection: DaViT
     Metadata:
@@ -68,4 +68,4 @@ Models:
     Converted From:
       Weights: https://drive.google.com/file/d/1u9sDBEueB-YFuLigvcwf4b2YyA4MIVsZ/view?usp=sharing
       Code: https://github.com/dingmyu/davit/blob/main/mmdet/mmdet/models/backbones/davit.py#L355
-    Config: configs/davit/davit-base_4xb256_in1k.py
+    Config: configs/davit/davit_base_4xb256_in1k.py

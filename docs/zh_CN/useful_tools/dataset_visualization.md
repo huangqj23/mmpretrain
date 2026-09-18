@@ -70,7 +70,7 @@ python ./tools/visualization/browse_dataset.py ./configs/resnet/resnet50_8xb32_i
 使用 **'concat'** 模式：
 
 ```shell
-python ./tools/visualization/browse_dataset.py configs/swin_transformer/swin-small_16xb64_in1k.py -n 10 -m concat
+python ./tools/visualization/browse_dataset.py configs/swin_transformer/swin_small_16xb64_in1k.py -n 10 -m concat
 ```
 
 <div align=center><img src="https://user-images.githubusercontent.com/18586273/190995078-3872feb2-d4e2-4727-a21b-7062d52f7d3e.JPEG" style=" width: auto; height: 40%; "></div>
@@ -78,13 +78,13 @@ python ./tools/visualization/browse_dataset.py configs/swin_transformer/swin-sma
 使用 **'pipeline'** 模式：
 
 ```shell
-python ./tools/visualization/browse_dataset.py configs/swin_transformer/swin-small_16xb64_in1k.py -m pipeline
+python ./tools/visualization/browse_dataset.py configs/swin_transformer/swin_small_16xb64_in1k.py -m pipeline
 ```
 
 <div align=center><img src="https://user-images.githubusercontent.com/18586273/190995525-fac0220f-6630-4013-b94a-bc6de4fdff7a.JPEG" style=" width: auto; height: 40%; "></div>
 
 ```shell
-python ./tools/visualization/browse_dataset.py configs/beit/beit_beit-base-p16_8xb256-amp-coslr-300e_in1k.py -m pipeline
+python ./tools/visualization/browse_dataset.py configs/beit/beit_beit_base_p16_8xb256_amp_coslr_300e_in1k.py -m pipeline
 ```
 
 <div align=center><img src="https://user-images.githubusercontent.com/26739999/226542300-74216187-e3d0-4a6e-8731-342abe719721.png" style=" width: auto; height: 40%; "></div>

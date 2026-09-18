@@ -35,10 +35,10 @@ Loading annotations maybe consume much time, you can directly specify the size o
 
 ## How to plot the learning rate curve without training
 
-You can use the following command to plot the step learning rate schedule used in the config `configs/swin_transformer/swin-base_16xb64_in1k.py`:
+You can use the following command to plot the step learning rate schedule used in the config `configs/swin_transformer/swin_base_16xb64_in1k.py`:
 
 ```bash
-python tools/visualization/vis_scheduler.py configs/swin_transformer/swin-base_16xb64_in1k.py --dataset-size 1281167 --ngpus 16
+python tools/visualization/vis_scheduler.py configs/swin_transformer/swin_base_16xb64_in1k.py --dataset-size 1281167 --ngpus 16
 ```
 
 <div align=center><img src="https://user-images.githubusercontent.com/26739999/226544329-cf3a3d45-6ab3-48aa-8972-2c2a58c35e62.png" style=" width: auto; height: 40%; "></div>

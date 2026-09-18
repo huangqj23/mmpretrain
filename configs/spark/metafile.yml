@@ -25,7 +25,7 @@ Models:
     In Collection: SparK
     Results: null
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/spark/spark_sparse-resnet50_8xb512-amp-coslr-800e_in1k/spark_sparse-resnet50_8xb512-amp-coslr-800e_in1k_20230612-e403c28f.pth
-    Config: configs/spark/spark_sparse-resnet50_8xb512-amp-coslr-800e_in1k.py
+    Config: configs/spark/spark_sparse_resnet50_8xb512_amp_coslr_800e_in1k.py
     Downstream:
       - resnet50_spark-pre_300e_in1k
   - Name: resnet50_spark-pre_300e_in1k
@@ -42,7 +42,7 @@ Models:
           Top 5 Accuracy: 94.9
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/spark/spark_sparse-resnet50_8xb512-amp-coslr-800e_in1k/resnet50_8xb256-coslr-300e_in1k/resnet50_8xb256-coslr-300e_in1k_20230612-f86aab51.pth
-    Config: configs/spark/benchmarks/resnet50_8xb256-coslr-300e_in1k.py
+    Config: configs/spark/benchmarks/resnet50_8xb256_coslr_300e_in1k.py
 
   - Name: spark_sparse-convnextv2-tiny_800e_in1k
     Metadata:
@@ -53,7 +53,7 @@ Models:
     In Collection: SparK
     Results: null
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/spark/spark_sparse-convnextv2-tiny_16xb256-amp-coslr-800e_in1k/spark_sparse-convnextv2-tiny_16xb256-amp-coslr-800e_in1k_20230612-b0ea712e.pth
-    Config: configs/spark/spark_sparse-convnextv2-tiny_16xb256-amp-coslr-800e_in1k.py
+    Config: configs/spark/spark_sparse_convnextv2_tiny_16xb256_amp_coslr_800e_in1k.py
     Downstream:
       - convnextv2-tiny_spark-pre_300e_in1k
   - Name: convnextv2-tiny_spark-pre_300e_in1k
@@ -70,4 +70,4 @@ Models:
           Top 5 Accuracy: 96.3
         Task: Image Classification
     Weights: https://download.openmmlab.com/mmpretrain/v1.0/spark//spark_sparse-convnextv2-tiny_16xb256-amp-coslr-800e_in1k/convnextv2-tiny_8xb256-coslr-300e_in1k/convnextv2-tiny_8xb256-coslr-300e_in1k_20230612-ffc78743.pth
-    Config: configs/spark/benchmarks/convnextv2-tiny_8xb256-coslr-300e_in1k.py
+    Config: configs/spark/benchmarks/convnextv2_tiny_8xb256_coslr_300e_in1k.py

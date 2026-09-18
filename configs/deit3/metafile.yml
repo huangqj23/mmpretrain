@@ -37,7 +37,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_small_224_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-small-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_small_p16_64xb64_in1k.py
   - Name: deit3-small-p16_3rdparty_in1k-384px
     In Collection: DeiT3
     Metadata:
@@ -55,7 +55,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_small_384_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-small-p16_64xb64_in1k-384px.py
+    Config: configs/deit3/deit3_small_p16_64xb64_in1k_384px.py
   - Name: deit3-small-p16_in21k-pre_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -73,7 +73,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_small_224_21k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-small-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_small_p16_64xb64_in1k.py
   - Name: deit3-small-p16_in21k-pre_3rdparty_in1k-384px
     In Collection: DeiT3
     Metadata:
@@ -91,7 +91,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_small_384_21k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-small-p16_64xb64_in1k-384px.py
+    Config: configs/deit3/deit3_small_p16_64xb64_in1k_384px.py
   - Name: deit3-medium-p16_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -109,7 +109,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_medium_224_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-medium-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_medium_p16_64xb64_in1k.py
   - Name: deit3-medium-p16_in21k-pre_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -127,7 +127,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_medium_224_21k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-medium-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_medium_p16_64xb64_in1k.py
   - Name: deit3-base-p16_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -145,7 +145,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_base_224_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-base-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_base_p16_64xb64_in1k.py
   - Name: deit3-base-p16_3rdparty_in1k-384px
     In Collection: DeiT3
     Metadata:
@@ -163,7 +163,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_base_384_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-base-p16_64xb32_in1k-384px.py
+    Config: configs/deit3/deit3_base_p16_64xb32_in1k_384px.py
   - Name: deit3-base-p16_in21k-pre_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -181,7 +181,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_base_224_21k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-base-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_base_p16_64xb64_in1k.py
   - Name: deit3-base-p16_in21k-pre_3rdparty_in1k-384px
     In Collection: DeiT3
     Metadata:
@@ -199,7 +199,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_base_384_21k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-base-p16_64xb32_in1k-384px.py
+    Config: configs/deit3/deit3_base_p16_64xb32_in1k_384px.py
   - Name: deit3-large-p16_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -217,7 +217,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_large_224_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-large-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_large_p16_64xb64_in1k.py
   - Name: deit3-large-p16_3rdparty_in1k-384px
     In Collection: DeiT3
     Metadata:
@@ -235,7 +235,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_large_384_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-large-p16_64xb16_in1k-384px.py
+    Config: configs/deit3/deit3_large_p16_64xb16_in1k_384px.py
   - Name: deit3-large-p16_in21k-pre_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -253,7 +253,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_large_224_21k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-large-p16_64xb64_in1k.py
+    Config: configs/deit3/deit3_large_p16_64xb64_in1k.py
   - Name: deit3-large-p16_in21k-pre_3rdparty_in1k-384px
     In Collection: DeiT3
     Metadata:
@@ -271,7 +271,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_large_384_21k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-large-p16_64xb16_in1k-384px.py
+    Config: configs/deit3/deit3_large_p16_64xb16_in1k_384px.py
   - Name: deit3-huge-p14_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -289,7 +289,7 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_huge_224_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-huge-p14_64xb32_in1k.py
+    Config: configs/deit3/deit3_huge_p14_64xb32_in1k.py
   - Name: deit3-huge-p14_in21k-pre_3rdparty_in1k
     In Collection: DeiT3
     Metadata:
@@ -307,4 +307,4 @@ Models:
     Converted From:
       Weights: https://dl.fbaipublicfiles.com/deit/deit_3_huge_224_1k.pth
       Code: https://github.com/facebookresearch/deit/blob/main/models_v2.py#L171
-    Config: configs/deit3/deit3-huge-p14_64xb32_in1k.py
+    Config: configs/deit3/deit3_huge_p14_64xb32_in1k.py

@@ -1,12 +1,16 @@
+# Converted from configs/_base_/schedules/imagenet_bs256_200e_coslr_warmup.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import SGD
+
 # optimizer
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001))
+    optimizer=dict(type=SGD, lr=0.1, momentum=0.9, weight_decay=0.0001))
 
 # learning policy
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=0.25,
         by_epoch=True,
         begin=0,
@@ -16,7 +20,7 @@ param_scheduler = [
     ),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=195,
         by_epoch=True,
         begin=5,

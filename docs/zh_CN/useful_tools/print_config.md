@@ -17,12 +17,12 @@ python tools/misc/print_config.py ${CONFIG} [--cfg-options ${CFG_OPTIONS}]
 
 ## 示例：
 
-打印`configs/t2t_vit/t2t-vit-t-14_8xb64_in1k.py`文件的完整配置
+打印`configs/t2t_vit/t2t_vit_t_14_8xb64_in1k.py`文件的完整配置
 
 ```shell
 # 打印完成的配置文件
-python tools/misc/print_config.py configs/t2t_vit/t2t-vit-t-14_8xb64_in1k.py
+python tools/misc/print_config.py configs/t2t_vit/t2t_vit_t_14_8xb64_in1k.py
 
 # 将完整的配置文件保存为一个独立的配置文件
-python tools/misc/print_config.py configs/t2t_vit/t2t-vit-t-14_8xb64_in1k.py > final_config.py
+python tools/misc/print_config.py configs/t2t_vit/t2t_vit_t_14_8xb64_in1k.py > final_config.py
 ```

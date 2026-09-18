@@ -17,7 +17,7 @@ Collections:
 Models:
   - Name: conformer-tiny-p16_3rdparty_in1k
     In Collection: Conformer
-    Config: configs/conformer/conformer-tiny-p16_8xb128_in1k.py
+    Config: configs/conformer/conformer_tiny_p16_8xb128_in1k.py
     Metadata:
       FLOPs: 4899611328
       Parameters: 23524704
@@ -33,7 +33,7 @@ Models:
       Code: https://github.com/pengzhiliang/Conformer/blob/main/models.py#L65
   - Name: conformer-small-p16_3rdparty_in1k
     In Collection: Conformer
-    Config: configs/conformer/conformer-small-p16_8xb128_in1k.py
+    Config: configs/conformer/conformer_small_p16_8xb128_in1k.py
     Metadata:
       FLOPs: 10311309312
       Parameters: 37673424
@@ -49,7 +49,7 @@ Models:
       Code: https://github.com/pengzhiliang/Conformer/blob/main/models.py#L73
   - Name: conformer-small-p32_8xb128_in1k
     In Collection: Conformer
-    Config: configs/conformer/conformer-small-p32_8xb128_in1k.py
+    Config: configs/conformer/conformer_small_p32_8xb128_in1k.py
     Metadata:
       FLOPs: 7087281792
       Parameters: 38853072
@@ -62,7 +62,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/conformer/conformer-small-p32_8xb128_in1k_20211206-947a0816.pth
   - Name: conformer-base-p16_3rdparty_in1k
     In Collection: Conformer
-    Config: configs/conformer/conformer-base-p16_8xb128_in1k.py
+    Config: configs/conformer/conformer_base_p16_8xb128_in1k.py
     Metadata:
       FLOPs: 22892078080
       Parameters: 83289136

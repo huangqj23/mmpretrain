@@ -35,7 +35,7 @@ Models:
     Converted From:
       Weights: https://1drv.ms/u/s!AkxDDnOtroRPdOTqhF8ne_aakDI?e=EVb8Ri
       Code: https://github.com/Res2Net/Res2Net-PretrainedModels/blob/master/res2net.py#L221
-    Config: configs/res2net/res2net50-w14-s8_8xb32_in1k.py
+    Config: configs/res2net/res2net50_w14_s8_8xb32_in1k.py
   - Name: res2net50-w26-s8_3rdparty_8xb32_in1k
     Metadata:
       FLOPs: 8390000000
@@ -51,7 +51,7 @@ Models:
     Converted From:
       Weights: https://1drv.ms/u/s!AkxDDnOtroRPdTrAd_Afzc26Z7Q?e=slYqsR
       Code: https://github.com/Res2Net/Res2Net-PretrainedModels/blob/master/res2net.py#L201
-    Config: configs/res2net/res2net50-w26-s8_8xb32_in1k.py
+    Config: configs/res2net/res2net50_w26_s8_8xb32_in1k.py
   - Name: res2net101-w26-s4_3rdparty_8xb32_in1k
     Metadata:
       FLOPs: 8120000000
@@ -67,4 +67,4 @@ Models:
     Converted From:
       Weights: https://1drv.ms/u/s!AkxDDnOtroRPcJRgTLkahL0cFYw?e=nwbnic
       Code: https://github.com/Res2Net/Res2Net-PretrainedModels/blob/master/res2net.py#L181
-    Config: configs/res2net/res2net101-w26-s4_8xb32_in1k.py
+    Config: configs/res2net/res2net101_w26_s4_8xb32_in1k.py

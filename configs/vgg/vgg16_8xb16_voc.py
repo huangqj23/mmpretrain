@@ -1,7 +1,16 @@
-_base_ = [
-    '../_base_/datasets/voc_bs16.py',
-    '../_base_/default_runtime.py',
-]
+# Converted from configs/vgg/vgg16_8xb16_voc.py by industrial-vision tools/convert_configs.py
+from mmengine.config import read_base
+
+with read_base():
+    from .._base_.datasets.voc_bs16 import *  # noqa: F401,F403
+    from .._base_.default_runtime import *  # noqa: F401,F403
+
+from mmengine.model import PretrainedInit
+from mmengine.optim import StepLR
+from torch.optim import SGD
+
+from mmpretrain.models import (VGG, CrossEntropyLoss, ImageClassifier,
+                               MultiLabelClsHead)
 
 # model settings
 
@@ -10,27 +19,27 @@ pretrained = 'https://download.openmmlab.com/mmclassification/v0/vgg/vgg16_batch
 
 # use different head for multilabel task
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='VGG',
+        type=VGG,
         depth=16,
         num_classes=20,
         init_cfg=dict(
-            type='Pretrained', checkpoint=pretrained, prefix='backbone')),
+            type=PretrainedInit, checkpoint=pretrained, prefix='backbone')),
     neck=None,
     head=dict(
-        type='MultiLabelClsHead',
-        loss=dict(type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)))
+        type=MultiLabelClsHead,
+        loss=dict(type=CrossEntropyLoss, use_sigmoid=True, loss_weight=1.0)))
 
 # schedule settings
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0),
+    optimizer=dict(type=SGD, lr=0.001, momentum=0.9, weight_decay=0),
     # update the final linear by 10 times learning rate.
     paramwise_cfg=dict(custom_keys={'.backbone.classifier': dict(lr_mult=10)}),
 )
 
 # learning policy
-param_scheduler = dict(type='StepLR', by_epoch=True, step_size=20, gamma=0.1)
+param_scheduler = dict(type=StepLR, by_epoch=True, step_size=20, gamma=0.1)
 
 # train, val, test setting
 train_cfg = dict(by_epoch=True, max_epochs=40, val_interval=1)

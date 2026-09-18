@@ -44,13 +44,13 @@ python tools/test.py configs/blip2/blip2_8xb32_retrieval.py https://download.ope
 
 | Model                                       | Params (M) | BLEU-4 | CIDER  |                   Config                   |                                           Download                                            |
 | :------------------------------------------ | :--------: | :----: | :----: | :----------------------------------------: | :-------------------------------------------------------------------------------------------: |
-| `blip2-opt2.7b_3rdparty-zeroshot_caption`\* |  3770.47   | 32.90  | 111.10 | [config](./blip2-opt2.7b_8xb32_caption.py) | [model](https://download.openmmlab.com/mmclassification/v1/blip2/blip2-opt2.7b_3rdparty_pretrain_20230505-b51db4e1.pth) |
+| `blip2-opt2.7b_3rdparty-zeroshot_caption`\* |  3770.47   | 32.90  | 111.10 | [config](./blip2_opt2_7b_8xb32_caption.py) | [model](https://download.openmmlab.com/mmclassification/v1/blip2/blip2-opt2.7b_3rdparty_pretrain_20230505-b51db4e1.pth) |
 
 ### Visual Question Answering on VQAv2
 
 | Model                                   | Params (M) | Accuracy |                 Config                 |                                                 Download                                                  |
 | :-------------------------------------- | :--------: | :------: | :------------------------------------: | :-------------------------------------------------------------------------------------------------------: |
-| `blip2-opt2.7b_3rdparty-zeroshot_vqa`\* |  3770.47   |  53.50   | [config](./blip2-opt2.7b_8xb16_vqa.py) | [model](https://download.openmmlab.com/mmclassification/v1/blip2/blip2-opt2.7b_3rdparty_pretrain_20230505-b51db4e1.pth) |
+| `blip2-opt2.7b_3rdparty-zeroshot_vqa`\* |  3770.47   |  53.50   | [config](./blip2_opt2_7b_8xb16_vqa.py) | [model](https://download.openmmlab.com/mmclassification/v1/blip2/blip2-opt2.7b_3rdparty_pretrain_20230505-b51db4e1.pth) |
 
 ### Image-To-Text Retrieval on COCO
 

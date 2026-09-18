@@ -30,7 +30,7 @@ Models:
     Converted From:
       Weights: https://penzhanwu2bbs.blob.core.windows.net/data/GLIPv1_Open/models/glip_tiny_model_o365_goldg_cc_sbu.pth
       Code: https://github.com/microsoft/GLIP
-    Config: configs/glip/glip-t_headless.py
+    Config: configs/glip/glip_t_headless.py
   - Name: swin-l_glip-pre_3rdparty_384px
     In Collection: GLIP
     Metadata:
@@ -46,4 +46,4 @@ Models:
     Converted From:
       Weights: https://penzhanwu2bbs.blob.core.windows.net/data/GLIPv1_Open/models/glip_large_model.pth
       Code: https://github.com/microsoft/GLIP
-    Config: configs/glip/glip-l_headless.py
+    Config: configs/glip/glip_l_headless.py

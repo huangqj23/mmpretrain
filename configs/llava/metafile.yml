@@ -22,7 +22,7 @@ Models:
           BLEU-4: null
           CIDER: null
     Weights: https://download.openmmlab.com/mmclassification/v1/llava/llava-7b-v1_liuhaotian_20231025-c9e119b6.pth
-    Config: configs/llava/llava-7b-v1_caption.py
+    Config: configs/llava/llava_7b_v1_caption.py
   - Name: llava-7b-v1.5_caption
     Metadata:
       FLOPs: null
@@ -35,7 +35,7 @@ Models:
           BLEU-4: null
           CIDER: null
     Weights: https://download.openmmlab.com/mmclassification/v1/llava/llava-7b-v1.5_liuhaotian_20231025-5828aa5a.pth
-    Config: configs/llava/llava-7b-v1.5_caption.py
+    Config: configs/llava/llava_7b_v1_5_caption.py
   - Name: llava-7b-v1.5_vqa
     Metadata:
       FLOPs: null
@@ -48,4 +48,4 @@ Models:
           BLEU-4: null
           CIDER: null
     Weights: https://download.openmmlab.com/mmclassification/v1/llava/llava-7b-v1.5_liuhaotian_20231025-5828aa5a.pth
-    Config: configs/llava/llava-7b-v1.5_vqa.py
+    Config: configs/llava/llava_7b_v1_5_vqa.py

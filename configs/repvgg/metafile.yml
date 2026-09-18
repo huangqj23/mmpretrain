@@ -16,7 +16,7 @@ Collections:
 Models:
   - Name: repvgg-A0_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-A0_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_A0_8xb32_in1k.py
     Metadata:
       FLOPs: 1360233728
       Parameters: 8309384
@@ -29,7 +29,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-A0_8xb32_in1k_20221213-60ae8e23.pth
   - Name: repvgg-A1_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-A1_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_A1_8xb32_in1k.py
     Metadata:
       FLOPs: 2362750208
       Parameters: 12789864
@@ -42,7 +42,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-A1_8xb32_in1k_20221213-f81bf3df.pth
   - Name: repvgg-A2_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-A2_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_A2_8xb32_in1k.py
     Metadata:
       FLOPs: 5115612544
       Parameters: 25499944
@@ -55,7 +55,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-A2_8xb32_in1k_20221213-a8767caf.pth
   - Name: repvgg-B0_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B0_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B0_8xb32_in1k.py
     Metadata:
       FLOPs: 15820000000
       Parameters: 3420000
@@ -68,7 +68,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B0_8xb32_in1k_20221213-5091ecc7.pth
   - Name: repvgg-B1_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B1_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B1_8xb32_in1k.py
     Metadata:
       FLOPs: 11813537792
       Parameters: 51829480
@@ -81,7 +81,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B1_8xb32_in1k_20221213-d17c45e7.pth
   - Name: repvgg-B1g2_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B1g2_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B1g2_8xb32_in1k.py
     Metadata:
       FLOPs: 8807794688
       Parameters: 41360104
@@ -94,7 +94,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B1g2_8xb32_in1k_20221213-ae6428fd.pth
   - Name: repvgg-B1g4_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B1g4_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B1g4_8xb32_in1k.py
     Metadata:
       FLOPs: 7304923136
       Parameters: 36125416
@@ -107,7 +107,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B1g4_8xb32_in1k_20221213-a7a4aaea.pth
   - Name: repvgg-B2_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B2_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B2_8xb32_in1k.py
     Metadata:
       FLOPs: 18374175232
       Parameters: 80315112
@@ -120,7 +120,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B2_8xb32_in1k_20221213-d8b420ef.pth
   - Name: repvgg-B2g4_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B2g4_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B2g4_8xb32_in1k.py
     Metadata:
       FLOPs: 11329464832
       Parameters: 55777512
@@ -133,7 +133,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B2g4_8xb32_in1k_20221213-0c1990eb.pth
   - Name: repvgg-B3_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B3_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B3_8xb32_in1k.py
     Metadata:
       FLOPs: 26206448128
       Parameters: 110960872
@@ -146,7 +146,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B3_8xb32_in1k_20221213-927a329a.pth
   - Name: repvgg-B3g4_8xb32_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-B3g4_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_B3g4_8xb32_in1k.py
     Metadata:
       FLOPs: 16062065152
       Parameters: 75626728
@@ -159,7 +159,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/repvgg/repvgg-B3g4_8xb32_in1k_20221213-e01cb280.pth
   - Name: repvgg-D2se_3rdparty_in1k
     In Collection: RepVGG
-    Config: configs/repvgg/repvgg-D2se_8xb32_in1k.py
+    Config: configs/repvgg/repvgg_D2se_8xb32_in1k.py
     Metadata:
       FLOPs: 32838581760
       Parameters: 120387572

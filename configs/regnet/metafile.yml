@@ -18,7 +18,7 @@ Collections:
 Models:
   - Name: regnetx-400mf_8xb128_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-400mf_8xb128_in1k.py
+    Config: configs/regnet/regnetx_400mf_8xb128_in1k.py
     Metadata:
       FLOPs: 410000000     # 0.41G
       Parameters: 5160000  # 5.16M
@@ -31,7 +31,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/regnet/regnetx-400mf_8xb128_in1k_20211213-89bfc226.pth
   - Name: regnetx-800mf_8xb128_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-800mf_8xb128_in1k.py
+    Config: configs/regnet/regnetx_800mf_8xb128_in1k.py
     Metadata:
       FLOPs: 810000000     # 0.81G
       Parameters: 7260000  # 7.26M
@@ -44,7 +44,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/regnet/regnetx-800mf_8xb128_in1k_20211213-222b0f11.pth
   - Name: regnetx-1.6gf_8xb128_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-1.6gf_8xb128_in1k.py
+    Config: configs/regnet/regnetx_1_6gf_8xb128_in1k.py
     Metadata:
       FLOPs: 1630000000     # 1.63G
       Parameters: 9190000   # 9.19M
@@ -57,7 +57,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/regnet/regnetx-1.6gf_8xb128_in1k_20211213-d1b89758.pth
   - Name: regnetx-3.2gf_8xb64_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-3.2gf_8xb64_in1k.py
+    Config: configs/regnet/regnetx_3_2gf_8xb64_in1k.py
     Metadata:
       FLOPs: 1530000000     # 1.53G
       Parameters: 3210000   # 32.1M
@@ -70,7 +70,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/regnet/regnetx-3.2gf_8xb64_in1k_20211213-1fdd82ae.pth
   - Name: regnetx-4.0gf_8xb64_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-4.0gf_8xb64_in1k.py
+    Config: configs/regnet/regnetx_4_0gf_8xb64_in1k.py
     Metadata:
       FLOPs: 4000000000     # 4G
       Parameters: 22120000  # 22.12M
@@ -83,7 +83,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/regnet/regnetx-4.0gf_8xb64_in1k_20211213-efed675c.pth
   - Name: regnetx-6.4gf_8xb64_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-6.4gf_8xb64_in1k.py
+    Config: configs/regnet/regnetx_6_4gf_8xb64_in1k.py
     Metadata:
       FLOPs: 6510000000      # 6.51G
       Parameters: 26210000   # 26.21M
@@ -96,7 +96,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/regnet/regnetx-6.4gf_8xb64_in1k_20211215-5c6089da.pth
   - Name: regnetx-8.0gf_8xb64_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-8.0gf_8xb64_in1k.py
+    Config: configs/regnet/regnetx_8_0gf_8xb64_in1k.py
     Metadata:
       FLOPs: 8030000000     # 8.03G
       Parameters: 39570000  # 39.57M
@@ -109,7 +109,7 @@ Models:
     Weights: https://download.openmmlab.com/mmclassification/v0/regnet/regnetx-8.0gf_8xb64_in1k_20211213-9a9fcc76.pth
   - Name: regnetx-12gf_8xb64_in1k
     In Collection: RegNet
-    Config: configs/regnet/regnetx-12gf_8xb64_in1k.py
+    Config: configs/regnet/regnetx_12gf_8xb64_in1k.py
     Metadata:
       FLOPs: 12150000000      # 12.15G
       Parameters: 46110000    # 46.11M

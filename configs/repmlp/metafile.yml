@@ -16,7 +16,7 @@ Collections:
 Models:
   - Name: repmlp-base_3rdparty_8xb64_in1k
     In Collection: RepMLP
-    Config: configs/repmlp/repmlp-base_8xb64_in1k.py
+    Config: configs/repmlp/repmlp_base_8xb64_in1k.py
     Metadata:
       FLOPs: 6710000000  # 6.71 G
       Parameters: 68240000  # 68.24 M
@@ -32,7 +32,7 @@ Models:
       Code: https://github.com/DingXiaoH/RepMLP/blob/072d8516beba83d75dfe6ebb12f625abad4b53d5/repmlpnet.py#L274
   - Name: repmlp-base_3rdparty_8xb64_in1k-256px
     In Collection: RepMLP
-    Config: configs/repmlp/repmlp-base_8xb64_in1k-256px.py
+    Config: configs/repmlp/repmlp_base_8xb64_in1k_256px.py
     Metadata:
       FLOPs: 9690000000  # 9.69 G
       Parameters: 96450000  # 96.45M

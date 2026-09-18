@@ -1,6 +1,16 @@
-_base_ = [
-    '../_base_/default_runtime.py',
-]
+# Converted from configs/flamingo/flamingo_fewshot_caption.py by industrial-vision tools/convert_configs.py
+from mmengine.config import read_base
+
+with read_base():
+    from .._base_.default_runtime import *  # noqa: F401,F403
+
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+from mmengine.dataset import DefaultSampler
+from torch.nn import LayerNorm
+
+from mmpretrain.datasets import ApplyToList, PackInputs, ResizeEdge
+from mmpretrain.evaluation import COCOCaption
+from mmpretrain.models import QuickGELU, VisionTransformer
 
 # model settings
 model = dict(
@@ -8,12 +18,12 @@ model = dict(
     tokenizer=dict(
         type='LlamaTokenizer', name_or_path='decapoda-research/llama-7b-hf'),
     vision_encoder=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='l',
         patch_size=14,
         pre_norm=True,
-        norm_cfg=dict(type='LN', eps=1e-5),
-        layer_cfgs=dict(act_cfg=dict(type='QuickGELU')),
+        norm_cfg=dict(type=LayerNorm, eps=1e-5),
+        layer_cfgs=dict(act_cfg=dict(type=QuickGELU)),
         final_norm=False,
         out_type='raw',
         pretrained=(
@@ -45,22 +55,22 @@ data_preprocessor = dict(
 
 test_pipeline = [
     dict(
-        type='ApplyToList',
+        type=ApplyToList,
         # Flamingo requires to load multiple images during few-shot inference.
         scatter_key='img_path',
         transforms=[
-            dict(type='LoadImageFromFile'),
+            dict(type=LoadImageFromFile),
             dict(
-                type='ResizeEdge',
+                type=ResizeEdge,
                 scale=224,
                 interpolation='bicubic',
                 backend='pillow'),
-            dict(type='CenterCrop', crop_size=(224, 224)),
+            dict(type=CenterCrop, crop_size=(224, 224)),
         ],
         collate_keys=['img', 'scale_factor', 'ori_shape'],
     ),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['gt_caption', 'shots'],
         meta_keys=['image_id']),
 ]
@@ -78,12 +88,12 @@ val_dataloader = dict(
         num_support_examples=2048,
         num_query_examples=5000,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 
 val_evaluator = dict(
-    type='COCOCaption',
+    type=COCOCaption,
     ann_file='data/coco/annotations/captions_train2014.json')
 
 # If you want standard test, please manually configure the test dataset
