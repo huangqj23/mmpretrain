@@ -3,6 +3,7 @@ import copy
 from typing import List, Union
 
 from mmcv.transforms import BaseTransform
+from mmengine.registry import cfg_type_matches
 
 PIPELINE_TYPE = List[Union[dict, BaseTransform]]
 
@@ -19,12 +20,10 @@ def get_transform_idx(pipeline: PIPELINE_TYPE, target: str) -> int:
     """
     for i, transform in enumerate(pipeline):
         if isinstance(transform, dict):
-            if isinstance(transform['type'], type):
-                if transform['type'].__name__ == target:
-                    return i
-            else:
-                if transform['type'] == target:
-                    return i
+            # ``type`` may be a registered name, a class, or a class written
+            # as its import path (a dumped pure-Python config).
+            if cfg_type_matches(transform['type'], target):
+                return i
         else:
             if transform.__class__.__name__ == target:
                 return i

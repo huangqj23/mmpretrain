@@ -208,3 +208,19 @@ def test_get_transform_idx():
                               dict(type=LoadImageFromFile)],
                              'LoadImageFromFile') == 1
     assert get_transform_idx([dict(type=Resize)], 'LoadImageFromFile') == -1
+
+
+def test_import_path_types():
+    """``Config.dump`` writes a class ``type`` as its import path."""
+    pipeline = [dict(type='Resize'),
+                dict(type='mmcv.transforms.LoadImageFromFile')]
+    assert get_transform_idx(pipeline, 'LoadImageFromFile') == 1
+
+
+def test_albumentations_import_path():
+    pytest.importorskip('albumentations')
+    from mmpretrain.datasets.transforms import Albumentations
+    a = Albumentations(transforms=[dict(type='Blur', blur_limit=3, p=1.0)])
+    b = Albumentations(
+        transforms=[dict(type='albumentations.Blur', blur_limit=3, p=1.0)])
+    assert type(a.aug.transforms[0]) is type(b.aug.transforms[0])

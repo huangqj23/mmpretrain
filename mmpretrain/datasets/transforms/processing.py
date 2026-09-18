@@ -16,6 +16,7 @@ import torchvision
 import torchvision.transforms.functional as F
 from mmcv.transforms import BaseTransform
 from mmcv.transforms.utils import cache_randomness
+from mmengine.utils import get_object_from_string
 from PIL import Image
 from torchvision import transforms
 from torchvision.transforms.transforms import InterpolationMode
@@ -1209,7 +1210,12 @@ class Albumentations(BaseTransform):
 
         obj_type = args.pop('type')
         if mmengine.is_str(obj_type):
-            obj_cls = getattr(albumentations, obj_type)
+            if '.' in obj_type:
+                # an import path such as 'albumentations.Blur' comes from a
+                # dumped pure-Python config whose ``type`` was the class
+                obj_cls = get_object_from_string(obj_type)
+            else:
+                obj_cls = getattr(albumentations, obj_type)
         elif inspect.isclass(obj_type):
             obj_cls = obj_type
         else:
