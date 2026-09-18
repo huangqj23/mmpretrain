@@ -12,6 +12,7 @@ import torch.nn as nn
 from mmengine.config import Config, DictAction
 from mmengine.hooks import Hook
 from mmengine.model import BaseModel
+from mmengine.registry import cfg_type_matches
 from mmengine.runner import Runner
 from mmengine.visualization import Visualizer
 from rich.progress import BarColumn, MofNCompleteColumn, Progress, TextColumn
@@ -232,7 +233,8 @@ def main():
     if 'by_epoch' in cfg.train_cfg:
         by_epoch = cfg.train_cfg.get('by_epoch')
     elif 'type' in cfg.train_cfg:
-        by_epoch = cfg.train_cfg.get('type') == 'EpochBasedTrainLoop'
+        by_epoch = cfg_type_matches(
+            cfg.train_cfg.get('type'), 'EpochBasedTrainLoop')
     else:
         raise ValueError('please set `train_cfg`.')
 

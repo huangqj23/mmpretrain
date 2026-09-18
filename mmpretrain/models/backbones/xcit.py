@@ -10,6 +10,7 @@ from mmcv.cnn.bricks import ConvModule, DropPath
 from mmcv.cnn.bricks.transformer import FFN
 from mmengine.model import BaseModule, Sequential
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 from mmengine.utils import digit_version
 
 from mmpretrain.registry import MODELS
@@ -681,7 +682,8 @@ class XCiT(BaseBackbone):
     def init_weights(self):
         super().init_weights()
 
-        if self.init_cfg is not None and self.init_cfg['type'] == 'Pretrained':
+        if self.init_cfg is not None and cfg_type_matches(
+                self.init_cfg['type'], 'Pretrained'):
             return
 
         trunc_normal_(self.cls_token, std=.02)

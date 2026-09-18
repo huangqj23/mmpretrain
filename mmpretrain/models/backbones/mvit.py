@@ -10,6 +10,7 @@ from mmcv.cnn.bricks import DropPath
 from mmcv.cnn.bricks.transformer import PatchEmbed
 from mmengine.model import BaseModule, ModuleList
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 from mmengine.utils import to_2tuple
 
 from ..builder import BACKBONES
@@ -254,7 +255,7 @@ class MultiScaleAttention(BaseModule):
         super().init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress rel_pos_zero_init if use pretrained model.
             return
 
@@ -665,7 +666,7 @@ class MViT(BaseBackbone):
         super().init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress default init if use pretrained model.
             return
 

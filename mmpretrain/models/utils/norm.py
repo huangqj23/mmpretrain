@@ -2,6 +2,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.registry import MODELS
 
@@ -119,12 +120,13 @@ def build_norm_layer(cfg: dict, num_features: int) -> nn.Module:
     requires_grad = cfg_.pop('requires_grad', True)
     cfg_.setdefault('eps', 1e-5)
 
-    if layer_type != 'GN':
+    if norm_layer is not nn.GroupNorm:
         layer = norm_layer(num_features, **cfg_)
     else:
         layer = norm_layer(num_channels=num_features, **cfg_)
 
-    if layer_type == 'SyncBN' and hasattr(layer, '_specify_ddp_gpu_num'):
+    if cfg_type_matches(layer_type, 'SyncBN') and hasattr(
+            layer, '_specify_ddp_gpu_num'):
         layer._specify_ddp_gpu_num(1)
 
     for param in layer.parameters():

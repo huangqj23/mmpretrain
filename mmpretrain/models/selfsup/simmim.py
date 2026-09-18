@@ -4,6 +4,7 @@ from typing import Dict, List, Optional, Sequence, Tuple, Union
 import torch
 import torch.nn as nn
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.models import SwinTransformer
 from mmpretrain.registry import MODELS
@@ -93,7 +94,7 @@ class SimMIMSwinTransformer(SwinTransformer):
         super().init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress default init if use pretrained model.
             return
 

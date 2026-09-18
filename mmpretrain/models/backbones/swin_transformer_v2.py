@@ -10,6 +10,7 @@ from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import FFN, PatchEmbed
 from mmengine.model import BaseModule, ModuleList
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
 from ..builder import MODELS
@@ -467,7 +468,7 @@ class SwinTransformerV2(BaseBackbone):
         super(SwinTransformerV2, self).init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress default init if use pretrained model.
             return
 

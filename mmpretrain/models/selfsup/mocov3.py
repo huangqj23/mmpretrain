@@ -13,6 +13,7 @@ from mmpretrain.models.utils import (build_2d_sincos_position_embedding,
                                      to_2tuple)
 from mmpretrain.registry import MODELS
 from mmpretrain.structures import DataSample
+from mmengine.registry import cfg_type_matches
 from ..utils import CosineEMA
 from .base import BaseSelfSupervisor
 
@@ -74,7 +75,7 @@ class MoCoV3ViT(VisionTransformer):
         super().init_weights()
 
         if not (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
 
             # Use fixed 2D sin-cos position embedding
             pos_emb = build_2d_sincos_position_embedding(

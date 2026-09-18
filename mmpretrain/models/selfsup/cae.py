@@ -11,6 +11,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmengine.model import BaseModule
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.models.backbones import BEiTViT
 from mmpretrain.registry import MODELS
@@ -295,7 +296,7 @@ class CAEPretrainViT(BEiTViT):
         """Initialize position embedding, patch embedding and cls token."""
         super().init_weights()
         if not (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # initialize position  embedding in backbone
             pos_embed = build_2d_sincos_position_embedding(
                 int(self.num_patches**.5),

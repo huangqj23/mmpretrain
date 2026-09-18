@@ -3,6 +3,7 @@ import re
 from typing import Optional, Tuple
 
 import torch.nn as nn
+from mmengine.registry import cfg_type_name
 
 from mmpretrain.models.utils.sparse_modules import (SparseAvgPooling,
                                                     SparseBatchNorm2d,
@@ -104,7 +105,7 @@ class SparseResNet(ResNet):
             init_cfg=init_cfg,
             drop_path_rate=drop_path_rate,
             **kwargs)
-        norm_type = norm_cfg['type']
+        norm_type = cfg_type_name(norm_cfg['type'])
         enable_sync_bn = False
         if re.search('Sync', norm_type) is not None:
             enable_sync_bn = True

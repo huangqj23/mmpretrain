@@ -8,6 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmengine.model import BaseModule
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.models import VisionTransformer
 from mmpretrain.registry import MODELS
@@ -236,7 +237,7 @@ class MaskFeatViT(VisionTransformer):
         """Initialize position embedding, mask token and cls token."""
         super().init_weights()
         if not (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
 
             nn.init.trunc_normal_(self.cls_token, std=.02)
             nn.init.trunc_normal_(self.mask_token, std=.02)

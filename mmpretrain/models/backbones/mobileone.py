@@ -7,6 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_activation_layer, build_conv_layer, build_norm_layer
 from mmengine.model import BaseModule, ModuleList, Sequential
+from mmengine.registry import cfg_type_matches
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmpretrain.registry import MODELS
@@ -155,7 +156,7 @@ class MobileOneBlock(BaseModule):
         """Switch the model structure from training mode to deployment mode."""
         if self.deploy:
             return
-        assert self.norm_cfg['type'] == 'BN', \
+        assert cfg_type_matches(self.norm_cfg['type'], 'BN'), \
             "Switch is not allowed when norm_cfg['type'] != 'BN'."
 
         reparam_weight, reparam_bias = self.reparameterize()

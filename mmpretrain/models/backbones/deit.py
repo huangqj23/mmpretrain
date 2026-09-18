@@ -2,6 +2,7 @@
 import torch
 import torch.nn as nn
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.registry import MODELS
 from .vision_transformer import VisionTransformer
@@ -112,5 +113,5 @@ class DistilledVisionTransformer(VisionTransformer):
         super(DistilledVisionTransformer, self).init_weights()
 
         if not (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             trunc_normal_(self.dist_token, std=0.02)

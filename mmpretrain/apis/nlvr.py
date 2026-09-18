@@ -7,6 +7,7 @@ import torch
 from mmcv.image import imread
 from mmengine.config import Config
 from mmengine.dataset import Compose, default_collate
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.registry import TRANSFORMS
 from mmpretrain.structures import DataSample
@@ -81,7 +82,7 @@ class NLVRInferencer(BaseInferencer):
 
     def _init_pipeline(self, cfg: Config) -> Callable:
         test_pipeline_cfg = cfg.test_dataloader.dataset.pipeline
-        assert test_pipeline_cfg[0]['type'] == 'ApplyToList'
+        assert cfg_type_matches(test_pipeline_cfg[0]['type'], 'ApplyToList')
 
         list_pipeline = deepcopy(test_pipeline_cfg[0])
         if list_pipeline.scatter_key == 'img_path':

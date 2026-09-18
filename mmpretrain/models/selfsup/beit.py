@@ -6,6 +6,7 @@ import torch
 from einops import rearrange
 from mmengine.model import BaseModule
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 from torch import nn
 
 from mmpretrain.models.backbones import BEiTViT
@@ -221,7 +222,7 @@ class BEiTPretrainViT(BEiTViT):
         super().init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress default init if use pretrained model.
             return
 

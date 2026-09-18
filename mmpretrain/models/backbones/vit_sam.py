@@ -8,6 +8,7 @@ import torch.nn.functional as F
 from mmcv.cnn.bricks.transformer import FFN, PatchEmbed
 from mmengine.model import BaseModule, ModuleList
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.registry import MODELS
 from ..utils import LayerNorm2d, build_norm_layer, resize_pos_embed, to_2tuple
@@ -538,7 +539,7 @@ class ViTSAM(BaseBackbone):
         super().init_weights()
 
         if not (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             if self.pos_embed is not None:
                 trunc_normal_(self.pos_embed, std=0.02)
 

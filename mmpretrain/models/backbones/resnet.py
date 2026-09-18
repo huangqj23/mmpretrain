@@ -9,6 +9,7 @@ from mmcv.cnn import (ConvModule, build_activation_layer, build_conv_layer,
 from mmcv.cnn.bricks import DropPath
 from mmengine.model import BaseModule
 from mmengine.model.weight_init import constant_init
+from mmengine.registry import cfg_type_matches
 from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
 from mmpretrain.registry import MODELS
@@ -640,7 +641,7 @@ class ResNet(BaseBackbone):
         super(ResNet, self).init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress zero_init_residual if use pretrained model.
             return
 

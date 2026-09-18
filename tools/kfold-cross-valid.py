@@ -8,6 +8,7 @@ from mmengine.config import Config, ConfigDict, DictAction
 from mmengine.dist import sync_random_seed
 from mmengine.fileio import dump, load
 from mmengine.hooks import Hook
+from mmengine.registry import cfg_type_matches
 from mmengine.runner import Runner, find_latest_checkpoint
 from mmengine.utils import digit_version
 from mmengine.utils.dl_utils import TORCH_VERSION
@@ -111,7 +112,8 @@ def merge_args(cfg, args):
     # enable automatic-mixed-precision training
     if args.amp is True:
         optim_wrapper = cfg.optim_wrapper.get('type', 'OptimWrapper')
-        assert optim_wrapper in ['OptimWrapper', 'AmpOptimWrapper'], \
+        assert cfg_type_matches(optim_wrapper, 'OptimWrapper',
+                                'AmpOptimWrapper'), \
             '`--amp` is not supported custom optimizer wrapper type ' \
             f'`{optim_wrapper}.'
         cfg.optim_wrapper.type = 'AmpOptimWrapper'

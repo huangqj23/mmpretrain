@@ -5,6 +5,7 @@ import torch.utils.checkpoint as cp
 from mmcv.cnn import (ConvModule, build_activation_layer, build_conv_layer,
                       build_norm_layer)
 from mmengine.model import BaseModule, Sequential
+from mmengine.registry import cfg_type_matches
 from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 from torch import nn
 
@@ -160,7 +161,7 @@ class RepVGGBlock(BaseModule):
         """Switch the model structure from training mode to deployment mode."""
         if self.deploy:
             return
-        assert self.norm_cfg['type'] == 'BN', \
+        assert cfg_type_matches(self.norm_cfg['type'], 'BN'), \
             "Switch is not allowed when norm_cfg['type'] != 'BN'."
 
         reparam_weight, reparam_bias = self.reparameterize()

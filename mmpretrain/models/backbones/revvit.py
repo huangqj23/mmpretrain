@@ -7,6 +7,7 @@ from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN, PatchEmbed
 from mmengine.model import BaseModule, ModuleList
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 from torch import nn
 from torch.autograd import Function as Function
 
@@ -552,7 +553,7 @@ class RevVisionTransformer(BaseBackbone):
     def init_weights(self):
         super(RevVisionTransformer, self).init_weights()
         if not (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             trunc_normal_(self.pos_embed, std=0.02)
 
     def _prepare_pos_embed(self, state_dict, prefix, *args, **kwargs):

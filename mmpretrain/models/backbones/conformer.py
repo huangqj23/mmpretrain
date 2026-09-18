@@ -9,6 +9,7 @@ from mmcv.cnn.bricks.drop import DropPath
 from mmcv.cnn.bricks.transformer import AdaptivePadding
 from mmengine.model import BaseModule
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.registry import MODELS
 from .base_backbone import BaseBackbone
@@ -578,7 +579,7 @@ class Conformer(BaseBackbone):
         super(Conformer, self).init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress default init if use pretrained model.
             return
         self.apply(self._init_weights)

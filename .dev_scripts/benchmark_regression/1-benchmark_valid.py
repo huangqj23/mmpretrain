@@ -13,6 +13,7 @@ from mmengine import DictAction, MMLogger
 from mmengine.dataset import Compose, default_collate
 from mmengine.device import get_device
 from mmengine.model.utils import revert_sync_batchnorm
+from mmengine.registry import cfg_type_matches
 from mmengine.runner import Runner, load_checkpoint
 from rich.console import Console
 from rich.table import Table
@@ -93,9 +94,10 @@ def inference(metainfo, checkpoint, work_dir, args, exp_name=None):
     if 'test_dataloader' in cfg:
         # build the data pipeline
         test_dataset = cfg.test_dataloader.dataset
-        if test_dataset.pipeline[0]['type'] != 'LoadImageFromFile':
+        if not cfg_type_matches(test_dataset.pipeline[0]['type'],
+                                'LoadImageFromFile'):
             test_dataset.pipeline.insert(0, dict(type='LoadImageFromFile'))
-        if test_dataset.type in ['CIFAR10', 'CIFAR100']:
+        if cfg_type_matches(test_dataset.type, 'CIFAR10', 'CIFAR100'):
             # The image shape of CIFAR is (32, 32, 3)
             test_dataset.pipeline.insert(1, dict(type='Resize', scale=32))
 

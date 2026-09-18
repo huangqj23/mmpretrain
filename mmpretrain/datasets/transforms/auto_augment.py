@@ -9,6 +9,7 @@ import mmcv
 import numpy as np
 from mmcv.transforms import BaseTransform, Compose, RandomChoice
 from mmcv.transforms.utils import cache_randomness
+from mmengine.registry import cfg_type_name
 from mmengine.utils import is_list_of, is_seq_of
 from PIL import Image, ImageFilter
 
@@ -80,7 +81,8 @@ class AutoAugment(RandomChoice):
     def __repr__(self) -> str:
         policies_str = ''
         for sub in self.policies:
-            policies_str += '\n    ' + ', \t'.join([t['type'] for t in sub])
+            policies_str += '\n    ' + ', \t'.join(
+                [cfg_type_name(t['type']) for t in sub])
 
         repr_str = self.__class__.__name__
         repr_str += f'(policies:{policies_str}\n)'
@@ -243,7 +245,7 @@ class RandAugment(BaseTransform):
         """Check whether the sub-policy dict is available."""
         assert isinstance(policy, dict) and 'type' in policy, \
             'Each policy must be a dict with key "type".'
-        type_name = policy['type']
+        type_name = cfg_type_name(policy['type'])
 
         if 'magnitude_range' in policy:
             magnitude_range = policy['magnitude_range']
@@ -270,7 +272,7 @@ class RandAugment(BaseTransform):
     def __repr__(self) -> str:
         policies_str = ''
         for policy in self.policies:
-            policies_str += '\n    ' + f'{policy["type"]}'
+            policies_str += '\n    ' + cfg_type_name(policy['type'])
             if 'magnitude_range' in policy:
                 val1, val2 = policy['magnitude_range']
                 policies_str += f' ({val1}, {val2})'

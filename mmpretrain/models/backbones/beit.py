@@ -8,6 +8,7 @@ from mmcv.cnn.bricks.drop import build_dropout
 from mmcv.cnn.bricks.transformer import FFN, PatchEmbed
 from mmengine.model import BaseModule, ModuleList
 from mmengine.model.weight_init import trunc_normal_
+from mmengine.registry import cfg_type_matches
 
 from mmpretrain.registry import MODELS
 from ..utils import (BEiTAttention, build_norm_layer, resize_pos_embed,
@@ -497,7 +498,7 @@ class BEiTViT(BaseBackbone):
         super(BEiTViT, self).init_weights()
 
         if not (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             if self.pos_embed is not None:
                 trunc_normal_(self.pos_embed, std=0.02)
 

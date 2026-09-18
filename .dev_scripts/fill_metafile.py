@@ -91,7 +91,7 @@ def get_flops_params(config_path):
     from mmengine.analysis import FlopAnalyzer, parameter_count
     from mmengine.dataset import Compose
     from mmengine.model.utils import revert_sync_batchnorm
-    from mmengine.registry import DefaultScope
+    from mmengine.registry import DefaultScope, cfg_type_matches
 
     from mmpretrain.apis import get_model
     from mmpretrain.models.utils import no_load_hf_pretrained_model
@@ -107,9 +107,10 @@ def get_flops_params(config_path):
         if 'test_dataloader' in model._config:
             # build the data pipeline
             test_dataset = model._config.test_dataloader.dataset
-            if test_dataset.pipeline[0]['type'] == 'LoadImageFromFile':
+            if cfg_type_matches(test_dataset.pipeline[0]['type'],
+                                'LoadImageFromFile'):
                 test_dataset.pipeline.pop(0)
-            if test_dataset.type in ['CIFAR10', 'CIFAR100']:
+            if cfg_type_matches(test_dataset.type, 'CIFAR10', 'CIFAR100'):
                 # The image shape of CIFAR is (32, 32, 3)
                 test_dataset.pipeline.insert(1, dict(type='Resize', scale=32))
 

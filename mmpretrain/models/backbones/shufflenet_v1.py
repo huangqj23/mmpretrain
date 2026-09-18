@@ -5,6 +5,7 @@ import torch.utils.checkpoint as cp
 from mmcv.cnn import ConvModule, build_activation_layer
 from mmengine.model import BaseModule
 from mmengine.model.weight_init import constant_init, normal_init
+from mmengine.registry import cfg_type_matches
 from torch.nn.modules.batchnorm import _BatchNorm
 
 from mmpretrain.models.utils import channel_shuffle, make_divisible
@@ -255,7 +256,7 @@ class ShuffleNetV1(BaseBackbone):
         super(ShuffleNetV1, self).init_weights()
 
         if (isinstance(self.init_cfg, dict)
-                and self.init_cfg['type'] == 'Pretrained'):
+                and cfg_type_matches(self.init_cfg['type'], 'Pretrained')):
             # Suppress default init if use pretrained model.
             return
 
