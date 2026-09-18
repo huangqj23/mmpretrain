@@ -7,6 +7,9 @@ with read_base():
     from .._base_.schedules.imagenet_bs256_coslr import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.optim import CosineAnnealingLR
+
 val_dataloader.merge(dict(batch_size=256))
 test_dataloader.merge(dict(batch_size=256))
 
@@ -22,7 +25,7 @@ optim_wrapper.merge(dict(
 
 # schedule settings
 param_scheduler.merge(dict(
-    type='CosineAnnealingLR',
+    type=CosineAnnealingLR,
     T_max=120,
     by_epoch=True,
     begin=0,
@@ -32,4 +35,4 @@ param_scheduler.merge(dict(
 train_cfg.merge(dict(by_epoch=True, max_epochs=120))
 
 default_hooks.merge(dict(
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3)))

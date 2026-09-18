@@ -5,12 +5,21 @@ with read_base():
     from .._base_.datasets.flickr30k_retrieval import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.ops.deprecated_wrappers import Linear_deprecated
+from mmengine.optim import CosineAnnealingLR, OptimWrapper
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
+from mmpretrain.engine import (RetrievalTestLoop, RetrievalValLoop,
+                               WarmupParamHook)
+from mmpretrain.models import ITCHead, ITMHead, VisionTransformer
+
 # model settings
 model = dict(
     type='BlipRetrieval',
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     vision_backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='b',
         img_size=384,
         patch_size=16,
@@ -38,21 +47,21 @@ model = dict(
             add_cross_attention=True),
     ),
     vision_neck=dict(
-        type='Linear',
+        type=Linear_deprecated,
         in_features=768,
         out_features=256,
     ),
     text_neck=dict(
-        type='Linear',
+        type=Linear_deprecated,
         in_features=768,
         out_features=256,
     ),
     head=dict(
-        type='ITCHead',
+        type=ITCHead,
         embed_dim=256,
     ),
     multimodal_head=dict(
-        type='ITMHead',
+        type=ITMHead,
         hidden_size=768,
         with_pooler=False,
     ),
@@ -61,16 +70,16 @@ model = dict(
 )
 
 # optimizer
-optimizer = dict(type='AdamW', lr=2e-5, weight_decay=0.04)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
+optimizer = dict(type=AdamW, lr=2e-5, weight_decay=0.04)
+optim_wrapper = dict(type=OptimWrapper, optimizer=optimizer)
 
 # learning rate scheduler
-param_scheduler = [dict(type='CosineAnnealingLR', by_epoch=True)]
+param_scheduler = [dict(type=CosineAnnealingLR, by_epoch=True)]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=6)
-val_cfg = dict(type='RetrievalValLoop')
-test_cfg = dict(type='RetrievalTestLoop')
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=6)
+val_cfg = dict(type=RetrievalValLoop)
+test_cfg = dict(type=RetrievalTestLoop)
 
 randomness.merge(dict(seed=42))
 
@@ -78,7 +87,7 @@ default_hooks.merge(dict(logger=dict(interval=1)))
 
 custom_hooks = [
     dict(
-        type='WarmupParamHook',
+        type=WarmupParamHook,
         param_name='alpha',
         module_name='head',
         warmup_epochs=2)

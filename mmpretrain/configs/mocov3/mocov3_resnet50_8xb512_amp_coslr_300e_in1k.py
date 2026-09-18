@@ -5,18 +5,26 @@ with read_base():
     from .._base_.datasets.imagenet_bs512_mocov3 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
+
+from mmpretrain.engine import LARS
+from mmpretrain.models import (CrossEntropyLoss, MoCoV3, MoCoV3Head,
+                               NonLinearNeck, ResNet)
+
 # model settings
 temperature = 1.0
 model = dict(
-    type='MoCoV3',
+    type=MoCoV3,
     base_momentum=0.01,  # 0.01 for 100e and 300e, 0.004 for 1000e
     backbone=dict(
-        type='ResNet',
+        type=ResNet,
         depth=50,
-        norm_cfg=dict(type='SyncBN'),
+        norm_cfg=dict(type=SyncBatchNorm),
         zero_init_residual=False),
     neck=dict(
-        type='NonLinearNeck',
+        type=NonLinearNeck,
         in_channels=2048,
         hid_channels=4096,
         out_channels=256,
@@ -27,9 +35,9 @@ model = dict(
         with_last_bias=False,
         with_avg_pool=True),
     head=dict(
-        type='MoCoV3Head',
+        type=MoCoV3Head,
         predictor=dict(
-            type='NonLinearNeck',
+            type=NonLinearNeck,
             in_channels=256,
             hid_channels=4096,
             out_channels=256,
@@ -39,14 +47,14 @@ model = dict(
             with_last_bn_affine=False,
             with_last_bias=False,
             with_avg_pool=False),
-        loss=dict(type='CrossEntropyLoss', loss_weight=2 * temperature),
+        loss=dict(type=CrossEntropyLoss, loss_weight=2 * temperature),
         temperature=temperature))
 
 # optimizer
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
+    type=AmpOptimWrapper,
     loss_scale='dynamic',
-    optimizer=dict(type='LARS', lr=4.8, weight_decay=1e-6, momentum=0.9),
+    optimizer=dict(type=LARS, lr=4.8, weight_decay=1e-6, momentum=0.9),
     paramwise_cfg=dict(
         custom_keys={
             'bn': dict(decay_mult=0, lars_exclude=True),
@@ -59,14 +67,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=10,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=290,
         by_epoch=True,
         begin=10,
@@ -75,7 +83,7 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=300)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=300)
 # only keeps the latest 3 checkpoints
 default_hooks.merge(dict(checkpoint=dict(max_keep_ckpts=3)))
 

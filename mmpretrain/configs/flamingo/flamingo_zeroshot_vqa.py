@@ -4,6 +4,15 @@ from mmengine.config import read_base
 with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+from mmengine.dataset import DefaultSampler
+from torch.nn import LayerNorm
+
+from mmpretrain.datasets import PackInputs, ResizeEdge
+from mmpretrain.evaluation import ReportVQA, VQAAcc
+from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
+                               VisionTransformer)
+
 zeroshot_prompt = (
     'Question:What is this photo taken looking through? Short Answer:pitcher<|endofchunk|>'  # noqa: E501
     'Question:How many people are wearing shorts in the forefront of this photo? Short Answer:4<|endofchunk|>'  # noqa: E501
@@ -15,12 +24,12 @@ model = dict(
     tokenizer=dict(
         type='LlamaTokenizer', name_or_path='decapoda-research/llama-7b-hf'),
     vision_encoder=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='l',
         patch_size=14,
         pre_norm=True,
-        norm_cfg=dict(type='LN', eps=1e-5),
-        layer_cfgs=dict(act_cfg=dict(type='QuickGELU')),
+        norm_cfg=dict(type=LayerNorm, eps=1e-5),
+        layer_cfgs=dict(act_cfg=dict(type=QuickGELU)),
         final_norm=False,
         out_type='raw',
         pretrained=(
@@ -45,22 +54,22 @@ model = dict(
 
 # data settings
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[122.770938, 116.7460125, 104.09373615],
     std=[68.5005327, 66.6321579, 70.32316305],
     to_rgb=True,
 )
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=224,
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='CenterCrop', crop_size=(224, 224)),
+    dict(type=CenterCrop, crop_size=(224, 224)),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight', 'shots'],
         meta_keys=['image_id'],
     ),
@@ -80,10 +89,10 @@ val_dataloader = dict(
         num_support_examples=2048,
         num_query_examples=5000,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
-val_evaluator = dict(type='VQAAcc')
+val_evaluator = dict(type=VQAAcc)
 
 test_dataloader = dict(
     batch_size=8,
@@ -99,10 +108,10 @@ test_dataloader = dict(
         num_support_examples=2048,
         num_query_examples=5000,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
-test_evaluator = dict(type='ReportVQA', file_path='vqa_test-dev.json')
+test_evaluator = dict(type=ReportVQA, file_path='vqa_test-dev.json')
 
 # schedule settings
 val_cfg = dict()

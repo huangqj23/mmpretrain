@@ -5,17 +5,25 @@ with read_base():
     from .._base_.datasets.imagenet_bs256_itpn import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
+from mmpretrain.models import (CLIPGenerator, CosineSimilarityLoss, iTPN,
+                               iTPNClipHead, iTPNHiViT, iTPNPretrainDecoder)
+
 model = dict(
-    type='iTPN',
+    type=iTPN,
     backbone=dict(
-        type='iTPNHiViT',
+        type=iTPNHiViT,
         arch='base',
         drop_path_rate=0.0,
         rpe=True,
         layer_scale_init_value=0.1,
         reconstruction_type='clip'),
     neck=dict(
-        type='iTPNPretrainDecoder',
+        type=iTPNPretrainDecoder,
         patch_size=16,
         in_chans=3,
         embed_dim=512,
@@ -27,12 +35,12 @@ model = dict(
         num_outs=3,
     ),
     head=dict(
-        type='iTPNClipHead',
+        type=iTPNClipHead,
         embed_dims=512,
         num_embed=512,
-        loss=dict(type='CosineSimilarityLoss')),
+        loss=dict(type=CosineSimilarityLoss)),
     target_generator=dict(
-        type='CLIPGenerator',
+        type=CLIPGenerator,
         tokenizer_path=  # noqa
         'https://download.openmmlab.com/mmselfsup/1.x/target_generator_ckpt/clip_vit_base_16.pth.tar'  # noqa
     ),
@@ -40,11 +48,11 @@ model = dict(
 
 # optimizer wrapper
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
+    type=AmpOptimWrapper,
     loss_scale='dynamic',
     # betas: (0.9, 0.98) for 300 epochs and (0.9, 0.999) for 1600 epochs.
     optimizer=dict(
-        type='AdamW', lr=1.5e-3, betas=(0.9, 0.98), weight_decay=0.05),
+        type=AdamW, lr=1.5e-3, betas=(0.9, 0.98), weight_decay=0.05),
     clip_grad=dict(max_norm=3.0),
     paramwise_cfg=dict(
         custom_keys={
@@ -56,14 +64,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=10,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         eta_min=1e-5,
         by_epoch=True,
         begin=10,
@@ -72,10 +80,10 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=300)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=300)
 default_hooks.merge(dict(
     # only keeps the latest 3 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3)))
 
 randomness.merge(dict(seed=0, diff_rank_seed=True))
 

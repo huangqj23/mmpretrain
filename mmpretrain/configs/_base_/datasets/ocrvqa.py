@@ -1,4 +1,10 @@
 # Converted from configs/_base_/datasets/ocrvqa.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.evaluation import VQAAcc
+
 # data settings
 
 data_preprocessor = dict(
@@ -8,30 +14,30 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=384,
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='CleanCaption', keys=['question', 'gt_answer']),
+    dict(type=CleanCaption, keys=['question', 'gt_answer']),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=[],
     ),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(480, 480),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='CleanCaption', keys=['question', 'gt_answer']),
+    dict(type=CleanCaption, keys=['question', 'gt_answer']),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=[],
     ),
@@ -47,7 +53,7 @@ train_dataloader = dict(
         ann_file='annotations/dataset.json',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     persistent_workers=True,
     drop_last=True,
 )
@@ -62,10 +68,10 @@ val_dataloader = dict(
         ann_file='annotations/dataset.json',
         split='val',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
-val_evaluator = dict(type='VQAAcc')
+val_evaluator = dict(type=VQAAcc)
 
 test_dataloader = dict(
     batch_size=64,
@@ -77,6 +83,6 @@ test_dataloader = dict(
         ann_file='annotations/dataset.json',
         split='test',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
-test_evaluator = dict(type='VQAAcc')
+test_evaluator = dict(type=VQAAcc)

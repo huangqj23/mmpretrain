@@ -6,6 +6,16 @@ with read_base():
     from .._base_.datasets.imagenet_bs64_pil_resize_autoaug import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import (CenterCrop, ImageToTensor, LoadImageFromFile,
+                             Normalize, RandomFlip, Resize, ToTensor)
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import SGD
+
+from mmpretrain.datasets import Collect, RandomResizedCrop
+from mmpretrain.models import CrossEntropyLoss
+
 # specific to vit pretrain
 paramwise_cfg = dict(custom_keys={
     '.cls_token': dict(decay_mult=0.0),
@@ -16,11 +26,11 @@ pretrained = 'https://download.openmmlab.com/mmclassification/v0/vit/pretrain/vi
 
 model.merge(dict(
     head=dict(
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0, _delete_=True), ),
+        loss=dict(type=CrossEntropyLoss, loss_weight=1.0, _delete_=True), ),
     backbone=dict(
         img_size=224,
         init_cfg=dict(
-            type='Pretrained',
+            type=PretrainedInit,
             checkpoint=pretrained,
             _delete_=True,
             prefix='backbone'))))
@@ -29,24 +39,24 @@ img_norm_cfg = dict(
     mean=[127.5, 127.5, 127.5], std=[127.5, 127.5, 127.5], to_rgb=True)
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=224, backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='ImageToTensor', keys=['img']),
-    dict(type='ToTensor', keys=['gt_label']),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=224, backend='pillow'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=Normalize, **img_norm_cfg),
+    dict(type=ImageToTensor, keys=['img']),
+    dict(type=ToTensor, keys=['gt_label']),
     dict(type='ToHalf', keys=['img']),
-    dict(type='Collect', keys=['img', 'gt_label'])
+    dict(type=Collect, keys=['img', 'gt_label'])
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=(224, -1), keep_ratio=True, backend='pillow'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='ImageToTensor', keys=['img']),
+    dict(type=LoadImageFromFile),
+    dict(type=Resize, scale=(224, -1), keep_ratio=True, backend='pillow'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=Normalize, **img_norm_cfg),
+    dict(type=ImageToTensor, keys=['img']),
     dict(type='ToHalf', keys=['img']),
-    dict(type='Collect', keys=['img'])
+    dict(type=Collect, keys=['img'])
 ]
 
 # change batch size
@@ -63,7 +73,7 @@ data = dict(
 
 # optimizer
 optimizer = dict(
-    type='SGD',
+    type=SGD,
     lr=0.08,
     weight_decay=1e-5,
     momentum=0.9,
@@ -72,9 +82,9 @@ optimizer = dict(
 
 # learning policy
 param_scheduler = [
-    dict(type='LinearLR', start_factor=0.02, by_epoch=False, begin=0, end=800),
+    dict(type=LinearLR, start_factor=0.02, by_epoch=False, begin=0, end=800),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=4200,
         by_epoch=False,
         begin=800,
@@ -111,7 +121,7 @@ runner = dict(
     options_cfg=options_cfg,
     max_iters=5000)
 
-default_hooks.merge(dict(checkpoint=dict(type='CheckpointHook', interval=1000)))
+default_hooks.merge(dict(checkpoint=dict(type=CheckpointHook, interval=1000)))
 
 fp16 = dict(loss_scale=256.0, velocity_accum_type='half', accum_type='half')
 if isinstance(train_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_

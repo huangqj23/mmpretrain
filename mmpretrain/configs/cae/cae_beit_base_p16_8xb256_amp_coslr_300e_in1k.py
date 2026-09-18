@@ -4,11 +4,24 @@ from mmengine.config import read_base
 with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+from mmengine.dataset import DefaultSampler, default_collate
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
+from mmpretrain.datasets import (BEiTMaskGenerator, ImageNet, PackInputs,
+                                 RandomResizedCropAndInterpolationWithTwoPic)
+from mmpretrain.models import (CAE, CAEHead, CAELoss, CAENeck, CAEPretrainViT,
+                               DALLEEncoder, TwoNormDataPreprocessor)
+
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = ImageNet
 data_root = 'data/imagenet/'
 data_preprocessor = dict(
-    type='TwoNormDataPreprocessor',
+    type=TwoNormDataPreprocessor,
     mean=[123.675, 116.28, 103.53],
     std=[58.395, 57.12, 57.375],
     second_mean=[-31.875, -31.875, -31.875],
@@ -16,30 +29,30 @@ data_preprocessor = dict(
     to_rgb=True)
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomFlip', prob=0.5),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomFlip, prob=0.5),
     dict(
-        type='RandomResizedCropAndInterpolationWithTwoPic',
+        type=RandomResizedCropAndInterpolationWithTwoPic,
         size=224,
         second_size=112,
         interpolation='bicubic',
         second_interpolation='lanczos',
         scale=(0.08, 1.0)),
     dict(
-        type='BEiTMaskGenerator',
+        type=BEiTMaskGenerator,
         input_size=(14, 14),
         num_masking_patches=75,
         max_num_patches=None,
         min_num_patches=16),
-    dict(type='PackInputs')
+    dict(type=PackInputs)
 ]
 
 train_dataloader = dict(
     batch_size=256,
     num_workers=8,
     persistent_workers=True,
-    sampler=dict(type='DefaultSampler', shuffle=True),
-    collate_fn=dict(type='default_collate'),
+    sampler=dict(type=DefaultSampler, shuffle=True),
+    collate_fn=dict(type=default_collate),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
@@ -49,15 +62,15 @@ train_dataloader = dict(
 
 # model settings
 model = dict(
-    type='CAE',
+    type=CAE,
     backbone=dict(
-        type='CAEPretrainViT',
+        type=CAEPretrainViT,
         arch='b',
         patch_size=16,
         layer_scale_init_value=0.1,
         bias='qv_bias'),
     neck=dict(
-        type='CAENeck',
+        type=CAENeck,
         embed_dims=768,
         num_heads=12,
         regressor_depth=4,
@@ -65,11 +78,11 @@ model = dict(
         mlp_ratio=4,
         layer_scale_init_value=0.1,
     ),
-    head=dict(type='CAEHead', loss=dict(type='CAELoss', lambd=2)),
+    head=dict(type=CAEHead, loss=dict(type=CAELoss, lambd=2)),
     target_generator=dict(
-        type='DALL-E',
+        type=DALLEEncoder,
         init_cfg=dict(
-            type='Pretrained',
+            type=PretrainedInit,
             checkpoint=  # noqa: E251
             'https://download.openmmlab.com/mmselfsup/1.x/target_generator_ckpt/dalle_encoder.pth',  # noqa: E501
         )),
@@ -77,10 +90,10 @@ model = dict(
 
 # optimizer wrapper
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
+    type=AmpOptimWrapper,
     loss_scale='dynamic',
     optimizer=dict(
-        type='AdamW', lr=1.5e-3, betas=(0.9, 0.999), weight_decay=0.05),
+        type=AdamW, lr=1.5e-3, betas=(0.9, 0.999), weight_decay=0.05),
     clip_grad=dict(max_norm=3.0),
     paramwise_cfg=dict(
         bias_decay_mult=0.0, norm_decay_mult=0.0, flat_decay_mult=0.0))
@@ -88,14 +101,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=10,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=290,
         eta_min=1e-5,
         by_epoch=True,
@@ -105,10 +118,10 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=300)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=300)
 default_hooks.merge(dict(
     # only keeps the latest 3 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=10, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=10, max_keep_ckpts=3)))
 
 randomness.merge(dict(seed=0, diff_rank_seed=True))
 

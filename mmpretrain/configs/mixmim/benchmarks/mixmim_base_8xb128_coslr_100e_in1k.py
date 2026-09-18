@@ -7,6 +7,16 @@ with read_base():
     from ..._base_.datasets.imagenet_bs64_swin_224 import *  # noqa: F401,F403
     from ..._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.dataset import DefaultSampler, default_collate
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit
+from mmengine.optim import CosineAnnealingLR, LinearLR, OptimWrapper
+from torch.optim import AdamW
+
+from mmpretrain.datasets import (ImageNet, PackInputs, RandAugment,
+                                 RandomErasing, RandomResizedCrop, ResizeEdge)
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -20,7 +30,7 @@ def __iv_merge(base, child):
 __base_test_dataloader = test_dataloader
 
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = ImageNet
 data_root = 'data/imagenet/'
 
 data_preprocessor.merge(dict(
@@ -33,15 +43,15 @@ bgr_mean = data_preprocessor['mean'][::-1]
 bgr_std = data_preprocessor['std'][::-1]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=224,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='RandAugment',
+        type=RandAugment,
         policies='timm_increasing',
         num_policies=2,
         total_level=10,
@@ -50,14 +60,14 @@ train_pipeline = [
         hparams=dict(
             pad_val=[round(x) for x in bgr_mean], interpolation='bicubic')),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.25,
         mode='rand',
         min_area_ratio=0.02,
         max_area_ratio=1 / 3,
         fill_color=bgr_mean,
         fill_std=bgr_std),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(
@@ -69,47 +79,47 @@ train_dataloader.merge(dict(
         ann_file='meta/train.txt',
         data_prefix='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     persistent_workers=True,
 ))
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=256,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs),
 ]
 
 val_dataloader.merge(dict(
     batch_size=64,
     num_workers=8,
     pin_memory=True,
-    collate_fn=dict(type='default_collate'),
+    collate_fn=dict(type=default_collate),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
         ann_file='meta/val.txt',
         data_prefix='val',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 ))
 test_dataloader = val_dataloader
 
 model.merge(dict(
     backbone=dict(
-        init_cfg=dict(type='Pretrained', checkpoint='', prefix='backbone.'))))
+        init_cfg=dict(type=PretrainedInit, checkpoint='', prefix='backbone.'))))
 
 # optimizer
 optim_wrapper = dict(
-    type='OptimWrapper',
+    type=OptimWrapper,
     optimizer=dict(
-        type='AdamW',
+        type=AdamW,
         lr=5e-4 * (8 * 128 / 256),
         betas=(0.9, 0.999),
         weight_decay=0.05),
@@ -123,14 +133,14 @@ optim_wrapper = dict(
 
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-6,
         by_epoch=True,
         begin=0,
         end=5,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=95,
         eta_min=1e-6,
         by_epoch=True,
@@ -145,7 +155,7 @@ test_cfg = dict()
 
 default_hooks.merge(dict(
     # save checkpoint per epoch.
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=1)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=1)))
 
 # ---- 旧式继承语义：子配置的值最后才与 base 递归合并 ----
 if isinstance(test_dataloader, dict):

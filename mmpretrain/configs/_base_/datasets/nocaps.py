@@ -1,21 +1,28 @@
 # Converted from configs/_base_/datasets/nocaps.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import PackInputs
+from mmpretrain.evaluation import NocapsSave
+from mmpretrain.models import MultiModalDataPreprocessor
+
 # data settings
 
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[122.770938, 116.7460125, 104.09373615],
     std=[68.5005327, 66.6321579, 70.32316305],
     to_rgb=True,
 )
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(384, 384),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='PackInputs', meta_keys=['image_id']),
+    dict(type=PackInputs, meta_keys=['image_id']),
 ]
 
 val_dataloader = dict(
@@ -28,12 +35,12 @@ val_dataloader = dict(
         ann_file='annotations/nocaps_val_4500_captions.json',
         pipeline=test_pipeline,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 
 val_evaluator = dict(
-    type='NocapsSave',
+    type=NocapsSave,
     save_dir='./',
 )
 

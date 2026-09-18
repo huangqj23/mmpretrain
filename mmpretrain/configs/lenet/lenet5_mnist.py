@@ -1,19 +1,31 @@
 # Converted from configs/lenet/lenet5_mnist.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import Resize
+from mmengine.dataset import DefaultSampler
+from mmengine.hooks import (CheckpointHook, DistSamplerSeedHook, IterTimerHook,
+                            LoggerHook, ParamSchedulerHook)
+from mmengine.optim import MultiStepLR
+from torch.optim import SGD
+
+from mmpretrain.datasets import MNIST, PackInputs
+from mmpretrain.evaluation import Accuracy
+from mmpretrain.models import (ClsHead, CrossEntropyLoss, ImageClassifier,
+                               LeNet5)
+
 # model settings
 model = dict(
-    type='ImageClassifier',
-    backbone=dict(type='LeNet5', num_classes=10),
+    type=ImageClassifier,
+    backbone=dict(type=LeNet5, num_classes=10),
     neck=None,
     head=dict(
-        type='ClsHead',
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        type=ClsHead,
+        loss=dict(type=CrossEntropyLoss, loss_weight=1.0),
     ))
 
 # dataset settings
-dataset_type = 'MNIST'
+dataset_type = MNIST
 data_preprocessor = dict(mean=[33.46], std=[78.87], num_classes=10)
 
-pipeline = [dict(type='Resize', scale=32), dict(type='PackInputs')]
+pipeline = [dict(type=Resize, scale=32), dict(type=PackInputs)]
 
 common_data_cfg = dict(
     type=dataset_type, data_prefix='data/mnist', pipeline=pipeline)
@@ -22,26 +34,26 @@ train_dataloader = dict(
     batch_size=128,
     num_workers=2,
     dataset=dict(**common_data_cfg, test_mode=False),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
 )
 
 val_dataloader = dict(
     batch_size=128,
     num_workers=2,
     dataset=dict(**common_data_cfg, test_mode=True),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
-val_evaluator = dict(type='Accuracy', topk=(1, ))
+val_evaluator = dict(type=Accuracy, topk=(1, ))
 
 test_dataloader = val_dataloader
 test_evaluator = val_evaluator
 
 # schedule settings
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001))
+    optimizer=dict(type=SGD, lr=0.01, momentum=0.9, weight_decay=0.0001))
 
 param_scheduler = dict(
-    type='MultiStepLR',  # learning policy, decay on several milestones.
+    type=MultiStepLR,  # learning policy, decay on several milestones.
     by_epoch=True,  # update based on epoch.
     milestones=[15],  # decay at the 15th epochs.
     gamma=0.1,  # decay to 0.1 times.
@@ -56,15 +68,15 @@ default_scope = 'mmpretrain'
 
 default_hooks = dict(
     # record the time of every iteration.
-    timer=dict(type='IterTimerHook'),
+    timer=dict(type=IterTimerHook),
     # print log every 150 iterations.
-    logger=dict(type='LoggerHook', interval=150),
+    logger=dict(type=LoggerHook, interval=150),
     # enable the parameter scheduler.
-    param_scheduler=dict(type='ParamSchedulerHook'),
+    param_scheduler=dict(type=ParamSchedulerHook),
     # save checkpoint per epoch.
-    checkpoint=dict(type='CheckpointHook', interval=1),
+    checkpoint=dict(type=CheckpointHook, interval=1),
     # set sampler seed in distributed evrionment.
-    sampler_seed=dict(type='DistSamplerSeedHook'),
+    sampler_seed=dict(type=DistSamplerSeedHook),
 )
 
 env_cfg = dict(

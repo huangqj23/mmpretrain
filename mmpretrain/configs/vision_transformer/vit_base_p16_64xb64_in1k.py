@@ -7,10 +7,12 @@ with read_base():
     from .._base_.schedules.imagenet_bs4096_AdamW import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmpretrain.models import Mixup
+
 # model setting
 model.merge(dict(
     head=dict(hidden_dim=3072),
-    train_cfg=dict(augments=dict(type='Mixup', alpha=0.2)),
+    train_cfg=dict(augments=dict(type=Mixup, alpha=0.2)),
 ))
 
 # schedule setting

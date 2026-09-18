@@ -15,6 +15,8 @@ from torch.optim import AdamW
 from mmpretrain.models import (VQKD, BEiT, BEiTPretrainViT, BEiTV2Head,
                                BEiTV2Neck, CrossEntropyLoss)
 
+from torch.nn import LayerNorm
+
 # model settings
 vqkd_encoder = dict(
     arch='base',
@@ -24,7 +26,7 @@ vqkd_encoder = dict(
     out_indices=-1,
     drop_rate=0.,
     drop_path_rate=0.,
-    norm_cfg=dict(type='LN', eps=1e-6),
+    norm_cfg=dict(type=LayerNorm, eps=1e-6),
     final_norm=True,
     out_type='featmap',
     with_cls_token=True,

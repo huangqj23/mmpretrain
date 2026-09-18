@@ -1,25 +1,30 @@
 # Converted from configs/_base_/models/vit-base-p32.py by industrial-vision tools/convert_configs.py
+from mmengine.model import KaimingInit
+
+from mmpretrain.models import (CrossEntropyLoss, ImageClassifier,
+                               VisionTransformer, VisionTransformerClsHead)
+
 # model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='b',
         img_size=224,
         patch_size=32,
         drop_rate=0.1,
         init_cfg=[
             dict(
-                type='Kaiming',
+                type=KaimingInit,
                 layer='Conv2d',
                 mode='fan_in',
                 nonlinearity='linear')
         ]),
     neck=None,
     head=dict(
-        type='VisionTransformerClsHead',
+        type=VisionTransformerClsHead,
         num_classes=1000,
         in_channels=768,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        loss=dict(type=CrossEntropyLoss, loss_weight=1.0),
         topk=(1, 5),
     ))

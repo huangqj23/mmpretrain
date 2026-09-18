@@ -1,9 +1,12 @@
 # Converted from configs/_base_/schedules/imagenet_bs2048_adamw_levit.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
 # for batch in each gpu is 256, 8 gpu
 # lr = 5e-4 * 256 * 8 / 512 = 0.002
 optim_wrapper = dict(
     optimizer=dict(
-        type='AdamW',
+        type=AdamW,
         lr=0.002,
         weight_decay=0.025,
         eps=1e-8,
@@ -20,7 +23,7 @@ optim_wrapper = dict(
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-6 / 0.002,
         by_epoch=True,
         end=5,
@@ -28,7 +31,7 @@ param_scheduler = [
         convert_to_iter_based=True,
     ),
     # main learning rate scheduler
-    dict(type='CosineAnnealingLR', eta_min=1e-5, by_epoch=True, begin=5)
+    dict(type=CosineAnnealingLR, eta_min=1e-5, by_epoch=True, begin=5)
 ]
 
 # train, val, test setting

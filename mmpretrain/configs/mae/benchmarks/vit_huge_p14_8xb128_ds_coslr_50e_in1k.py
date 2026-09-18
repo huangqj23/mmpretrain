@@ -4,12 +4,15 @@ from mmengine.config import read_base
 with read_base():
     from .vit_huge_p14_8xb128_coslr_50e_in1k import *  # noqa: F401,F403
 
+from mmengine._strategy import DeepSpeedStrategy
+from mmengine._strategy.deepspeed import DeepSpeedOptimWrapper
+
 # optimizer wrapper
-optim_wrapper.merge(dict(type='DeepSpeedOptimWrapper'))
+optim_wrapper.merge(dict(type=DeepSpeedOptimWrapper))
 
 # training strategy
 strategy = dict(
-    type='DeepSpeedStrategy',
+    type=DeepSpeedStrategy,
     fp16=dict(
         enabled=True,
         fp16_master_weights_and_grads=False,

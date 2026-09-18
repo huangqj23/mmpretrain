@@ -7,6 +7,14 @@ with read_base():
     from .._base_.datasets.imagenet_bs128_mbv3 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.optim import StepLR
+from torch.nn import BatchNorm2d
+from torch.optim import RMSprop
+
+from mmpretrain.datasets import (AutoAugment, PackInputs, RandomErasing,
+                                 RandomResizedCrop, ResizeEdge)
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -20,41 +28,41 @@ def __iv_merge(base, child):
 __base_test_dataloader = test_dataloader
 
 # model settings
-model.merge(dict(backbone=dict(norm_cfg=dict(type='BN', eps=1e-5, momentum=0.1))))
+model.merge(dict(backbone=dict(norm_cfg=dict(type=BatchNorm2d, eps=1e-5, momentum=0.1))))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=224,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='AutoAugment',
+        type=AutoAugment,
         policies='imagenet',
         hparams=dict(pad_val=[round(x) for x in [103.53, 116.28, 123.675]])),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.2,
         mode='rand',
         min_area_ratio=0.02,
         max_area_ratio=1 / 3,
         fill_color=[103.53, 116.28, 123.675],
         fill_std=[57.375, 57.12, 58.395]),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=256,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))
@@ -66,14 +74,14 @@ test_dataloader = val_dataloader
 # schedule settings
 optim_wrapper = dict(
     optimizer=dict(
-        type='RMSprop',
+        type=RMSprop,
         lr=0.064,
         alpha=0.9,
         momentum=0.9,
         eps=0.0316,
         weight_decay=1e-5))
 
-param_scheduler = dict(type='StepLR', by_epoch=True, step_size=2, gamma=0.973)
+param_scheduler = dict(type=StepLR, by_epoch=True, step_size=2, gamma=0.973)
 
 train_cfg = dict(by_epoch=True, max_epochs=600, val_interval=10)
 val_cfg = dict()

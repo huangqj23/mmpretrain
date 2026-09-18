@@ -5,6 +5,10 @@ from copy import deepcopy as __deepcopy
 with read_base():
     from .edgenext_small_8xb256_in1k import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+
+from mmpretrain.datasets import PackInputs, ResizeEdge
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -20,15 +24,15 @@ __base_test_dataloader = test_dataloader
 # dataset setting
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=269,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=256),
-    dict(type='PackInputs')
+    dict(type=CenterCrop, crop_size=256),
+    dict(type=PackInputs)
 ]
 
 val_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))

@@ -1,9 +1,11 @@
 # Converted from configs/dinov2/vit-small-p14_dinov2-pre_headless.py by industrial-vision tools/convert_configs.py
+from mmpretrain.models import ImageClassifier, VisionTransformer
+
 # model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='dinov2-small',
         img_size=518,
         patch_size=14,

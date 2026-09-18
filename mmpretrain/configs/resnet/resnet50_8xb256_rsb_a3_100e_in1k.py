@@ -7,13 +7,17 @@ with read_base():
     from .._base_.schedules.imagenet_bs2048_rsb import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
+
+from mmpretrain.models import CutMix, Mixup
+
 # model settings
 model.merge(dict(
-    backbone=dict(norm_cfg=dict(type='SyncBN', requires_grad=True)),
+    backbone=dict(norm_cfg=dict(type=SyncBatchNorm, requires_grad=True)),
     head=dict(loss=dict(use_sigmoid=True)),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.1),
-        dict(type='CutMix', alpha=1.0)
+        dict(type=Mixup, alpha=0.1),
+        dict(type=CutMix, alpha=1.0)
     ]),
 ))
 

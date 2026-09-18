@@ -6,18 +6,27 @@ with read_base():
     from .._base_.schedules.imagenet_bs4096_AdamW import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit, TruncNormalInit
+from mmengine.optim import CosineAnnealingLR, LinearLR
+
+from mmpretrain.datasets import PackInputs, RandomResizedCrop, ResizeEdge
+from mmpretrain.models import (ImageClassifier, LabelSmoothLoss, LoRAModel,
+                               VisionTransformer, VisionTransformerClsHead)
+
 # model setting
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='LoRAModel',
+        type=LoRAModel,
         module=dict(
-            type='VisionTransformer',
+            type=VisionTransformer,
             arch='b',
             img_size=384,
             patch_size=16,
             drop_rate=0.1,
-            init_cfg=dict(type='Pretrained', checkpoint='',
+            init_cfg=dict(type=PretrainedInit, checkpoint='',
                           prefix='backbone')),
         alpha=16,
         rank=16,
@@ -25,13 +34,13 @@ model = dict(
         targets=[dict(type='qkv')]),
     neck=None,
     head=dict(
-        type='VisionTransformerClsHead',
+        type=VisionTransformerClsHead,
         num_classes=1000,
         in_channels=768,
         loss=dict(
-            type='LabelSmoothLoss', label_smooth_val=0.1,
+            type=LabelSmoothLoss, label_smooth_val=0.1,
             mode='classy_vision'),
-        init_cfg=[dict(type='TruncNormal', layer='Linear', std=2e-5)],
+        init_cfg=[dict(type=TruncNormalInit, layer='Linear', std=2e-5)],
     ))
 
 # dataset setting
@@ -43,17 +52,17 @@ data_preprocessor.merge(dict(
 ))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=384, backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=384, backend='pillow'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='ResizeEdge', scale=384, edge='short', backend='pillow'),
-    dict(type='CenterCrop', crop_size=384),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=ResizeEdge, scale=384, edge='short', backend='pillow'),
+    dict(type=CenterCrop, crop_size=384),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))
@@ -61,14 +70,14 @@ val_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))
 
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=5,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=45,
         by_epoch=True,
         begin=5,
@@ -80,7 +89,7 @@ param_scheduler = [
 train_cfg.merge(dict(by_epoch=True, max_epochs=50))
 default_hooks.merge(dict(
     # save checkpoint per epoch.
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3)))
 
 # schedule setting
 optim_wrapper.merge(dict(clip_grad=dict(max_norm=1.0)))

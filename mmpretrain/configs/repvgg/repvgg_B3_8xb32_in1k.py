@@ -7,6 +7,13 @@ with read_base():
     from .._base_.schedules.imagenet_bs256_coslr import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.hooks import CheckpointHook
+from mmengine.optim import CosineAnnealingLR
+
+from mmpretrain.datasets import (PackInputs, RandAugment, RandomResizedCrop,
+                                 ResizeEdge)
+
 # schedule settings
 optim_wrapper.merge(dict(
     paramwise_cfg=dict(
@@ -29,25 +36,25 @@ bgr_mean = data_preprocessor['mean'][::-1]
 bgr_std = data_preprocessor['std'][::-1]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=224, backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=224, backend='pillow'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='RandAugment',
+        type=RandAugment,
         policies='timm_increasing',
         num_policies=2,
         total_level=10,
         magnitude_level=7,
         magnitude_std=0.5,
         hparams=dict(pad_val=[round(x) for x in bgr_mean])),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='ResizeEdge', scale=256, edge='short', backend='pillow'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=ResizeEdge, scale=256, edge='short', backend='pillow'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))
@@ -56,7 +63,7 @@ test_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))
 
 # schedule settings
 param_scheduler.merge(dict(
-    type='CosineAnnealingLR',
+    type=CosineAnnealingLR,
     T_max=200,
     by_epoch=True,
     begin=0,
@@ -66,7 +73,7 @@ param_scheduler.merge(dict(
 train_cfg.merge(dict(by_epoch=True, max_epochs=200))
 
 default_hooks.merge(dict(
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3)))
 if isinstance(train_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_
     train_pipeline.pop('_delete_', None)
 if isinstance(test_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_

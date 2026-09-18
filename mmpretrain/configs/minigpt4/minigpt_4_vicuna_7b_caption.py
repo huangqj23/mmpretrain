@@ -6,6 +6,13 @@ with read_base():
     from .._base_.datasets.coco_caption import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, Resize
+from mmengine.optim import CosineAnnealingLR
+from torch.optim import AdamW
+
+from mmpretrain.datasets import PackInputs
+from mmpretrain.models import BEiTViT
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -20,13 +27,13 @@ __base_test_dataloader = test_dataloader
 
 # dataset settings
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(224, 224),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='PackInputs', meta_keys=['image_id']),
+    dict(type=PackInputs, meta_keys=['image_id']),
 ]
 
 val_dataloader.merge(dict(batch_size=1, dataset=dict(pipeline=test_pipeline)))
@@ -36,7 +43,7 @@ test_dataloader = val_dataloader
 model = dict(
     type='MiniGPT4',
     vision_encoder=dict(
-        type='BEiTViT',
+        type=BEiTViT,
         # eva-g without the final layer
         arch=dict(
             embed_dims=1408,
@@ -93,11 +100,11 @@ model = dict(
     end_sym='###')
 
 # schedule settings
-optim_wrapper = dict(optimizer=dict(type='AdamW', lr=1e-5, weight_decay=0.05))
+optim_wrapper = dict(optimizer=dict(type=AdamW, lr=1e-5, weight_decay=0.05))
 
 param_scheduler = [
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         by_epoch=True,
         begin=0,
         end=5,

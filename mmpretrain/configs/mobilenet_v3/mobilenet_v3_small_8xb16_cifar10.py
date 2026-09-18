@@ -7,9 +7,11 @@ with read_base():
     from .._base_.schedules.cifar10_bs128 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import MultiStepLR
+
 # schedule settings
 param_scheduler.merge(dict(
-    type='MultiStepLR',
+    type=MultiStepLR,
     by_epoch=True,
     milestones=[120, 170],
     gamma=0.1,

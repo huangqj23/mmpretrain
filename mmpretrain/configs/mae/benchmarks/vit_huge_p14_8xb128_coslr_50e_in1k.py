@@ -7,6 +7,17 @@ with read_base():
     from ..._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from ..._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit, TruncNormalInit
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
+from mmpretrain.datasets import (PackInputs, RandAugment, RandomErasing,
+                                 RandomResizedCrop, ResizeEdge)
+from mmpretrain.models import (CutMix, ImageClassifier, LabelSmoothLoss,
+                               LinearClsHead, Mixup, VisionTransformer)
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -21,15 +32,15 @@ __base_test_dataloader = test_dataloader
 
 # dataset settings
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=224,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='RandAugment',
+        type=RandAugment,
         policies='timm_increasing',
         num_policies=2,
         total_level=10,
@@ -37,25 +48,25 @@ train_pipeline = [
         magnitude_std=0.5,
         hparams=dict(pad_val=[104, 116, 124], interpolation='bicubic')),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.25,
         mode='rand',
         min_area_ratio=0.02,
         max_area_ratio=0.3333333333333333,
         fill_color=[103.53, 116.28, 123.675],
         fill_std=[57.375, 57.12, 58.395]),
-    dict(type='PackInputs')
+    dict(type=PackInputs)
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=256,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs')
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs)
 ]
 
 train_dataloader.merge(dict(batch_size=128, dataset=dict(pipeline=train_pipeline)))
@@ -64,34 +75,34 @@ test_dataloader = val_dataloader
 
 # model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='huge',
         img_size=224,
         patch_size=14,
         drop_path_rate=0.3,  # set to 0.3
         out_type='avg_featmap',
         final_norm=False,
-        init_cfg=dict(type='Pretrained', checkpoint='', prefix='backbone.')),
+        init_cfg=dict(type=PretrainedInit, checkpoint='', prefix='backbone.')),
     neck=None,
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=1280,
         loss=dict(
-            type='LabelSmoothLoss', label_smooth_val=0.1, mode='original'),
-        init_cfg=[dict(type='TruncNormal', layer='Linear', std=2e-5)]),
+            type=LabelSmoothLoss, label_smooth_val=0.1, mode='original'),
+        init_cfg=[dict(type=TruncNormalInit, layer='Linear', std=2e-5)]),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.8),
-        dict(type='CutMix', alpha=1.0)
+        dict(type=Mixup, alpha=0.8),
+        dict(type=CutMix, alpha=1.0)
     ]))
 
 # optimizer wrapper
 # learning rate and layer decay rate are set to 0.004 and 0.75 respectively
 optim_wrapper.merge(dict(
     optimizer=dict(
-        type='AdamW', lr=4e-3, weight_decay=0.05, betas=(0.9, 0.999)),
+        type=AdamW, lr=4e-3, weight_decay=0.05, betas=(0.9, 0.999)),
     constructor='LearningRateDecayOptimWrapperConstructor',
     paramwise_cfg=dict(
         layer_decay_rate=0.75,
@@ -105,14 +116,14 @@ optim_wrapper.merge(dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=5,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=45,
         by_epoch=True,
         begin=5,
@@ -125,7 +136,7 @@ param_scheduler = [
 train_cfg.merge(dict(by_epoch=True, max_epochs=50))
 default_hooks.merge(dict(
     # save checkpoint per epoch.
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3)))
 
 randomness.merge(dict(seed=0, diff_rank_seed=True))
 

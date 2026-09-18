@@ -6,19 +6,26 @@ with read_base():
     from .._base_.schedules.imagenet_lars_coslr_200e import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import OptimWrapper
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
+
+from mmpretrain.engine import LARS
+from mmpretrain.models import (BYOL, CosineSimilarityLoss, LatentPredictHead,
+                               NonLinearNeck, ResNet)
+
 train_dataloader.merge(dict(batch_size=256))
 
 # model settings
 model = dict(
-    type='BYOL',
+    type=BYOL,
     base_momentum=0.01,
     backbone=dict(
-        type='ResNet',
+        type=ResNet,
         depth=50,
-        norm_cfg=dict(type='SyncBN'),
+        norm_cfg=dict(type=SyncBatchNorm),
         zero_init_residual=False),
     neck=dict(
-        type='NonLinearNeck',
+        type=NonLinearNeck,
         in_channels=2048,
         hid_channels=4096,
         out_channels=256,
@@ -27,9 +34,9 @@ model = dict(
         with_last_bn=False,
         with_avg_pool=True),
     head=dict(
-        type='LatentPredictHead',
+        type=LatentPredictHead,
         predictor=dict(
-            type='NonLinearNeck',
+            type=NonLinearNeck,
             in_channels=256,
             hid_channels=4096,
             out_channels=256,
@@ -37,13 +44,13 @@ model = dict(
             with_bias=True,
             with_last_bn=False,
             with_avg_pool=False),
-        loss=dict(type='CosineSimilarityLoss')),
+        loss=dict(type=CosineSimilarityLoss)),
 )
 
 # optimizer
-optimizer = dict(type='LARS', lr=4.8, momentum=0.9, weight_decay=1e-6)
+optimizer = dict(type=LARS, lr=4.8, momentum=0.9, weight_decay=1e-6)
 optim_wrapper.merge(dict(
-    type='OptimWrapper',
+    type=OptimWrapper,
     optimizer=optimizer,
     paramwise_cfg=dict(
         custom_keys={

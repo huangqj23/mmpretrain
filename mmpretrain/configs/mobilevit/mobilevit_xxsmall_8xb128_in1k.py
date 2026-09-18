@@ -8,6 +8,10 @@ with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
     from .._base_.schedules.imagenet_bs256 import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+
+from mmpretrain.datasets import PackInputs, ResizeEdge
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -30,10 +34,10 @@ data_preprocessor.merge(dict(
 ))
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='ResizeEdge', scale=288, edge='short'),
-    dict(type='CenterCrop', crop_size=256),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=ResizeEdge, scale=288, edge='short'),
+    dict(type=CenterCrop, crop_size=256),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(batch_size=128))

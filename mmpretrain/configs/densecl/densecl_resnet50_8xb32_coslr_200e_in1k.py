@@ -6,27 +6,33 @@ with read_base():
     from .._base_.schedules.imagenet_sgd_coslr_200e import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from torch.nn import BatchNorm2d
+
+from mmpretrain.models import (ContrastiveHead, CrossEntropyLoss, DenseCL,
+                               DenseCLNeck, ResNet)
+
 # model settings
 model = dict(
-    type='DenseCL',
+    type=DenseCL,
     queue_len=65536,
     feat_dim=128,
     momentum=0.001,
     loss_lambda=0.5,
     backbone=dict(
-        type='ResNet',
+        type=ResNet,
         depth=50,
-        norm_cfg=dict(type='BN'),
+        norm_cfg=dict(type=BatchNorm2d),
         zero_init_residual=False),
     neck=dict(
-        type='DenseCLNeck',
+        type=DenseCLNeck,
         in_channels=2048,
         hid_channels=2048,
         out_channels=128,
         num_grid=None),
     head=dict(
-        type='ContrastiveHead',
-        loss=dict(type='CrossEntropyLoss'),
+        type=ContrastiveHead,
+        loss=dict(type=CrossEntropyLoss),
         temperature=0.2),
 )
 find_unused_parameters = True
@@ -34,7 +40,7 @@ find_unused_parameters = True
 # runtime settings
 default_hooks.merge(dict(
     # only keeps the latest 3 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=10, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=10, max_keep_ckpts=3)))
 
 # NOTE: `auto_scale_lr` is for automatically scaling LR
 # based on the actual training batch size.

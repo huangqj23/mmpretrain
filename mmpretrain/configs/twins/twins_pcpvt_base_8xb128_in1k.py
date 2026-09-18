@@ -7,13 +7,16 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
 # dataset settings
 train_dataloader.merge(dict(batch_size=128))
 
 # schedule settings
 optim_wrapper.merge(dict(
     optimizer=dict(
-        type='AdamW',
+        type=AdamW,
         lr=5e-4 * 128 * 8 / 512,  # learning rate for 128 batch size, 8 gpu.
         weight_decay=0.05,
         eps=1e-8,
@@ -25,7 +28,7 @@ optim_wrapper.merge(dict(
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-3,
         by_epoch=True,
         begin=0,
@@ -34,7 +37,7 @@ param_scheduler = [
         convert_to_iter_based=True),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=295,
         eta_min=1e-5,
         by_epoch=True,

@@ -6,6 +6,15 @@ with read_base():
     from .._base_.datasets.voc_bs16 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
+from mmengine.model import PretrainedInit
+from mmengine.optim import LinearLR, StepLR
+from torch.optim import SGD
+
+from mmpretrain.datasets import PackInputs, RandomResizedCrop
+from mmpretrain.models import (CrossEntropyLoss, CSRAClsHead, ImageClassifier,
+                               ResNet)
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -28,23 +37,23 @@ checkpoint = 'https://download.openmmlab.com/mmclassification/v0/resnet/resnet10
 
 # model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='ResNet',
+        type=ResNet,
         depth=101,
         num_stages=4,
         out_indices=(3, ),
         style='pytorch',
         init_cfg=dict(
-            type='Pretrained', checkpoint=checkpoint, prefix='backbone')),
+            type=PretrainedInit, checkpoint=checkpoint, prefix='backbone')),
     neck=None,
     head=dict(
-        type='CSRAClsHead',
+        type=CSRAClsHead,
         num_classes=20,
         in_channels=2048,
         num_heads=1,
         lam=0.1,
-        loss=dict(type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)))
+        loss=dict(type=CrossEntropyLoss, use_sigmoid=True, loss_weight=1.0)))
 
 # dataset setting
 data_preprocessor.merge(dict(
@@ -53,17 +62,17 @@ data_preprocessor.merge(dict(
     std=[255, 255, 255]))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=448, crop_ratio_range=(0.7, 1.0)),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=448, crop_ratio_range=(0.7, 1.0)),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=448),
+    dict(type=LoadImageFromFile),
+    dict(type=Resize, scale=448),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         # `gt_label_difficult` is needed for VOC evaluation
         meta_keys=('sample_idx', 'img_path', 'ori_shape', 'img_shape',
                    'scale_factor', 'flip', 'flip_direction',
@@ -77,18 +86,18 @@ test_dataloader = val_dataloader
 # optimizer
 # the lr of classifier.head is 10 * base_lr, which help convergence.
 optim_wrapper = dict(
-    optimizer=dict(type='SGD', lr=0.0002, momentum=0.9, weight_decay=0.0001),
+    optimizer=dict(type=SGD, lr=0.0002, momentum=0.9, weight_decay=0.0001),
     paramwise_cfg=dict(custom_keys={'head': dict(lr_mult=10)}))
 
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-7,
         by_epoch=True,
         begin=0,
         end=1,
         convert_to_iter_based=True),
-    dict(type='StepLR', by_epoch=True, step_size=6, gamma=0.1)
+    dict(type=StepLR, by_epoch=True, step_size=6, gamma=0.1)
 ]
 
 train_cfg = dict(by_epoch=True, max_epochs=20, val_interval=1)

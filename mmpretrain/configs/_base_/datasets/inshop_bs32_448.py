@@ -1,6 +1,12 @@
 # Converted from configs/_base_/datasets/inshop_bs32_448.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import InShop, PackInputs, RandomCrop
+from mmpretrain.evaluation import RetrievalAveragePrecision, RetrievalRecall
+
 # dataset settings
-dataset_type = 'InShop'
+dataset_type = InShop
 data_preprocessor = dict(
     num_classes=3997,
     mean=[123.675, 116.28, 103.53],
@@ -9,18 +15,18 @@ data_preprocessor = dict(
     to_rgb=True)
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=512),
-    dict(type='RandomCrop', crop_size=448),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=Resize, scale=512),
+    dict(type=RandomCrop, crop_size=448),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=512),
-    dict(type='CenterCrop', crop_size=448),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=Resize, scale=512),
+    dict(type=CenterCrop, crop_size=448),
+    dict(type=PackInputs),
 ]
 
 train_dataloader = dict(
@@ -31,7 +37,7 @@ train_dataloader = dict(
         data_root='data/inshop',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
 )
 
 query_dataloader = dict(
@@ -42,7 +48,7 @@ query_dataloader = dict(
         data_root='data/inshop',
         split='query',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
 
 gallery_dataloader = dict(
@@ -53,12 +59,12 @@ gallery_dataloader = dict(
         data_root='data/inshop',
         split='gallery',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
 val_dataloader = query_dataloader
 val_evaluator = [
-    dict(type='RetrievalRecall', topk=1),
-    dict(type='RetrievalAveragePrecision', topk=10),
+    dict(type=RetrievalRecall, topk=1),
+    dict(type=RetrievalAveragePrecision, topk=10),
 ]
 
 test_dataloader = val_dataloader

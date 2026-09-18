@@ -7,6 +7,10 @@ with read_base():
     from .._base_.schedules.imagenet_bs4096_AdamW import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+
+from mmpretrain.datasets import PackInputs, RandomResizedCrop, ResizeEdge
+
 # model setting
 model.merge(dict(backbone=dict(img_size=384)))
 
@@ -19,17 +23,17 @@ data_preprocessor.merge(dict(
 ))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=384, backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=384, backend='pillow'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='ResizeEdge', scale=384, edge='short', backend='pillow'),
-    dict(type='CenterCrop', crop_size=384),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=ResizeEdge, scale=384, edge='short', backend='pillow'),
+    dict(type=CenterCrop, crop_size=384),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))

@@ -1,12 +1,17 @@
 # Converted from configs/_base_/models/t2t-vit-t-14.py by industrial-vision tools/convert_configs.py
+from mmengine.model import ConstantInit, TruncNormalInit
+
+from mmpretrain.models import (CutMix, ImageClassifier, LabelSmoothLoss, Mixup,
+                               T2T_ViT, VisionTransformerClsHead)
+
 # model settings
 embed_dims = 384
 num_classes = 1000
 
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='T2T_ViT',
+        type=T2T_ViT,
         img_size=224,
         in_channels=3,
         embed_dims=embed_dims,
@@ -21,23 +26,23 @@ model = dict(
         ),
         drop_path_rate=0.1,
         init_cfg=[
-            dict(type='TruncNormal', layer='Linear', std=.02),
-            dict(type='Constant', layer='LayerNorm', val=1., bias=0.),
+            dict(type=TruncNormalInit, layer='Linear', std=.02),
+            dict(type=ConstantInit, layer='LayerNorm', val=1., bias=0.),
         ]),
     neck=None,
     head=dict(
-        type='VisionTransformerClsHead',
+        type=VisionTransformerClsHead,
         num_classes=num_classes,
         in_channels=embed_dims,
         loss=dict(
-            type='LabelSmoothLoss',
+            type=LabelSmoothLoss,
             label_smooth_val=0.1,
             mode='original',
         ),
         topk=(1, 5),
-        init_cfg=dict(type='TruncNormal', layer='Linear', std=.02)),
+        init_cfg=dict(type=TruncNormalInit, layer='Linear', std=.02)),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.8),
-        dict(type='CutMix', alpha=1.0),
+        dict(type=Mixup, alpha=0.8),
+        dict(type=CutMix, alpha=1.0),
     ]),
 )

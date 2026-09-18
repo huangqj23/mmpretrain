@@ -7,27 +7,33 @@ with read_base():
     from .._base_.schedules.imagenet_bs2048_rsb import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
+
+from mmpretrain.datasets import RepeatAugSampler
+from mmpretrain.models import CutMix, LabelSmoothLoss, Mixup
+
 # model settings
 model.merge(dict(
     backbone=dict(
-        norm_cfg=dict(type='SyncBN', requires_grad=True),
+        norm_cfg=dict(type=SyncBatchNorm, requires_grad=True),
         drop_path_rate=0.05,
     ),
     head=dict(
         loss=dict(
-            type='LabelSmoothLoss',
+            type=LabelSmoothLoss,
             label_smooth_val=0.1,
             mode='original',
             use_sigmoid=True,
         )),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.2),
-        dict(type='CutMix', alpha=1.0)
+        dict(type=Mixup, alpha=0.2),
+        dict(type=CutMix, alpha=1.0)
     ]),
 ))
 
 # dataset settings
-train_dataloader.merge(dict(sampler=dict(type='RepeatAugSampler', shuffle=True)))
+train_dataloader.merge(dict(sampler=dict(type=RepeatAugSampler, shuffle=True)))
 
 # schedule settings
 optim_wrapper.merge(dict(
@@ -38,7 +44,7 @@ optim_wrapper.merge(dict(
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=0.0001,
         by_epoch=True,
         begin=0,
@@ -47,7 +53,7 @@ param_scheduler = [
         convert_to_iter_based=True),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=595,
         eta_min=1.0e-6,
         by_epoch=True,

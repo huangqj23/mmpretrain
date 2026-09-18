@@ -7,6 +7,12 @@ with read_base():
     from .._base_.datasets.imagenet_bs32_pil_resize import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
+from mmpretrain.datasets import PackInputs, ResizeEdge
+
 # dataset settings
 data_preprocessor.merge(dict(
     mean=[127.5, 127.5, 127.5],
@@ -16,15 +22,15 @@ data_preprocessor.merge(dict(
 ))
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=248,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(batch_size=64))
@@ -32,12 +38,12 @@ val_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))
 test_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))
 
 # schedule settings
-optim_wrapper = dict(optimizer=dict(type='AdamW', lr=1e-3, weight_decay=0.05))
+optim_wrapper = dict(optimizer=dict(type=AdamW, lr=1e-3, weight_decay=0.05))
 
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-3,
         by_epoch=True,
         begin=0,
@@ -45,7 +51,7 @@ param_scheduler = [
         # update by iter
         convert_to_iter_based=True),
     # main learning rate scheduler
-    dict(type='CosineAnnealingLR', T_max=295, by_epoch=True, begin=5, end=300)
+    dict(type=CosineAnnealingLR, T_max=295, by_epoch=True, begin=5, end=300)
 ]
 
 train_cfg = dict(by_epoch=True, max_epochs=300, val_interval=1)

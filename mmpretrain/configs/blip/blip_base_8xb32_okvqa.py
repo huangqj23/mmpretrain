@@ -5,12 +5,17 @@ with read_base():
     from .._base_.datasets.coco_okvqa import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR, OptimWrapper
+from torch.optim import AdamW
+
+from mmpretrain.models import VisionTransformer, VQAGenerationHead
+
 # model settings
 model = dict(
     type='BlipVQA',
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     vision_backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='b',
         img_size=480,
         patch_size=16,
@@ -37,7 +42,7 @@ model = dict(
             add_cross_attention=True),
     ),
     head=dict(
-        type='VQAGenerationHead',
+        type=VQAGenerationHead,
         decoder=dict(
             type='XBertLMHeadDecoder',
             med_config=dict(
@@ -64,10 +69,10 @@ model = dict(
 )
 
 # schedule settings
-optimizer = dict(type='AdamW', lr=2e-5, weight_decay=0.05)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
+optimizer = dict(type=AdamW, lr=2e-5, weight_decay=0.05)
+optim_wrapper = dict(type=OptimWrapper, optimizer=optimizer)
 
-param_scheduler = [dict(type='CosineAnnealingLR', by_epoch=True)]
+param_scheduler = [dict(type=CosineAnnealingLR, by_epoch=True)]
 
 train_cfg = dict(max_epochs=10, by_epoch=True)
 val_cfg = dict()

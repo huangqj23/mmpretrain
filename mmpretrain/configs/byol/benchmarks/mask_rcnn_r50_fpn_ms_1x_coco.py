@@ -4,6 +4,12 @@ from mmengine.config import read_base
 with read_base():
     from mmdet.configs.mask_rcnn.mask_rcnn_r50_fpn_1x_coco import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomChoiceResize
+from mmdet.datasets.transforms import (LoadAnnotations, PackDetInputs,
+                                       RandomFlip)
+from mmdet.models import Shared4Conv1FCBBoxHead
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
+
 def __iv_scope(cfg, scope, has_scope=True):
     """复刻旧式跨库继承（scope::path）时 mmengine 给 base 变量加 _scope_ 的逻辑：
     每条路径上最外层带 type 的 dict 加 _scope_。"""
@@ -48,24 +54,24 @@ vis_backends = __iv_scope(vis_backends, 'mmdet')
 visualizer = __iv_scope(visualizer, 'mmdet')
 # https://github.com/open-mmlab/mmdetection/blob/dev-3.x/configs/mask_rcnn/mask-rcnn_r50_fpn_1x_coco.py
 
-norm_cfg = dict(type='SyncBN', requires_grad=True)
+norm_cfg = dict(type=SyncBatchNorm, requires_grad=True)
 model.merge(dict(
     backbone=dict(frozen_stages=-1, norm_cfg=norm_cfg, norm_eval=False),
     neck=dict(norm_cfg=norm_cfg),
     roi_head=dict(
-        bbox_head=dict(type='Shared4Conv1FCBBoxHead', norm_cfg=norm_cfg),
+        bbox_head=dict(type=Shared4Conv1FCBBoxHead, norm_cfg=norm_cfg),
         mask_head=dict(norm_cfg=norm_cfg))))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+    dict(type=LoadImageFromFile),
+    dict(type=LoadAnnotations, with_bbox=True, with_mask=True),
     dict(
-        type='RandomChoiceResize',
+        type=RandomChoiceResize,
         scales=[(1333, 640), (1333, 672), (1333, 704), (1333, 736),
                 (1333, 768), (1333, 800)],
         keep_ratio=True),
-    dict(type='RandomFlip', prob=0.5),
-    dict(type='PackDetInputs')
+    dict(type=RandomFlip, prob=0.5),
+    dict(type=PackDetInputs)
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))

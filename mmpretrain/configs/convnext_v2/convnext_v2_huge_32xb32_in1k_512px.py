@@ -7,22 +7,28 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
+from mmengine.optim import CosineAnnealingLR, LinearLR
+
+from mmpretrain.datasets import PackInputs, RandomResizedCrop
+from mmpretrain.engine import EMAHook
+
 # dataset setting
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=512,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=512, backend='pillow', interpolation='bicubic'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=Resize, scale=512, backend='pillow', interpolation='bicubic'),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(batch_size=32, dataset=dict(pipeline=train_pipeline)))
@@ -39,21 +45,21 @@ optim_wrapper.merge(dict(
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-3,
         by_epoch=True,
         end=20,
         # update by iter
         convert_to_iter_based=True),
     # main learning rate scheduler
-    dict(type='CosineAnnealingLR', eta_min=1e-5, by_epoch=True, begin=20)
+    dict(type=CosineAnnealingLR, eta_min=1e-5, by_epoch=True, begin=20)
 ]
 
 # train, val, test setting
 train_cfg.merge(dict(by_epoch=True, max_epochs=100, val_interval=1))
 
 # runtime setting
-custom_hooks = [dict(type='EMAHook', momentum=1e-4, priority='ABOVE_NORMAL')]
+custom_hooks = [dict(type=EMAHook, momentum=1e-4, priority='ABOVE_NORMAL')]
 if isinstance(train_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_
     train_pipeline.pop('_delete_', None)
 if isinstance(test_pipeline, dict):  # base 中是非 dict，旧式替换前弹掉顶层 _delete_

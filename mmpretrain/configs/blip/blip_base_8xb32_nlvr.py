@@ -5,11 +5,17 @@ with read_base():
     from .._base_.datasets.nlvr2 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR, OptimWrapper
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
+from mmpretrain.models import VisionTransformer
+
 # model settings
 model = dict(
     type='BlipNLVR',
     vision_backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='b',
         img_size=384,
         patch_size=16,
@@ -41,12 +47,12 @@ model = dict(
 )
 
 # optimizer
-optimizer = dict(type='AdamW', lr=2e-5, weight_decay=0.05)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
+optimizer = dict(type=AdamW, lr=2e-5, weight_decay=0.05)
+optim_wrapper = dict(type=OptimWrapper, optimizer=optimizer)
 
 param_scheduler = [
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         by_epoch=True,
         begin=0,
         end=10,
@@ -54,7 +60,7 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=10)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=10)
 val_cfg = dict()
 test_cfg = dict()
 

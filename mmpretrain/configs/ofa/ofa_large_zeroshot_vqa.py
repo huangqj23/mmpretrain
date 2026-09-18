@@ -6,6 +6,8 @@ with read_base():
     from .._base_.datasets.coco_vqa import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmpretrain.models import MultiModalDataPreprocessor
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -44,7 +46,7 @@ model = dict(
 
 # data settings
 data_preprocessor.merge(dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[127.5, 127.5, 127.5],
     std=[127.5, 127.5, 127.5],
     to_rgb=True,

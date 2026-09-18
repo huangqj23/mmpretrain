@@ -1,15 +1,19 @@
 # Converted from configs/_base_/schedules/imagenet_sgd_coslr_100e.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import CosineAnnealingLR, OptimWrapper
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import SGD
+
 # optimizer wrapper
 optim_wrapper = dict(
-    type='OptimWrapper',
-    optimizer=dict(type='SGD', lr=0.3, momentum=0.9, weight_decay=1e-6))
+    type=OptimWrapper,
+    optimizer=dict(type=SGD, lr=0.3, momentum=0.9, weight_decay=1e-6))
 
 # learning rate scheduler
 param_scheduler = [
-    dict(type='CosineAnnealingLR', T_max=100, by_epoch=True, begin=0, end=100)
+    dict(type=CosineAnnealingLR, T_max=100, by_epoch=True, begin=0, end=100)
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=100)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=100)
 val_cfg = dict()
 test_cfg = dict()

@@ -4,19 +4,30 @@ from mmengine.config import read_base
 with read_base():
     from .._base_.datasets.imagenet_bs32_byol import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
+
+from mmengine.model import KaimingInit
+from mmengine.optim import CosineAnnealingLR, LinearLR, OptimWrapper
+from mmengine.runner import EpochBasedTrainLoop
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
+
+from mmpretrain.engine import LARS
+from mmpretrain.models import (BarlowTwins, CrossCorrelationLoss,
+                               LatentCrossCorrelationHead, NonLinearNeck,
+                               ResNet)
+
 # datasets
 train_dataloader.merge(dict(batch_size=256))
 
 # model settings
 model = dict(
-    type='BarlowTwins',
+    type=BarlowTwins,
     backbone=dict(
-        type='ResNet',
+        type=ResNet,
         depth=50,
-        norm_cfg=dict(type='SyncBN'),
+        norm_cfg=dict(type=SyncBatchNorm),
         zero_init_residual=True),
     neck=dict(
-        type='NonLinearNeck',
+        type=NonLinearNeck,
         in_channels=2048,
         hid_channels=8192,
         out_channels=8192,
@@ -25,16 +36,16 @@ model = dict(
         with_last_bn_affine=False,
         with_avg_pool=True,
         init_cfg=dict(
-            type='Kaiming', distribution='uniform', layer=['Linear'])),
+            type=KaimingInit, distribution='uniform', layer=['Linear'])),
     head=dict(
-        type='LatentCrossCorrelationHead',
+        type=LatentCrossCorrelationHead,
         in_channels=8192,
-        loss=dict(type='CrossCorrelationLoss')))
+        loss=dict(type=CrossCorrelationLoss)))
 
 # optimizer
 optim_wrapper = dict(
-    type='OptimWrapper',
-    optimizer=dict(type='LARS', lr=1.6, momentum=0.9, weight_decay=1e-6),
+    type=OptimWrapper,
+    optimizer=dict(type=LARS, lr=1.6, momentum=0.9, weight_decay=1e-6),
     paramwise_cfg=dict(
         custom_keys={
             'bn': dict(decay_mult=0, lr_mult=0.024, lars_exclude=True),
@@ -47,14 +58,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1.6e-4,
         by_epoch=True,
         begin=0,
         end=10,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=990,
         eta_min=0.0016,
         by_epoch=True,
@@ -64,7 +75,7 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=1000)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=1000)
 default_hooks.merge(dict(checkpoint=dict(max_keep_ckpts=3)))
 
 # NOTE: `auto_scale_lr` is for automatically scaling LR

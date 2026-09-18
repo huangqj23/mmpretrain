@@ -4,20 +4,25 @@ from mmengine.config import read_base
 with read_base():
     from .efficientnetv2_s_8xb32_in1k_384px import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+
+from mmpretrain.datasets import (EfficientNetCenterCrop,
+                                 EfficientNetRandomCrop, PackInputs)
+
 # model setting
 model.merge(dict(backbone=dict(arch='l'), ))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='EfficientNetRandomCrop', scale=384, crop_padding=0),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=EfficientNetRandomCrop, scale=384, crop_padding=0),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='EfficientNetCenterCrop', crop_size=480, crop_padding=0),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=EfficientNetCenterCrop, crop_size=480, crop_padding=0),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))

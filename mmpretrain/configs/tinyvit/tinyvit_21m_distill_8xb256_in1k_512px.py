@@ -8,6 +8,10 @@ with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
     from .._base_.models.tinyvit.tinyvit_21m import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, Resize
+
+from mmpretrain.datasets import PackInputs
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -29,13 +33,13 @@ model.merge(dict(
     )))
 # data settings
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(512, 512),
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 val_dataloader.merge(dict(batch_size=16, dataset=dict(pipeline=test_pipeline)))

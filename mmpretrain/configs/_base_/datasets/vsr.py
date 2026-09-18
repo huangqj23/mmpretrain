@@ -1,4 +1,9 @@
 # Converted from configs/_base_/datasets/vsr.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+
 # data settings
 
 data_preprocessor = dict(
@@ -8,32 +13,32 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=384,
         interpolation='bicubic',
         backend='pillow'),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=['question_id', 'image_id'],
     ),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(480, 480),
         interpolation='bicubic',
         backend='pillow'),
     dict(
-        type='CleanCaption',
+        type=CleanCaption,
         keys=['question'],
     ),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=['question_id', 'image_id'],
     ),
@@ -48,7 +53,7 @@ train_dataloader = dict(
         data_prefix='',
         ann_file='annotations/train.json',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
     drop_last=True,
 )
@@ -62,7 +67,7 @@ val_dataloader = dict(
         data_prefix='',
         ann_file='annotations/val.json',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 val_evaluator = dict(type='VSRAcc')
@@ -76,7 +81,7 @@ test_dataloader = dict(
         data_prefix='',
         ann_file='annotations/test.json',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 test_evaluator = val_evaluator

@@ -5,11 +5,16 @@ with read_base():
     from .._base_.datasets.coco_caption import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR
+from torch.optim import AdamW
+
+from mmpretrain.models import SeqGenerationHead, VisionTransformer
+
 # model settings
 model = dict(
     type='BlipCaption',
     vision_encoder=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='b',
         img_size=384,
         patch_size=16,
@@ -17,7 +22,7 @@ model = dict(
     ),
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     decoder_head=dict(
-        type='SeqGenerationHead',
+        type=SeqGenerationHead,
         decoder=dict(
             type='XBertLMHeadDecoder',
             med_config=dict(
@@ -45,11 +50,11 @@ model = dict(
 )
 
 # schedule settings
-optim_wrapper = dict(optimizer=dict(type='AdamW', lr=1e-5, weight_decay=0.05))
+optim_wrapper = dict(optimizer=dict(type=AdamW, lr=1e-5, weight_decay=0.05))
 
 param_scheduler = [
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         by_epoch=True,
         begin=0,
         end=10,

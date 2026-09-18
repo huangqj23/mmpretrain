@@ -6,22 +6,25 @@ with read_base():
     from .._base_.schedules.imagenet_bs4096_AdamW import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmpretrain.models import (ImageClassifier, LabelSmoothLoss,
+                               VisionTransformer, VisionTransformerClsHead)
+
 # model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='deit-base',
         img_size=384,
         patch_size=16,
     ),
     neck=None,
     head=dict(
-        type='VisionTransformerClsHead',
+        type=VisionTransformerClsHead,
         num_classes=1000,
         in_channels=768,
         loss=dict(
-            type='LabelSmoothLoss', label_smooth_val=0.1, mode='original'),
+            type=LabelSmoothLoss, label_smooth_val=0.1, mode='original'),
     ),
     # Change to the path of the pretrained model
     # init_cfg=dict(type='Pretrained', checkpoint=''),

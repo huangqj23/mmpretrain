@@ -6,10 +6,13 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmpretrain.models import (CrossEntropyLoss, CutMix, ImageClassifier,
+                               LinearClsHead, Mixup, XCiT)
+
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='XCiT',
+        type=XCiT,
         patch_size=16,
         embed_dims=384,
         depth=24,
@@ -21,14 +24,14 @@ model = dict(
         out_type='cls_token',
     ),
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=384,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        loss=dict(type=CrossEntropyLoss, loss_weight=1.0),
     ),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.8),
-        dict(type='CutMix', alpha=1.0),
+        dict(type=Mixup, alpha=0.8),
+        dict(type=CutMix, alpha=1.0),
     ]),
 )
 

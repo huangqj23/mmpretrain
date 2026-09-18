@@ -8,8 +8,10 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmpretrain.models import ImageClassifier
+
 model.merge(dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
         img_size=384,
         window_size=[24, 24, 24, 12],

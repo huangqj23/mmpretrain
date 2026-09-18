@@ -7,6 +7,11 @@ with read_base():
     from .._base_.schedules.imagenet_bs256 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+
+from mmpretrain.datasets import (EfficientNetCenterCrop,
+                                 EfficientNetRandomCrop, PackInputs)
+
 # dataset settings
 data_preprocessor.merge(dict(
     mean=[127.5, 127.5, 127.5],
@@ -16,16 +21,16 @@ data_preprocessor.merge(dict(
 ))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='EfficientNetRandomCrop', scale=672),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=EfficientNetRandomCrop, scale=672),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='EfficientNetCenterCrop', crop_size=672),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=EfficientNetCenterCrop, crop_size=672),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))

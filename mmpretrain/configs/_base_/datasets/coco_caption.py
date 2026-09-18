@@ -1,49 +1,56 @@
 # Converted from configs/_base_/datasets/coco_caption.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.evaluation import COCOCaption
+from mmpretrain.models import MultiModalDataPreprocessor
+
 # data settings
 # coco caption annotations can be grabbed from LAVIS repo
 # https://github.com/salesforce/LAVIS/blob/main/lavis/configs/datasets/coco/defaults_cap.yaml
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[122.770938, 116.7460125, 104.09373615],
     std=[68.5005327, 66.6321579, 70.32316305],
     to_rgb=True,
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=384,
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='CleanCaption', keys='gt_caption'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=CleanCaption, keys='gt_caption'),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['gt_caption'],
         meta_keys=['image_id'],
     ),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(384, 384),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='PackInputs', meta_keys=['image_id']),
+    dict(type=PackInputs, meta_keys=['image_id']),
 ]
 
 train_dataloader = dict(
     batch_size=32,
     num_workers=5,
     dataset=dict(
-        type='COCOCaption',
+        type=COCOCaption,
         data_root='data/coco',
         ann_file='annotations/coco_karpathy_train.json',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     persistent_workers=True,
     drop_last=True,
 )
@@ -52,17 +59,17 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=5,
     dataset=dict(
-        type='COCOCaption',
+        type=COCOCaption,
         data_root='data/coco',
         ann_file='annotations/coco_karpathy_val.json',
         pipeline=test_pipeline,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 
 val_evaluator = dict(
-    type='COCOCaption',
+    type=COCOCaption,
     ann_file='data/coco/annotations/coco_karpathy_val_gt.json',
 )
 

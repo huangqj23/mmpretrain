@@ -7,8 +7,13 @@ with read_base():
     from .._base_.schedules.imagenet_bs256 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+
+from mmpretrain.datasets import (EfficientNetCenterCrop, ImageNet, PackInputs,
+                                 RandAugment, RandomErasing, RandomResizedCrop)
+
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = ImageNet
 data_preprocessor.merge(dict(
     num_classes=1000,
     # RGB format normalization parameters
@@ -22,15 +27,15 @@ bgr_mean = data_preprocessor['mean'][::-1]
 bgr_std = data_preprocessor['std'][::-1]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=192,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='RandAugment',
+        type=RandAugment,
         policies='timm_increasing',
         num_policies=2,
         total_level=10,
@@ -39,20 +44,20 @@ train_pipeline = [
         hparams=dict(
             pad_val=[round(x) for x in bgr_mean], interpolation='bicubic')),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.25,
         mode='rand',
         min_area_ratio=0.02,
         max_area_ratio=1 / 3,
         fill_color=bgr_mean,
         fill_std=bgr_std),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='EfficientNetCenterCrop', crop_size=224, crop_padding=0),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=EfficientNetCenterCrop, crop_size=224, crop_padding=0),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(dataset=dict(pipeline=train_pipeline)))

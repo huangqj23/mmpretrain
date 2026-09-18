@@ -1,8 +1,10 @@
 # Converted from configs/eva02/eva02-large-p14_headless.py by industrial-vision tools/convert_configs.py
+from mmpretrain.models import ImageClassifier, ViTEVA02
+
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='ViTEVA02',
+        type=ViTEVA02,
         arch='l',
         img_size=224,
         patch_size=14,

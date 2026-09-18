@@ -1,42 +1,50 @@
 # Converted from configs/_base_/datasets/coco_vg_vqa.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
+from mmengine.dataset import ConcatDataset, DefaultSampler
+
+from mmpretrain.datasets import (CleanCaption, PackInputs, RandAugment,
+                                 RandomResizedCrop)
+from mmpretrain.evaluation import ReportVQA
+from mmpretrain.models import MultiModalDataPreprocessor
+
 # data settings
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[122.770938, 116.7460125, 104.09373615],
     std=[68.5005327, 66.6321579, 70.32316305],
     to_rgb=True,
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=(480, 480),
         crop_ratio_range=(0.5, 1.0),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='RandAugment',
+        type=RandAugment,
         policies='simple_increasing',  # slightly different from LAVIS
         num_policies=2,
         magnitude_level=5),
-    dict(type='CleanCaption', keys=['question', 'gt_answer']),
+    dict(type=CleanCaption, keys=['question', 'gt_answer']),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight']),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(480, 480),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='CleanCaption', keys=['question']),
+    dict(type=CleanCaption, keys=['question']),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question'],
         meta_keys=['question_id']),
 ]
@@ -45,7 +53,7 @@ train_dataloader = dict(
     batch_size=32,
     num_workers=8,
     dataset=dict(
-        type='ConcatDataset',
+        type=ConcatDataset,
         datasets=[
             # VQAv2 train
             dict(
@@ -76,7 +84,7 @@ train_dataloader = dict(
                 pipeline=train_pipeline,
             )
         ]),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     persistent_workers=True,
     drop_last=True,
 )
@@ -92,6 +100,6 @@ test_dataloader = dict(
         'annotations/v2_OpenEnded_mscoco_test2015_questions.json',  # noqa: E501
         pipeline=test_pipeline,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
-test_evaluator = dict(type='ReportVQA', file_path='vqa_test.json')
+test_evaluator = dict(type=ReportVQA, file_path='vqa_test.json')

@@ -7,17 +7,21 @@ with read_base():
     from .._base_.schedules.imagenet_bs256 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+
+from mmpretrain.datasets import PackInputs, ResizeEdge
+
 # dataset settings
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=235,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs),
 ]
 
 val_dataloader.merge(dict(dataset=dict(pipeline=test_pipeline)))

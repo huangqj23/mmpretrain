@@ -7,11 +7,14 @@ with read_base():
     from ..._base_.schedules.imagenet_sgd_coslr_100e import *  # noqa: F401,F403
     from ..._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit
+
 model.merge(dict(
     backbone=dict(
         frozen_stages=4,
-        init_cfg=dict(type='Pretrained', checkpoint='', prefix='backbone.'))))
+        init_cfg=dict(type=PretrainedInit, checkpoint='', prefix='backbone.'))))
 
 # runtime settings
 default_hooks.merge(dict(
-    checkpoint=dict(type='CheckpointHook', interval=10, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=10, max_keep_ckpts=3)))

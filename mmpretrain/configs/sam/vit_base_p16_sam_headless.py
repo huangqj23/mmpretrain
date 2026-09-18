@@ -1,9 +1,11 @@
 # Converted from configs/sam/vit-base-p16_sam_headless.py by industrial-vision tools/convert_configs.py
+from mmpretrain.models import ImageClassifier, ViTSAM
+
 # model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='ViTSAM',
+        type=ViTSAM,
         arch='base',
         img_size=1024,
         patch_size=16,

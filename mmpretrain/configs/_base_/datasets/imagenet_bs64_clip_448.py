@@ -1,6 +1,12 @@
 # Converted from configs/_base_/datasets/imagenet_bs64_clip_448.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import (CenterCrop, ImageToTensor, LoadImageFromFile,
+                             Normalize, RandomFlip, Resize, ToTensor)
+
+from mmpretrain.datasets import (Collect, ImageNet, RandomErasing,
+                                 RandomResizedCrop)
+
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = ImageNet
 img_norm_cfg = dict(
     mean=[0.48145466 * 255, 0.4578275 * 255, 0.40821073 * 255],
     std=[0.26862954 * 255, 0.26130258 * 255, 0.27577711 * 255],
@@ -8,13 +14,13 @@ img_norm_cfg = dict(
 image_size = 448
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         size=image_size,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, flip_prob=0.5, direction='horizontal'),
     # dict(
     #     type='RandAugment',
     #     policies={{_base_.rand_increasing_policies}},
@@ -26,30 +32,30 @@ train_pipeline = [
     #         pad_val=[round(x) for x in img_norm_cfg['mean'][::-1]],
     #         interpolation='bicubic')),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.25,
         mode='rand',
         min_area_ratio=0.02,
         max_area_ratio=1 / 3,
         fill_color=img_norm_cfg['mean'][::-1],
         fill_std=img_norm_cfg['std'][::-1]),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='ImageToTensor', keys=['img']),
-    dict(type='ToTensor', keys=['gt_label']),
-    dict(type='Collect', keys=['img', 'gt_label'])
+    dict(type=Normalize, **img_norm_cfg),
+    dict(type=ImageToTensor, keys=['img']),
+    dict(type=ToTensor, keys=['gt_label']),
+    dict(type=Collect, keys=['img', 'gt_label'])
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         size=(image_size, -1),
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=image_size),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='ImageToTensor', keys=['img']),
-    dict(type='Collect', keys=['img'])
+    dict(type=CenterCrop, crop_size=image_size),
+    dict(type=Normalize, **img_norm_cfg),
+    dict(type=ImageToTensor, keys=['img']),
+    dict(type=Collect, keys=['img'])
 ]
 
 data = dict(

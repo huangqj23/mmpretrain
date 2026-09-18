@@ -7,6 +7,11 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_coslr import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+
+from mmpretrain.datasets import Lighting, PackInputs, RandomResizedCrop
+from mmpretrain.engine import PreciseBNHook
+
 # dataset settings
 data_preprocessor.merge(dict(
     # BGR format normalization parameters
@@ -24,16 +29,16 @@ EIGVEC = [
 ]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=224),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=224),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='Lighting',
+        type=Lighting,
         eigval=EIGVAL,
         eigvec=EIGVEC,
         alphastd=25.5,  # because the value range of images is [0,255]
         to_rgb=False),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(batch_size=128, dataset=dict(pipeline=train_pipeline)))
@@ -53,7 +58,7 @@ optim_wrapper.merge(dict(optimizer=dict(lr=0.8, nesterov=True)))
 # 'ABOVENORMAL' here.
 custom_hooks = [
     dict(
-        type='PreciseBNHook',
+        type=PreciseBNHook,
         num_samples=8192,
         interval=1,
         priority='ABOVE_NORMAL')

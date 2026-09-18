@@ -5,6 +5,16 @@ with read_base():
     from .._base_.datasets.imagenet_bs256_beitv2 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.model import ConstantInit, PretrainedInit, TruncNormalInit
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from torch.nn import LayerNorm
+from torch.optim import AdamW
+
+from mmpretrain.models import (VQKD, BEiT, BEiTPretrainViT, BEiTV2Head,
+                               BEiTV2Neck, CrossEntropyLoss)
+
 # model settings
 vqkd_encoder = dict(
     arch='base',
@@ -14,7 +24,7 @@ vqkd_encoder = dict(
     out_indices=-1,
     drop_rate=0.,
     drop_path_rate=0.,
-    norm_cfg=dict(type='LN', eps=1e-6),
+    norm_cfg=dict(type=LayerNorm, eps=1e-6),
     final_norm=True,
     out_type='featmap',
     with_cls_token=True,
@@ -31,9 +41,9 @@ vqkd_encoder = dict(
 layer_scale_init_value = 0.1
 drop_path_rate = 0.1  # 0. for 300 epochs and 0.1 for 1600 epochs.
 model = dict(
-    type='BEiT',
+    type=BEiT,
     backbone=dict(
-        type='BEiTPretrainViT',
+        type=BEiTPretrainViT,
         arch='base',
         patch_size=16,
         out_indices=[-4, -1],
@@ -42,12 +52,12 @@ model = dict(
         out_type='raw',
         layer_scale_init_value=layer_scale_init_value,
         init_cfg=[
-            dict(type='TruncNormal', std=0.02, layer='Linear'),
-            dict(type='TruncNormal', std=0.02, layer='Conv2d'),
-            dict(type='Constant', layer='LayerNorm', val=1.0, bias=0.0)
+            dict(type=TruncNormalInit, std=0.02, layer='Linear'),
+            dict(type=TruncNormalInit, std=0.02, layer='Conv2d'),
+            dict(type=ConstantInit, layer='LayerNorm', val=1.0, bias=0.0)
         ]),
     neck=dict(
-        type='BEiTV2Neck',
+        type=BEiTV2Neck,
         num_layers=2,
         early_layers=9,
         backbone_arch='base',
@@ -55,26 +65,26 @@ model = dict(
         layer_scale_init_value=layer_scale_init_value,
     ),
     head=dict(
-        type='BEiTV2Head',
+        type=BEiTV2Head,
         embed_dims=768,
         num_embed=8192,
-        loss=dict(type='CrossEntropyLoss')),
+        loss=dict(type=CrossEntropyLoss)),
     target_generator=dict(
-        type='VQKD',
+        type=VQKD,
         encoder_config=vqkd_encoder,
         init_cfg=dict(
-            type='Pretrained',
+            type=PretrainedInit,
             checkpoint=  # noqa
             'https://download.openmmlab.com/mmselfsup/1.x/target_generator_ckpt/vqkd_encoder.pth'  # noqa
         )))
 
 # optimizer wrapper
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
+    type=AmpOptimWrapper,
     loss_scale='dynamic',
     # betas: (0.9, 0.98) for 300 epochs and (0.9, 0.999) for 1600 epochs.
     optimizer=dict(
-        type='AdamW', lr=1.5e-3, betas=(0.9, 0.999), weight_decay=0.05),
+        type=AdamW, lr=1.5e-3, betas=(0.9, 0.999), weight_decay=0.05),
     clip_grad=dict(max_norm=3.0),
     paramwise_cfg=dict(
         custom_keys={
@@ -91,14 +101,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=10,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         eta_min=1e-5,
         by_epoch=True,
         begin=10,
@@ -107,10 +117,10 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=1600)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=1600)
 default_hooks.merge(dict(
     # only keeps the latest 3 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3)))
 
 randomness.merge(dict(seed=0, diff_rank_seed=True))
 

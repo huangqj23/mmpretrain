@@ -6,18 +6,24 @@ with read_base():
     from ..._base_.datasets.imagenet_bs256_swin_192 import *  # noqa: F401,F403
     from ..._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook, LoggerHook
+from mmengine.model import PretrainedInit
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
 # model settings
 model.merge(dict(
     backbone=dict(
         img_size=192,
         drop_path_rate=0.1,
         stage_cfgs=dict(block_cfgs=dict(window_size=6)),
-        init_cfg=dict(type='Pretrained', checkpoint='', prefix='backbone.'))))
+        init_cfg=dict(type=PretrainedInit, checkpoint='', prefix='backbone.'))))
 
 # optimizer settings
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
-    optimizer=dict(type='AdamW', lr=5e-3, weight_decay=0.05),
+    type=AmpOptimWrapper,
+    optimizer=dict(type=AdamW, lr=5e-3, weight_decay=0.05),
     clip_grad=dict(max_norm=5.0),
     constructor='LearningRateDecayOptimWrapperConstructor',
     paramwise_cfg=dict(
@@ -32,14 +38,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=2.5e-7 / 1.25e-3,
         by_epoch=True,
         begin=0,
         end=20,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=80,
         eta_min=2.5e-7 * 2048 / 512,
         by_epoch=True,
@@ -49,13 +55,13 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=100)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=100)
 val_cfg = dict()
 test_cfg = dict()
 
 default_hooks.merge(dict(
     # save checkpoint per epoch.
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3),
-    logger=dict(type='LoggerHook', interval=100)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3),
+    logger=dict(type=LoggerHook, interval=100)))
 
 randomness.merge(dict(seed=0))

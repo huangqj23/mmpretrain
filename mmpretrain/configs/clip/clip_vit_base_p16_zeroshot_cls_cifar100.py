@@ -4,18 +4,26 @@ from mmengine.config import read_base
 with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import CIFAR100, PackInputs
+from mmpretrain.evaluation import Accuracy
+from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
+                               VisionTransformer)
+
 # data settings
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[0.48145466 * 255, 0.4578275 * 255, 0.40821073 * 255],
     std=[0.26862954 * 255, 0.26130258 * 255, 0.27577711 * 255],
     to_rgb=False,
 )
 
 test_pipeline = [
-    dict(type='Resize', scale=(224, 224), interpolation='bicubic'),
+    dict(type=Resize, scale=(224, 224), interpolation='bicubic'),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['text'],
         meta_keys=['image_id', 'scale_factor'],
     ),
@@ -26,13 +34,13 @@ test_dataloader = dict(
     batch_size=32,
     num_workers=8,
     dataset=dict(
-        type='CIFAR100',
+        type=CIFAR100,
         data_root='data/cifar100',
         split='test',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
-test_evaluator = dict(type='Accuracy', topk=(1, 5))
+test_evaluator = dict(type=Accuracy, topk=(1, 5))
 
 # schedule settings
 train_cfg = None
@@ -43,12 +51,12 @@ test_cfg = dict()
 model = dict(
     type='CLIPZeroShot',
     vision_backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='base',
         img_size=224,
         patch_size=16,
         drop_rate=0.,
-        layer_cfgs=dict(act_cfg=dict(type='QuickGELU')),
+        layer_cfgs=dict(act_cfg=dict(type=QuickGELU)),
         pre_norm=True,
     ),
     projection=dict(type='CLIPProjection', in_channels=768, out_channels=512),

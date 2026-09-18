@@ -1,8 +1,10 @@
 # Converted from configs/eva/eva-g-p16_headless.py by industrial-vision tools/convert_configs.py
+from mmpretrain.models import BEiTViT, ImageClassifier
+
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='BEiTViT',
+        type=BEiTViT,
         arch='eva-g',
         img_size=224,
         patch_size=16,

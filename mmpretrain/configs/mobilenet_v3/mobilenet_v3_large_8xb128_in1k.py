@@ -8,17 +8,20 @@ with read_base():
     from .._base_.datasets.imagenet_bs128_mbv3 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import StepLR
+from torch.optim import RMSprop
+
 # schedule settings
 optim_wrapper = dict(
     optimizer=dict(
-        type='RMSprop',
+        type=RMSprop,
         lr=0.064,
         alpha=0.9,
         momentum=0.9,
         eps=0.0316,
         weight_decay=1e-5))
 
-param_scheduler = dict(type='StepLR', by_epoch=True, step_size=2, gamma=0.973)
+param_scheduler = dict(type=StepLR, by_epoch=True, step_size=2, gamma=0.973)
 
 train_cfg = dict(by_epoch=True, max_epochs=600, val_interval=1)
 val_cfg = dict()

@@ -4,8 +4,20 @@ from mmengine.config import read_base
 with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
+from mmengine._strategy import DeepSpeedStrategy
+from mmengine._strategy.deepspeed import DeepSpeedOptimWrapper
+from mmengine.dataset import DefaultSampler, default_collate
+from mmengine.hooks import CheckpointHook
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
+from mmpretrain.datasets import CleanCaption, PackInputs
+from mmpretrain.evaluation import COCOCaption
+from mmpretrain.models import BEiTViT, MultiModalDataPreprocessor
+
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[122.770938, 116.7460125, 104.09373615],
     std=[68.5005327, 66.6321579, 70.32316305],
     to_rgb=True,
@@ -13,20 +25,20 @@ data_preprocessor = dict(
 
 # dataset settings
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(224, 224),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='CleanCaption',
+        type=CleanCaption,
         keys='chat_content',
         remove_chars='',
         lowercase=False),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['chat_content', 'lang'],
         meta_keys=['image_id']),
 ]
@@ -39,30 +51,30 @@ train_dataloader = dict(
         data_root='YOUR_DATA_DIRECTORY',
         ann_file='YOUR_DATA_FILE',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
-    collate_fn=dict(type='default_collate'),
+    sampler=dict(type=DefaultSampler, shuffle=True),
+    collate_fn=dict(type=default_collate),
     drop_last=False,
 )
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(224, 224),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='PackInputs', meta_keys=['image_id']),
+    dict(type=PackInputs, meta_keys=['image_id']),
 ]
 
 test_evaluator = dict(
-    type='COCOCaption',
+    type=COCOCaption,
     ann_file='data/coco/annotations/coco_karpathy_val_gt.json',
 )
 
 test_dataloader = dict(
     batch_size=1,
     dataset=dict(
-        type='COCOCaption',
+        type=COCOCaption,
         data_root='data/coco',
         ann_file='annotations/coco_karpathy_val.json',
         pipeline=test_pipeline))
@@ -71,7 +83,7 @@ test_dataloader = dict(
 model = dict(
     type='MiniGPT4',
     vision_encoder=dict(
-        type='BEiTViT',
+        type=BEiTViT,
         # eva-g without the final layer
         arch=dict(
             embed_dims=1408,
@@ -133,7 +145,7 @@ model = dict(
     end_sym='###')
 
 strategy = dict(
-    type='DeepSpeedStrategy',
+    type=DeepSpeedStrategy,
     fp16=dict(
         enabled=True,
         auto_cast=False,
@@ -158,19 +170,19 @@ strategy = dict(
 
 # schedule settings
 optim_wrapper = dict(
-    type='DeepSpeedOptimWrapper',
-    optimizer=dict(type='AdamW', lr=1e-3, weight_decay=0.05))
+    type=DeepSpeedOptimWrapper,
+    optimizer=dict(type=AdamW, lr=1e-3, weight_decay=0.05))
 
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-3 / 500,
         by_epoch=False,
         begin=0,
         end=500,
     ),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         eta_min=2e-4,
         by_epoch=False,
         begin=500,
@@ -184,7 +196,7 @@ runner_type = 'FlexibleRunner'
 
 default_hooks.merge(dict(
     checkpoint=dict(
-        type='CheckpointHook',
+        type=CheckpointHook,
         interval=1,
         by_epoch=True,
         save_last=True,

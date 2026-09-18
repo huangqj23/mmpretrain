@@ -1,18 +1,21 @@
 # Converted from configs/_base_/models/mobileone/mobileone_s2.py by industrial-vision tools/convert_configs.py
+from mmpretrain.models import (GlobalAveragePooling, ImageClassifier,
+                               LabelSmoothLoss, LinearClsHead, MobileOne)
+
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='MobileOne',
+        type=MobileOne,
         arch='s2',
         out_indices=(3, ),
     ),
-    neck=dict(type='GlobalAveragePooling'),
+    neck=dict(type=GlobalAveragePooling),
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=2048,
         loss=dict(
-            type='LabelSmoothLoss',
+            type=LabelSmoothLoss,
             label_smooth_val=0.1,
             mode='original',
         ),

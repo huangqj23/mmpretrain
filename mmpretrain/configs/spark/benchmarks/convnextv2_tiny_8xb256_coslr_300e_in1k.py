@@ -5,6 +5,19 @@ with read_base():
     from ..._base_.datasets.imagenet_bs64_swin_224 import *  # noqa: F401,F403
     from ..._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit, TruncNormalInit
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import AdamW
+
+from mmpretrain.datasets import (NumpyToPIL, PackInputs, PILToNumpy,
+                                 RandomErasing, RandomResizedCrop,
+                                 RepeatAugSampler)
+from mmpretrain.engine import EMAHook
+from mmpretrain.models import (ConvNeXt, CutMix, ImageClassifier,
+                               LabelSmoothLoss, LinearClsHead, Mixup)
+
 data_preprocessor.merge(dict(
     num_classes=1000,
     # RGB format normalization parameters
@@ -18,63 +31,63 @@ bgr_mean = data_preprocessor['mean'][::-1]
 bgr_std = data_preprocessor['std'][::-1]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=224,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='NumpyToPIL', to_rgb=True),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=NumpyToPIL, to_rgb=True),
     dict(
         type='torchvision/TrivialAugmentWide',
         num_magnitude_bins=31,
         interpolation='bicubic',
         fill=None),
-    dict(type='PILToNumpy', to_bgr=True),
+    dict(type=PILToNumpy, to_bgr=True),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.25,
         mode='rand',
         min_area_ratio=0.02,
         max_area_ratio=1 / 3,
         fill_color=bgr_mean,
         fill_std=bgr_std),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 train_dataloader.merge(dict(
     dataset=dict(pipeline=train_pipeline),
-    sampler=dict(type='RepeatAugSampler', shuffle=True),
+    sampler=dict(type=RepeatAugSampler, shuffle=True),
 ))
 
 # Model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='ConvNeXt',
+        type=ConvNeXt,
         arch='tiny',
         drop_path_rate=0.1,
         layer_scale_init_value=0.,
         use_grn=True,
-        init_cfg=dict(type='Pretrained', checkpoint='', prefix='backbone.')),
+        init_cfg=dict(type=PretrainedInit, checkpoint='', prefix='backbone.')),
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=768,
         loss=dict(
-            type='LabelSmoothLoss', label_smooth_val=0.1, mode='original'),
-        init_cfg=dict(type='TruncNormal', layer='Linear', std=.02, bias=0.),
+            type=LabelSmoothLoss, label_smooth_val=0.1, mode='original'),
+        init_cfg=dict(type=TruncNormalInit, layer='Linear', std=.02, bias=0.),
     ),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.8),
-        dict(type='CutMix', alpha=1.0),
+        dict(type=Mixup, alpha=0.8),
+        dict(type=CutMix, alpha=1.0),
     ]),
 )
 
 custom_hooks = [
     dict(
-        type='EMAHook',
+        type=EMAHook,
         momentum=1e-4,
         evaluate_on_origin=True,
         priority='ABOVE_NORMAL')
@@ -84,7 +97,7 @@ custom_hooks = [
 # optimizer
 optim_wrapper = dict(
     optimizer=dict(
-        type='AdamW', lr=3.2e-3, betas=(0.9, 0.999), weight_decay=0.05),
+        type=AdamW, lr=3.2e-3, betas=(0.9, 0.999), weight_decay=0.05),
     constructor='LearningRateDecayOptimWrapperConstructor',
     paramwise_cfg=dict(
         layer_decay_rate=0.7,
@@ -96,7 +109,7 @@ optim_wrapper = dict(
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=0.0001,
         by_epoch=True,
         begin=0,
@@ -104,7 +117,7 @@ param_scheduler = [
         convert_to_iter_based=True),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=280,
         eta_min=1.0e-5,
         by_epoch=True,
@@ -117,7 +130,7 @@ test_cfg = dict()
 
 default_hooks.merge(dict(
     # only keeps the latest 2 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=2)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=2)))
 
 # NOTE: `auto_scale_lr` is for automatically scaling LR,
 # based on the actual training batch size.

@@ -1,8 +1,10 @@
 # Converted from configs/glip/glip-l_headless.py by industrial-vision tools/convert_configs.py
+from mmpretrain.models import ImageClassifier, SwinTransformer
+
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='SwinTransformer',
+        type=SwinTransformer,
         arch='large',
         img_size=384,
         out_indices=(1, 2, 3),  # original weight is for detection

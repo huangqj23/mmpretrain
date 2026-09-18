@@ -7,16 +7,21 @@ with read_base():
     from ..._base_.schedules.imagenet_sgd_steplr_100e import *  # noqa: F401,F403
     from ..._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit
+from mmengine.optim import OptimWrapper
+from torch.optim import SGD
+
 model.merge(dict(
     backbone=dict(
         frozen_stages=4,
-        init_cfg=dict(type='Pretrained', checkpoint='', prefix='backbone.'))))
+        init_cfg=dict(type=PretrainedInit, checkpoint='', prefix='backbone.'))))
 
 # optimizer
 optim_wrapper.merge(dict(
-    type='OptimWrapper',
-    optimizer=dict(type='SGD', lr=30., momentum=0.9, weight_decay=0.)))
+    type=OptimWrapper,
+    optimizer=dict(type=SGD, lr=30., momentum=0.9, weight_decay=0.)))
 
 # runtime settings
 default_hooks.merge(dict(
-    checkpoint=dict(type='CheckpointHook', interval=10, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=10, max_keep_ckpts=3)))

@@ -1,6 +1,11 @@
 # Converted from configs/_base_/datasets/imagenet21k_bs128.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, RandomFlip
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import ImageNet21k, PackInputs, RandomResizedCrop
+
 # dataset settings
-dataset_type = 'ImageNet21k'
+dataset_type = ImageNet21k
 data_preprocessor = dict(
     num_classes=21842,
     # RGB format normalization parameters
@@ -11,10 +16,10 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=224),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=224),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 train_dataloader = dict(
@@ -25,5 +30,5 @@ train_dataloader = dict(
         data_root='data/imagenet21k',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
 )

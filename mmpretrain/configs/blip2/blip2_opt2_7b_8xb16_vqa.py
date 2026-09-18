@@ -6,6 +6,13 @@ with read_base():
     from .._base_.datasets.coco_vqa import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, Resize
+from mmengine.optim import CosineAnnealingLR
+from torch.optim import AdamW
+
+from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.models import BEiTViT, LinearClsHead
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -27,7 +34,7 @@ model = dict(
         type='AutoTokenizer', name_or_path='facebook/opt-2.7b',
         use_fast=False),
     vision_backbone=dict(
-        type='BEiTViT',
+        type=BEiTViT,
         # eva-g without the final layer
         arch=dict(
             embed_dims=1408,
@@ -55,7 +62,7 @@ model = dict(
         cross_attention_freq=2,
         num_query_token=32),
     vision_neck=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         in_channels=768,
         num_classes=2560,
     ),
@@ -64,28 +71,28 @@ model = dict(
 
 # data settings
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', scale=224),
+    dict(type=LoadImageFromFile),
+    dict(type=RandomResizedCrop, scale=224),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=['question_id', 'image_id'],
     ),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(224, 224),
         interpolation='bicubic',
         backend='pillow'),
     dict(
-        type='CleanCaption',
+        type=CleanCaption,
         keys=['question'],
     ),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['question', 'gt_answer', 'gt_answer_weight'],
         meta_keys=['question_id', 'image_id'],
     ),
@@ -96,11 +103,11 @@ val_dataloader = dict(dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
 # schedule settings
-optim_wrapper = dict(optimizer=dict(type='AdamW', lr=1e-5, weight_decay=0.05))
+optim_wrapper = dict(optimizer=dict(type=AdamW, lr=1e-5, weight_decay=0.05))
 
 param_scheduler = [
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         by_epoch=True,
         begin=0,
         end=10,

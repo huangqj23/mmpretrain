@@ -5,20 +5,31 @@ with read_base():
     from .._base_.datasets.imagenet_bs512_mocov3 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import (LoadImageFromFile, RandomApply, RandomFlip,
+                             RandomGrayscale)
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
+from mmpretrain.datasets import (ColorJitter, GaussianBlur, MultiView,
+                                 PackInputs, RandomResizedCrop, Solarize)
+from mmpretrain.models import (CrossEntropyLoss, MoCoV3, MoCoV3Head, MoCoV3ViT,
+                               NonLinearNeck)
+
 # dataset settings
 # the difference between ResNet50 and ViT pipeline is the `scale` in
 # `RandomResizedCrop`, `scale=(0.08, 1.)` in ViT pipeline
 view_pipeline1 = [
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=224,
         crop_ratio_range=(0.08, 1.),
         backend='pillow'),
     dict(
-        type='RandomApply',
+        type=RandomApply,
         transforms=[
             dict(
-                type='ColorJitter',
+                type=ColorJitter,
                 brightness=0.4,
                 contrast=0.4,
                 saturation=0.2,
@@ -26,29 +37,29 @@ view_pipeline1 = [
         ],
         prob=0.8),
     dict(
-        type='RandomGrayscale',
+        type=RandomGrayscale,
         prob=0.2,
         keep_channels=True,
         channel_weights=(0.114, 0.587, 0.2989)),
     dict(
-        type='GaussianBlur',
+        type=GaussianBlur,
         magnitude_range=(0.1, 2.0),
         magnitude_std='inf',
         prob=1.),
-    dict(type='Solarize', thr=128, prob=0.),
-    dict(type='RandomFlip', prob=0.5),
+    dict(type=Solarize, thr=128, prob=0.),
+    dict(type=RandomFlip, prob=0.5),
 ]
 view_pipeline2 = [
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=224,
         crop_ratio_range=(0.08, 1.),
         backend='pillow'),
     dict(
-        type='RandomApply',
+        type=RandomApply,
         transforms=[
             dict(
-                type='ColorJitter',
+                type=ColorJitter,
                 brightness=0.4,
                 contrast=0.4,
                 saturation=0.2,
@@ -56,26 +67,26 @@ view_pipeline2 = [
         ],
         prob=0.8),
     dict(
-        type='RandomGrayscale',
+        type=RandomGrayscale,
         prob=0.2,
         keep_channels=True,
         channel_weights=(0.114, 0.587, 0.2989)),
     dict(
-        type='GaussianBlur',
+        type=GaussianBlur,
         magnitude_range=(0.1, 2.0),
         magnitude_std='inf',
         prob=0.1),
-    dict(type='Solarize', thr=128, prob=0.2),
-    dict(type='RandomFlip', prob=0.5),
+    dict(type=Solarize, thr=128, prob=0.2),
+    dict(type=RandomFlip, prob=0.5),
 ]
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='MultiView',
+        type=MultiView,
         num_views=[1, 1],
         transforms=[view_pipeline1, view_pipeline2]),
-    dict(type='PackInputs')
+    dict(type=PackInputs)
 ]
 
 train_dataloader.merge(dict(batch_size=64, dataset=dict(pipeline=train_pipeline)))
@@ -83,16 +94,16 @@ train_dataloader.merge(dict(batch_size=64, dataset=dict(pipeline=train_pipeline)
 # model settings
 temperature = 0.2
 model = dict(
-    type='MoCoV3',
+    type=MoCoV3,
     base_momentum=0.01,
     backbone=dict(
-        type='MoCoV3ViT',
+        type=MoCoV3ViT,
         arch='large',  # embed_dim = 1024
         img_size=224,
         patch_size=16,
         stop_grad_conv1=True),
     neck=dict(
-        type='NonLinearNeck',
+        type=NonLinearNeck,
         in_channels=1024,
         hid_channels=4096,
         out_channels=256,
@@ -103,9 +114,9 @@ model = dict(
         with_last_bias=False,
         with_avg_pool=False),
     head=dict(
-        type='MoCoV3Head',
+        type=MoCoV3Head,
         predictor=dict(
-            type='NonLinearNeck',
+            type=NonLinearNeck,
             in_channels=256,
             hid_channels=4096,
             out_channels=256,
@@ -115,28 +126,28 @@ model = dict(
             with_last_bn_affine=False,
             with_last_bias=False,
             with_avg_pool=False),
-        loss=dict(type='CrossEntropyLoss', loss_weight=2 * temperature),
+        loss=dict(type=CrossEntropyLoss, loss_weight=2 * temperature),
         temperature=temperature))
 
 # optimizer
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
+    type=AmpOptimWrapper,
     loss_scale='dynamic',
     clip_grad=dict(max_norm=5.0, error_if_nonfinite=False),
-    optimizer=dict(type='AdamW', lr=2.4e-3, weight_decay=0.1))
+    optimizer=dict(type=AdamW, lr=2.4e-3, weight_decay=0.1))
 find_unused_parameters = True
 
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=40,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=260,
         by_epoch=True,
         begin=40,
@@ -145,7 +156,7 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=300)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=300)
 # only keeps the latest 3 checkpoints
 default_hooks.merge(dict(checkpoint=dict(max_keep_ckpts=3)))
 

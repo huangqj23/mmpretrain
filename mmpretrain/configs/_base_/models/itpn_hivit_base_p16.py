@@ -1,14 +1,19 @@
 # Converted from configs/_base_/models/itpn_hivit-base-p16.py by industrial-vision tools/convert_configs.py
+from mmengine.model import ConstantInit, XavierInit
+
+from mmpretrain.models import (MAEPretrainHead, PixelReconstructionLoss, iTPN,
+                               iTPNHiViT, iTPNPretrainDecoder)
+
 # model settings
 model = dict(
-    type='iTPN',
+    type=iTPN,
     backbone=dict(
-        type='iTPNHiViT',
+        type=iTPNHiViT,
         arch='base',
         reconstruction_type='pixel',
         mask_ratio=0.75),
     neck=dict(
-        type='iTPNPretrainDecoder',
+        type=iTPNPretrainDecoder,
         num_patches=196,
         patch_size=16,
         in_chans=3,
@@ -24,11 +29,11 @@ model = dict(
         num_outs=3,
     ),
     head=dict(
-        type='MAEPretrainHead',
+        type=MAEPretrainHead,
         norm_pix=True,
         patch_size=16,
-        loss=dict(type='PixelReconstructionLoss', criterion='L2')),
+        loss=dict(type=PixelReconstructionLoss, criterion='L2')),
     init_cfg=[
-        dict(type='Xavier', layer='Linear', distribution='uniform'),
-        dict(type='Constant', layer='LayerNorm', val=1.0, bias=0.0)
+        dict(type=XavierInit, layer='Linear', distribution='uniform'),
+        dict(type=ConstantInit, layer='LayerNorm', val=1.0, bias=0.0)
     ])

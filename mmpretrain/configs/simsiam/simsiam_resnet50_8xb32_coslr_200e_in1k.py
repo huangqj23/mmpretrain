@@ -6,16 +6,25 @@ with read_base():
     from .._base_.schedules.imagenet_sgd_coslr_200e import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.optim import OptimWrapper
+from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
+from torch.optim import SGD
+
+from mmpretrain.engine import SimSiamHook
+from mmpretrain.models import (CosineSimilarityLoss, LatentPredictHead,
+                               NonLinearNeck, ResNet, SimSiam)
+
 # model settings
 model = dict(
-    type='SimSiam',
+    type=SimSiam,
     backbone=dict(
-        type='ResNet',
+        type=ResNet,
         depth=50,
-        norm_cfg=dict(type='SyncBN'),
+        norm_cfg=dict(type=SyncBatchNorm),
         zero_init_residual=True),
     neck=dict(
-        type='NonLinearNeck',
+        type=NonLinearNeck,
         in_channels=2048,
         hid_channels=2048,
         out_channels=2048,
@@ -23,10 +32,10 @@ model = dict(
         with_last_bn_affine=False,
         with_avg_pool=True),
     head=dict(
-        type='LatentPredictHead',
-        loss=dict(type='CosineSimilarityLoss'),
+        type=LatentPredictHead,
+        loss=dict(type=CosineSimilarityLoss),
         predictor=dict(
-            type='NonLinearNeck',
+            type=NonLinearNeck,
             in_channels=2048,
             hid_channels=512,
             out_channels=2048,
@@ -39,16 +48,16 @@ model = dict(
 # set base learning rate
 lr = 0.05
 optim_wrapper.merge(dict(
-    type='OptimWrapper',
-    optimizer=dict(type='SGD', lr=lr, weight_decay=1e-4, momentum=0.9),
+    type=OptimWrapper,
+    optimizer=dict(type=SGD, lr=lr, weight_decay=1e-4, momentum=0.9),
     paramwise_cfg=dict(custom_keys={'predictor': dict(fix_lr=True)})))
 
 # runtime settings
 default_hooks.merge(dict(
     # only keeps the latest 3 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=10, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=10, max_keep_ckpts=3)))
 
 # additional hooks
 custom_hooks = [
-    dict(type='SimSiamHook', priority='HIGH', fix_pred_lr=True, lr=lr)
+    dict(type=SimSiamHook, priority='HIGH', fix_pred_lr=True, lr=lr)
 ]

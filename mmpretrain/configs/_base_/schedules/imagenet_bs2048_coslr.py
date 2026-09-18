@@ -1,14 +1,17 @@
 # Converted from configs/_base_/schedules/imagenet_bs2048_coslr.py by industrial-vision tools/convert_configs.py
+from mmengine.optim import CosineAnnealingLR, LinearLR
+from torch.optim import SGD
+
 # optimizer
 optim_wrapper = dict(
     optimizer=dict(
-        type='SGD', lr=0.8, momentum=0.9, weight_decay=0.0001, nesterov=True))
+        type=SGD, lr=0.8, momentum=0.9, weight_decay=0.0001, nesterov=True))
 
 # learning policy
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=0.25,
         by_epoch=True,
         begin=0,
@@ -18,7 +21,7 @@ param_scheduler = [
         convert_to_iter_based=True),
     # main learning rate scheduler
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=95,
         by_epoch=True,
         begin=5,

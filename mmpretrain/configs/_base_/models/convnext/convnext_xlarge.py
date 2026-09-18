@@ -1,20 +1,25 @@
 # Converted from configs/_base_/models/convnext/convnext-xlarge.py by industrial-vision tools/convert_configs.py
+from mmengine.model import TruncNormalInit
+
+from mmpretrain.models import (ConvNeXt, CutMix, ImageClassifier,
+                               LabelSmoothLoss, LinearClsHead, Mixup)
+
 # Model settings
 model = dict(
-    type='ImageClassifier',
-    backbone=dict(type='ConvNeXt', arch='xlarge', drop_path_rate=0.5),
+    type=ImageClassifier,
+    backbone=dict(type=ConvNeXt, arch='xlarge', drop_path_rate=0.5),
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=2048,
         loss=dict(
-            type='LabelSmoothLoss', label_smooth_val=0.1, mode='original'),
+            type=LabelSmoothLoss, label_smooth_val=0.1, mode='original'),
         init_cfg=None,
     ),
     init_cfg=dict(
-        type='TruncNormal', layer=['Conv2d', 'Linear'], std=.02, bias=0.),
+        type=TruncNormalInit, layer=['Conv2d', 'Linear'], std=.02, bias=0.),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.8),
-        dict(type='CutMix', alpha=1.0),
+        dict(type=Mixup, alpha=0.8),
+        dict(type=CutMix, alpha=1.0),
     ]),
 )

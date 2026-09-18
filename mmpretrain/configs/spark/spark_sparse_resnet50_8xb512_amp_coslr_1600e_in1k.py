@@ -4,24 +4,28 @@ from mmengine.config import read_base
 with read_base():
     from .spark_sparse_resnet50_8xb512_amp_coslr_800e_in1k import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR, LinearLR
+
+from mmpretrain.engine import CosineAnnealingWeightDecay
+
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=40,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=1560,
         by_epoch=True,
         begin=40,
         end=1600,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingWeightDecay',
+        type=CosineAnnealingWeightDecay,
         eta_min=0.2,
         T_max=1600,
         by_epoch=True,

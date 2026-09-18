@@ -5,26 +5,34 @@ with read_base():
     from .._base_.datasets.imagenet_bs256_simmim_192 import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
+from mmpretrain.models import (PixelReconstructionLoss, SimMIM, SimMIMHead,
+                               SimMIMLinearDecoder, SimMIMSwinTransformer)
+
 # model settings
 model = dict(
-    type='SimMIM',
+    type=SimMIM,
     backbone=dict(
-        type='SimMIMSwinTransformer',
+        type=SimMIMSwinTransformer,
         arch='base',
         img_size=192,
         stage_cfgs=dict(block_cfgs=dict(window_size=6))),
     neck=dict(
-        type='SimMIMLinearDecoder', in_channels=128 * 2**3, encoder_stride=32),
+        type=SimMIMLinearDecoder, in_channels=128 * 2**3, encoder_stride=32),
     head=dict(
-        type='SimMIMHead',
+        type=SimMIMHead,
         patch_size=4,
-        loss=dict(type='PixelReconstructionLoss', criterion='L1', channel=3)))
+        loss=dict(type=PixelReconstructionLoss, criterion='L1', channel=3)))
 
 # optimizer wrapper
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
+    type=AmpOptimWrapper,
     optimizer=dict(
-        type='AdamW',
+        type=AdamW,
         lr=2e-4 * 2048 / 512,
         betas=(0.9, 0.999),
         weight_decay=0.05),
@@ -40,14 +48,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-6 / 2e-4,
         by_epoch=True,
         begin=0,
         end=10,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=90,
         eta_min=1e-5 * 2048 / 512,
         by_epoch=True,
@@ -57,10 +65,10 @@ param_scheduler = [
 ]
 
 # runtime
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=100)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=100)
 default_hooks.merge(dict(
     # only keeps the latest 3 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=10, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=10, max_keep_ckpts=3)))
 
 # NOTE: `auto_scale_lr` is for automatically scaling LR
 # based on the actual training batch size.

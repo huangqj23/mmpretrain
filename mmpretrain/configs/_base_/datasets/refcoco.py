@@ -1,4 +1,13 @@
 # Converted from configs/_base_/datasets/refcoco.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import (LoadImageFromFile, RandomApply,
+                             RandomChoiceResize, Resize)
+from mmdet.datasets.transforms import RandomCrop
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import (CleanCaption, ColorJitter, PackInputs,
+                                 RandomTranslatePad)
+from mmpretrain.evaluation import VisualGroundingMetric
+
 # data settings
 
 data_preprocessor = dict(
@@ -8,12 +17,12 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomApply',
+        type=RandomApply,
         transforms=[
             dict(
-                type='ColorJitter',
+                type=ColorJitter,
                 brightness=0.4,
                 contrast=0.4,
                 saturation=0.4,
@@ -22,38 +31,38 @@ train_pipeline = [
         ],
         prob=0.5),
     dict(
-        type='mmdet.RandomCrop',
+        type=RandomCrop,
         crop_type='relative_range',
         crop_size=(0.8, 0.8),
         allow_negative_crop=False),
     dict(
-        type='RandomChoiceResize',
+        type=RandomChoiceResize,
         scales=[(384, 384), (360, 360), (344, 344), (312, 312), (300, 300),
                 (286, 286), (270, 270)],
         keep_ratio=False),
     dict(
-        type='RandomTranslatePad',
+        type=RandomTranslatePad,
         size=384,
         aug_translate=True,
     ),
-    dict(type='CleanCaption', keys='text'),
+    dict(type=CleanCaption, keys='text'),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['text', 'gt_bboxes', 'scale_factor'],
         meta_keys=['image_id'],
     ),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(384, 384),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='CleanCaption', keys='text'),
+    dict(type=CleanCaption, keys='text'),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['text', 'gt_bboxes', 'scale_factor'],
         meta_keys=['image_id'],
     ),
@@ -70,7 +79,7 @@ train_dataloader = dict(
         split_file='refcoco/refs(unc).p',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     drop_last=True,
 )
 
@@ -85,10 +94,10 @@ val_dataloader = dict(
         split_file='refcoco/refs(unc).p',
         split='val',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
 
-val_evaluator = dict(type='VisualGroundingMetric')
+val_evaluator = dict(type=VisualGroundingMetric)
 
 test_dataloader = dict(
     batch_size=16,
@@ -101,6 +110,6 @@ test_dataloader = dict(
         split_file='refcoco/refs(unc).p',
         split='testA',  # or 'testB'
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
 test_evaluator = val_evaluator

@@ -7,8 +7,10 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmpretrain.engine import EMAHook
+
 data = dict(samples_per_gpu=128)
 
 optim_wrapper.merge(dict(optimizer=dict(lr=4e-3), clip_grad=dict(max_norm=1.0)))
 
-custom_hooks = [dict(type='EMAHook', momentum=4e-5, priority='ABOVE_NORMAL')]
+custom_hooks = [dict(type=EMAHook, momentum=4e-5, priority='ABOVE_NORMAL')]

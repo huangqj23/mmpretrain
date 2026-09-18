@@ -4,11 +4,17 @@ from mmengine.config import read_base
 with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import ImageNet, PackInputs, ResizeEdge
+from mmpretrain.models import ImageClassifier, VisionTransformer
+
 # model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='l',
         img_size=224,
         patch_size=16,
@@ -18,21 +24,21 @@ model = dict(
 )
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='ResizeEdge', scale=256, edge='short', backend='pillow'),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=ResizeEdge, scale=256, edge='short', backend='pillow'),
+    dict(type=CenterCrop, crop_size=224),
+    dict(type=PackInputs),
 ]
 
 test_dataloader = dict(
     batch_size=64,
     num_workers=5,
     dataset=dict(
-        type='ImageNet',
+        type=ImageNet,
         data_root='data/imagenet',
         ann_file='meta/val.txt',
         data_prefix='val',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
 test_evaluator = None

@@ -1,6 +1,13 @@
 # Converted from configs/_base_/datasets/imagenet_bs256_swin_192.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import CenterCrop, LoadImageFromFile, RandomFlip
+from mmengine.dataset import DefaultSampler, default_collate
+
+from mmpretrain.datasets import (ImageNet, PackInputs, RandAugment,
+                                 RandomErasing, RandomResizedCrop, ResizeEdge)
+from mmpretrain.evaluation import Accuracy
+
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = ImageNet
 data_root = 'data/imagenet/'
 data_preprocessor = dict(
     num_classes=1000,
@@ -12,15 +19,15 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=192,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
     dict(
-        type='RandAugment',
+        type=RandAugment,
         policies='timm_increasing',
         num_policies=2,
         total_level=10,
@@ -28,34 +35,34 @@ train_pipeline = [
         magnitude_std=0.5,
         hparams=dict(pad_val=[104, 116, 124], interpolation='bicubic')),
     dict(
-        type='RandomErasing',
+        type=RandomErasing,
         erase_prob=0.25,
         mode='rand',
         min_area_ratio=0.02,
         max_area_ratio=1 / 3,
         fill_color=[103.53, 116.28, 123.675],
         fill_std=[57.375, 57.12, 58.395]),
-    dict(type='PackInputs'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=219,
         edge='short',
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='CenterCrop', crop_size=192),
-    dict(type='PackInputs'),
+    dict(type=CenterCrop, crop_size=192),
+    dict(type=PackInputs),
 ]
 
 train_dataloader = dict(
     batch_size=256,
     num_workers=8,
-    collate_fn=dict(type='default_collate'),
+    collate_fn=dict(type=default_collate),
     persistent_workers=True,
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
@@ -66,16 +73,16 @@ train_dataloader = dict(
 val_dataloader = dict(
     batch_size=64,
     num_workers=5,
-    collate_fn=dict(type='default_collate'),
+    collate_fn=dict(type=default_collate),
     persistent_workers=True,
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
         split='val',
         pipeline=test_pipeline),
 )
-val_evaluator = dict(type='Accuracy', topk=(1, 5))
+val_evaluator = dict(type=Accuracy, topk=(1, 5))
 
 # If you want standard test, please manually configure the test dataset
 test_dataloader = val_dataloader

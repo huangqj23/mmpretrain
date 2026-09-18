@@ -6,12 +6,17 @@ with read_base():
     from .._base_.datasets.imagenet_bs512_mae import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.optim import AmpOptimWrapper, CosineAnnealingLR, LinearLR
+from mmengine.runner import EpochBasedTrainLoop
+from torch.optim import AdamW
+
 # optimizer wrapper
 optim_wrapper = dict(
-    type='AmpOptimWrapper',
+    type=AmpOptimWrapper,
     loss_scale='dynamic',
     optimizer=dict(
-        type='AdamW',
+        type=AdamW,
         lr=1.5e-4 * 4096 / 256,
         betas=(0.9, 0.95),
         weight_decay=0.05),
@@ -26,14 +31,14 @@ optim_wrapper = dict(
 # learning rate scheduler
 param_scheduler = [
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
         end=40,
         convert_to_iter_based=True),
     dict(
-        type='CosineAnnealingLR',
+        type=CosineAnnealingLR,
         T_max=760,
         by_epoch=True,
         begin=40,
@@ -42,10 +47,10 @@ param_scheduler = [
 ]
 
 # runtime settings
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=800)
+train_cfg = dict(type=EpochBasedTrainLoop, max_epochs=800)
 default_hooks.merge(dict(
     # only keeps the latest 3 checkpoints
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=1, max_keep_ckpts=3)))
 
 randomness.merge(dict(seed=0, diff_rank_seed=True))
 

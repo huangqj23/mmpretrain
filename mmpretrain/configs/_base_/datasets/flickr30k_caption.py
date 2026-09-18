@@ -1,37 +1,44 @@
 # Converted from configs/_base_/datasets/flickr30k_caption.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.evaluation import COCOCaption
+from mmpretrain.models import MultiModalDataPreprocessor
+
 # data settings
 
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[122.770938, 116.7460125, 104.09373615],
     std=[68.5005327, 66.6321579, 70.32316305],
     to_rgb=True,
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=384,
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='CleanCaption', keys='gt_caption'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=CleanCaption, keys='gt_caption'),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['gt_caption'],
         meta_keys=['image_id'],
     ),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='Resize',
+        type=Resize,
         scale=(384, 384),
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='PackInputs', meta_keys=['image_id']),
+    dict(type=PackInputs, meta_keys=['image_id']),
 ]
 
 train_dataloader = dict(
@@ -44,7 +51,7 @@ train_dataloader = dict(
         data_prefix='images',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
     persistent_workers=True,
     drop_last=True,
 )
@@ -60,13 +67,13 @@ val_dataloader = dict(
         split='val',
         pipeline=test_pipeline,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 
 # refer tools/dataset_converters/convert_flickr30k_ann.py
 val_evaluator = dict(
-    type='COCOCaption',
+    type=COCOCaption,
     ann_file='data/flickr30k_val_gt.json',
 )
 
@@ -82,12 +89,12 @@ test_dataloader = dict(
         split='test',
         pipeline=test_pipeline,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 
 # refer tools/dataset_converters/convert_flickr30k_ann.py
 test_evaluator = dict(
-    type='COCOCaption',
+    type=COCOCaption,
     ann_file='data/flickr30k_test_gt.json',
 )

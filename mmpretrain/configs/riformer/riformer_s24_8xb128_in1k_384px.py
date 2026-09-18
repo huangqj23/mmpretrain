@@ -6,27 +6,32 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.model import ConstantInit, TruncNormalInit
+
+from mmpretrain.models import (CrossEntropyLoss, GlobalAveragePooling,
+                               ImageClassifier, LinearClsHead, RIFormer)
+
 # Model settings
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='RIFormer',
+        type=RIFormer,
         arch='s24',
         drop_path_rate=0.1,
         init_cfg=[
             dict(
-                type='TruncNormal',
+                type=TruncNormalInit,
                 layer=['Conv2d', 'Linear'],
                 std=.02,
                 bias=0.),
-            dict(type='Constant', layer=['GroupNorm'], val=1., bias=0.),
+            dict(type=ConstantInit, layer=['GroupNorm'], val=1., bias=0.),
         ]),
-    neck=dict(type='GlobalAveragePooling'),
+    neck=dict(type=GlobalAveragePooling),
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=512,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        loss=dict(type=CrossEntropyLoss, loss_weight=1.0),
     ))
 
 # schedule settings

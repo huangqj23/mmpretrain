@@ -5,6 +5,11 @@ with read_base():
     from .._base_.datasets.refcoco import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR, OptimWrapper
+from torch.optim import AdamW
+
+from mmpretrain.models import GroundingHead, VisionTransformer
+
 med_config = {
     'architectures': ['BertModel'],
     'attention_probs_dropout_prob': 0.1,
@@ -28,7 +33,7 @@ med_config = {
 model = dict(
     type='BlipGrounding',
     visual_encoder=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='b',
         img_size=384,
         patch_size=16,
@@ -44,7 +49,7 @@ model = dict(
     ),
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     head=dict(
-        type='GroundingHead',
+        type=GroundingHead,
         decoder=dict(
             type='XBertLMHeadDecoder',
             med_config=med_config,
@@ -55,9 +60,9 @@ model = dict(
 )
 
 # schedule settings
-optimizer = dict(type='AdamW', lr=1.5e-5, weight_decay=0.02)
-optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer)
-param_scheduler = [dict(type='CosineAnnealingLR', by_epoch=True)]
+optimizer = dict(type=AdamW, lr=1.5e-5, weight_decay=0.02)
+optim_wrapper = dict(type=OptimWrapper, optimizer=optimizer)
+param_scheduler = [dict(type=CosineAnnealingLR, by_epoch=True)]
 
 train_cfg = dict(by_epoch=True, max_epochs=120)
 val_cfg = dict()

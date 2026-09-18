@@ -7,6 +7,8 @@ with read_base():
     from .._base_.schedules.imagenet_bs1024_adamw_swin import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR, LinearLR
+
 # dataset settings
 train_dataloader.merge(dict(batch_size=256))
 val_dataloader.merge(dict(batch_size=256))
@@ -30,14 +32,14 @@ optim_wrapper.merge(dict(
 param_scheduler = [
     # warm up learning rate scheduler
     dict(
-        type='LinearLR',
+        type=LinearLR,
         start_factor=1e-3,
         by_epoch=True,
         end=70,
         # update by iter
         convert_to_iter_based=True),
     # main learning rate scheduler
-    dict(type='CosineAnnealingLR', eta_min=1e-5, by_epoch=True, begin=70)
+    dict(type=CosineAnnealingLR, eta_min=1e-5, by_epoch=True, begin=70)
 ]
 
 # NOTE: `auto_scale_lr` is for automatically scaling LR,

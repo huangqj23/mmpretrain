@@ -1,12 +1,17 @@
 # Converted from configs/_base_/models/vig/vig_tiny.py by industrial-vision tools/convert_configs.py
+from torch.nn import GELU, BatchNorm2d
+
+from mmpretrain.models import (CrossEntropyLoss, CutMix, GlobalAveragePooling,
+                               ImageClassifier, Mixup, Vig, VigClsHead)
+
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='Vig',
+        type=Vig,
         arch='tiny',
         k=9,
-        act_cfg=dict(type='GELU'),
-        norm_cfg=dict(type='BN'),
+        act_cfg=dict(type=GELU),
+        norm_cfg=dict(type=BatchNorm2d),
         graph_conv_type='mr',
         graph_conv_bias=True,
         epsilon=0.2,
@@ -16,19 +21,19 @@ model = dict(
         relative_pos=False,
         norm_eval=False,
         frozen_stages=0),
-    neck=dict(type='GlobalAveragePooling'),
+    neck=dict(type=GlobalAveragePooling),
     head=dict(
-        type='VigClsHead',
+        type=VigClsHead,
         num_classes=1000,
         in_channels=192,
         hidden_dim=1024,
-        act_cfg=dict(type='GELU'),
+        act_cfg=dict(type=GELU),
         dropout=0.,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        loss=dict(type=CrossEntropyLoss, loss_weight=1.0),
         topk=(1, 5),
     ),
     train_cfg=dict(augments=[
-        dict(type='Mixup', alpha=0.8),
-        dict(type='CutMix', alpha=1.0)
+        dict(type=Mixup, alpha=0.8),
+        dict(type=CutMix, alpha=1.0)
     ]),
 )

@@ -1,6 +1,12 @@
 # Converted from configs/_base_/datasets/imagenet_bs16_pil_bicubic_384.py by industrial-vision tools/convert_configs.py
+from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
+from mmengine.dataset import DefaultSampler
+
+from mmpretrain.datasets import ImageNet, PackInputs, RandomResizedCrop
+from mmpretrain.evaluation import Accuracy
+
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = ImageNet
 data_preprocessor = dict(
     # RGB format normalization parameters
     mean=[123.675, 116.28, 103.53],
@@ -10,20 +16,20 @@ data_preprocessor = dict(
 )
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='RandomResizedCrop',
+        type=RandomResizedCrop,
         scale=384,
         backend='pillow',
         interpolation='bicubic'),
-    dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(type='PackInputs'),
+    dict(type=RandomFlip, prob=0.5, direction='horizontal'),
+    dict(type=PackInputs),
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=384, backend='pillow', interpolation='bicubic'),
-    dict(type='PackInputs'),
+    dict(type=LoadImageFromFile),
+    dict(type=Resize, scale=384, backend='pillow', interpolation='bicubic'),
+    dict(type=PackInputs),
 ]
 
 train_dataloader = dict(
@@ -34,7 +40,7 @@ train_dataloader = dict(
         data_root='data/imagenet',
         split='train',
         pipeline=train_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=True),
+    sampler=dict(type=DefaultSampler, shuffle=True),
 )
 
 val_dataloader = dict(
@@ -45,9 +51,9 @@ val_dataloader = dict(
         data_root='data/imagenet',
         split='val',
         pipeline=test_pipeline),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
 )
-val_evaluator = dict(type='Accuracy', topk=(1, 5))
+val_evaluator = dict(type=Accuracy, topk=(1, 5))
 
 # If you want standard test, please manually configure the test dataset
 test_dataloader = val_dataloader

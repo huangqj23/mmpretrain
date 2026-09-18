@@ -7,8 +7,10 @@ with read_base():
     from .._base_.schedules.imagenet_bs256_coslr import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.optim import CosineAnnealingLR
+
 # schedule settings
 param_scheduler.merge(dict(
-    type='CosineAnnealingLR', T_max=300, by_epoch=True, begin=0, end=300))
+    type=CosineAnnealingLR, T_max=300, by_epoch=True, begin=0, end=300))
 
 train_cfg.merge(dict(by_epoch=True, max_epochs=300))

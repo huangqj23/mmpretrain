@@ -6,6 +6,11 @@ with read_base():
     from .._base_.datasets.coco_caption import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import LoadImageFromFile, Resize
+
+from mmpretrain.datasets import PackInputs
+from mmpretrain.models import MultiModalDataPreprocessor
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -35,16 +40,16 @@ model = dict(
 
 # data settings
 data_preprocessor.merge(dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[127.5, 127.5, 127.5],
     std=[127.5, 127.5, 127.5],
     to_rgb=True,
 ))
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=(480, 480)),
-    dict(type='PackInputs', meta_keys=('image_id', )),
+    dict(type=LoadImageFromFile),
+    dict(type=Resize, scale=(480, 480)),
+    dict(type=PackInputs, meta_keys=('image_id', )),
 ]
 
 train_dataloader = None

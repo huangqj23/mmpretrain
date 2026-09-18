@@ -4,17 +4,26 @@ from mmengine.config import read_base
 with read_base():
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmcv.transforms import CenterCrop, LoadImageFromFile
+from mmengine.dataset import DefaultSampler
+from torch.nn import LayerNorm
+
+from mmpretrain.datasets import PackInputs, ResizeEdge
+from mmpretrain.evaluation import COCOCaption
+from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
+                               VisionTransformer)
+
 # model settings
 model = dict(
     type='Otter',
     tokenizer=dict(type='LlamaTokenizer', name_or_path='huggyllama/llama-7b'),
     vision_encoder=dict(
-        type='VisionTransformer',
+        type=VisionTransformer,
         arch='l',
         patch_size=14,
         pre_norm=True,
-        norm_cfg=dict(type='LN', eps=1e-5),
-        layer_cfgs=dict(act_cfg=dict(type='mmpretrain.QuickGELU')),
+        norm_cfg=dict(type=LayerNorm, eps=1e-5),
+        layer_cfgs=dict(act_cfg=dict(type=QuickGELU)),
         final_norm=False,
         out_type='raw',
         pretrained=(
@@ -42,22 +51,22 @@ model = dict(
 
 # data settings
 data_preprocessor = dict(
-    type='MultiModalDataPreprocessor',
+    type=MultiModalDataPreprocessor,
     mean=[122.770938, 116.7460125, 104.09373615],
     std=[68.5005327, 66.6321579, 70.32316305],
     to_rgb=True,
 )
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type=LoadImageFromFile),
     dict(
-        type='ResizeEdge',
+        type=ResizeEdge,
         scale=224,
         interpolation='bicubic',
         backend='pillow'),
-    dict(type='CenterCrop', crop_size=(224, 224)),
+    dict(type=CenterCrop, crop_size=(224, 224)),
     dict(
-        type='PackInputs',
+        type=PackInputs,
         algorithm_keys=['gt_caption'],
         meta_keys=['image_id'],
     ),
@@ -67,17 +76,17 @@ val_dataloader = dict(
     batch_size=8,
     num_workers=8,
     dataset=dict(
-        type='COCOCaption',
+        type=COCOCaption,
         data_root='data/coco',
         ann_file='annotations/coco_karpathy_val.json',
         pipeline=test_pipeline,
     ),
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     persistent_workers=True,
 )
 
 val_evaluator = dict(
-    type='COCOCaption',
+    type=COCOCaption,
     ann_file='data/coco/annotations/coco_karpathy_val_gt.json')
 
 # If you want standard test, please manually configure the test dataset

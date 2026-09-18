@@ -1,19 +1,21 @@
 # Converted from configs/_base_/models/replknet-31B_in1k.py by industrial-vision tools/convert_configs.py
-from mmpretrain.models import build_classifier
+from mmpretrain.models import (CrossEntropyLoss, GlobalAveragePooling,
+                               ImageClassifier, LinearClsHead, RepLKNet,
+                               build_classifier)
 
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='RepLKNet',
+        type=RepLKNet,
         arch='31B',
         out_indices=(3, ),
     ),
-    neck=dict(type='GlobalAveragePooling'),
+    neck=dict(type=GlobalAveragePooling),
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=1024,
-        loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        loss=dict(type=CrossEntropyLoss, loss_weight=1.0),
         topk=(1, 5),
     ))
 

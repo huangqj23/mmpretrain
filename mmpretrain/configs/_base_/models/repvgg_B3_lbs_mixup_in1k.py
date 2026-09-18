@@ -1,23 +1,26 @@
 # Converted from configs/_base_/models/repvgg-B3_lbs-mixup_in1k.py by industrial-vision tools/convert_configs.py
+from mmpretrain.models import (GlobalAveragePooling, ImageClassifier,
+                               LabelSmoothLoss, LinearClsHead, Mixup, RepVGG)
+
 model = dict(
-    type='ImageClassifier',
+    type=ImageClassifier,
     backbone=dict(
-        type='RepVGG',
+        type=RepVGG,
         arch='B3',
         out_indices=(3, ),
     ),
-    neck=dict(type='GlobalAveragePooling'),
+    neck=dict(type=GlobalAveragePooling),
     head=dict(
-        type='LinearClsHead',
+        type=LinearClsHead,
         num_classes=1000,
         in_channels=2560,
         loss=dict(
-            type='LabelSmoothLoss',
+            type=LabelSmoothLoss,
             loss_weight=1.0,
             label_smooth_val=0.1,
             mode='classy_vision',
             num_classes=1000),
         topk=(1, 5),
     ),
-    train_cfg=dict(augments=dict(type='Mixup', alpha=0.2)),
+    train_cfg=dict(augments=dict(type=Mixup, alpha=0.2)),
 )

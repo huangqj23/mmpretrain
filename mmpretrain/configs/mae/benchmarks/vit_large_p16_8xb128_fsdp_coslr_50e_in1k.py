@@ -4,14 +4,18 @@ from mmengine.config import read_base
 with read_base():
     from .vit_large_p16_8xb128_coslr_50e_in1k import *  # noqa: F401,F403
 
+from mmengine._strategy import FSDPStrategy
+from mmengine.optim import AmpOptimWrapper
+from torch.distributed.fsdp.wrap import size_based_auto_wrap_policy
+
 strategy = dict(
-    type='FSDPStrategy',
+    type=FSDPStrategy,
     model_wrapper=dict(
         auto_wrap_policy=dict(
-            type='torch.distributed.fsdp.wrap.size_based_auto_wrap_policy',
+            type=size_based_auto_wrap_policy,
             min_num_params=1e7)))
 
-optim_wrapper.merge(dict(type='AmpOptimWrapper'))
+optim_wrapper.merge(dict(type=AmpOptimWrapper))
 
 # runner which supports strategies
 runner_type = 'FlexibleRunner'

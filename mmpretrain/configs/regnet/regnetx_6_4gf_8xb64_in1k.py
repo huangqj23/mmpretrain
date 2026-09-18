@@ -4,9 +4,11 @@ from mmengine.config import read_base
 with read_base():
     from .regnetx_400mf_8xb128_in1k import *  # noqa: F401,F403
 
+from mmpretrain.models import RegNet
+
 # model settings
 model.merge(dict(
-    backbone=dict(type='RegNet', arch='regnetx_6.4gf'),
+    backbone=dict(type=RegNet, arch='regnetx_6.4gf'),
     head=dict(in_channels=1624, )))
 
 # dataset settings

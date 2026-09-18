@@ -7,14 +7,17 @@ with read_base():
     from ..._base_.schedules.imagenet_lars_coslr_90e import *  # noqa: F401,F403
     from ..._base_.default_runtime import *  # noqa: F401,F403
 
+from mmengine.hooks import CheckpointHook
+from mmengine.model import PretrainedInit
+
 model.merge(dict(
     backbone=dict(
         frozen_stages=4,
-        init_cfg=dict(type='Pretrained', checkpoint='', prefix='backbone.'))))
+        init_cfg=dict(type=PretrainedInit, checkpoint='', prefix='backbone.'))))
 
 # dataset summary
 train_dataloader.merge(dict(batch_size=512))
 
 # runtime settings
 default_hooks.merge(dict(
-    checkpoint=dict(type='CheckpointHook', interval=10, max_keep_ckpts=3)))
+    checkpoint=dict(type=CheckpointHook, interval=10, max_keep_ckpts=3)))
