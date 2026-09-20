@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
+import inspect
 import os.path as osp
 import time
 from collections import defaultdict
@@ -231,14 +232,19 @@ def main():
         np.save(output_file, val)
 
     # build t-SNE model
-    tsne_model = TSNE(
+    tsne_kwargs = dict(
         n_components=args.n_components,
         perplexity=args.perplexity,
         early_exaggeration=args.early_exaggeration,
         learning_rate=args.learning_rate,
-        n_iter=args.n_iter,
         n_iter_without_progress=args.n_iter_without_progress,
         init=args.init)
+    # scikit-learn 1.5 起 TSNE 的 n_iter 更名 max_iter，1.7 起移除旧名
+    if 'max_iter' in inspect.signature(TSNE).parameters:
+        tsne_kwargs['max_iter'] = args.n_iter
+    else:
+        tsne_kwargs['n_iter'] = args.n_iter
+    tsne_model = TSNE(**tsne_kwargs)
 
     # run and get results
     logger.info('Running t-SNE.')
