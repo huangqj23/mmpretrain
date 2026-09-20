@@ -10,7 +10,8 @@ from torch.nn import LayerNorm
 
 from mmpretrain.datasets import CIFAR100, PackInputs
 from mmpretrain.evaluation import Accuracy
-from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
+from mmpretrain.models import (BertModelCN, ChineseCLIP, FullTokenizer,
+                               MultiModalDataPreprocessor, QuickGELU,
                                VisionTransformer)
 
 # data settings
@@ -49,7 +50,7 @@ test_cfg = dict()
 
 # model settings
 model = dict(
-    type='ChineseCLIP',
+    type=ChineseCLIP,
     vision_backbone=dict(
         type=VisionTransformer,
         arch='large',
@@ -62,7 +63,7 @@ model = dict(
         out_type='cls_token',
     ),
     text_backbone=dict(
-        type='BertModelCN',
+        type=BertModelCN,
         config=dict(
             vocab_size=21128,
             pad_token_id=0,
@@ -79,7 +80,7 @@ model = dict(
             type_vocab_size=2,
             layer_norm_eps=1e-12)),
     tokenizer=dict(
-        type='FullTokenizer',
+        type=FullTokenizer,
         vocab_file=  # noqa
         'https://download.openmmlab.com/mmpretrain/v1.0/chinese_clip/vocab.txt'
     ),

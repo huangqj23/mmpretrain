@@ -5,11 +5,12 @@ with read_base():
     from .._base_.datasets.nocaps import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
-from mmpretrain.models import SeqGenerationHead, VisionTransformer
+from mmpretrain.models import (BlipCaption, SeqGenerationHead,
+                               VisionTransformer, XBertLMHeadDecoder)
 
 # model settings
 model = dict(
-    type='BlipCaption',
+    type=BlipCaption,
     vision_encoder=dict(
         type=VisionTransformer,
         arch='b',
@@ -21,7 +22,7 @@ model = dict(
     decoder_head=dict(
         type=SeqGenerationHead,
         decoder=dict(
-            type='XBertLMHeadDecoder',
+            type=XBertLMHeadDecoder,
             med_config=dict(
                 architectures=['BertModel'],
                 attention_probs_dropout_prob=0.1,

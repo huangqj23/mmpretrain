@@ -3,9 +3,9 @@ from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
 from mmengine.dataset import DefaultSampler
 
 from mmpretrain.datasets import (AutoContrast, Brightness, CleanCaption,
-                                 Equalize, PackInputs, RandAugment,
-                                 RandomResizedCrop, Rotate, SequentialSampler,
-                                 Sharpness, Shear)
+                                 Equalize, Flickr30kRetrieval, PackInputs,
+                                 RandAugment, RandomResizedCrop, Rotate,
+                                 SequentialSampler, Sharpness, Shear)
 from mmpretrain.evaluation import RetrievalRecall
 from mmpretrain.models import MultiModalDataPreprocessor
 
@@ -75,7 +75,7 @@ train_dataloader = dict(
     batch_size=32,
     num_workers=16,
     dataset=dict(
-        type='Flickr30kRetrieval',
+        type=Flickr30kRetrieval,
         data_root='data/flickr30k',
         ann_file='annotations/dataset_flickr30k.json',
         data_prefix='images',
@@ -90,7 +90,7 @@ val_dataloader = dict(
     batch_size=64,
     num_workers=16,
     dataset=dict(
-        type='Flickr30kRetrieval',
+        type=Flickr30kRetrieval,
         data_root='data/flickr30k',
         ann_file='annotations/dataset_flickr30k.json',
         data_prefix='images',
@@ -109,7 +109,7 @@ test_dataloader = dict(
     batch_size=64,
     num_workers=16,
     dataset=dict(
-        type='Flickr30kRetrieval',
+        type=Flickr30kRetrieval,
         data_root='data/flickr30k',
         ann_file='annotations/dataset_flickr30k.json',
         data_prefix='images',

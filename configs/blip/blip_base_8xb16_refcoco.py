@@ -8,7 +8,8 @@ with read_base():
 from mmengine.optim import CosineAnnealingLR, OptimWrapper
 from torch.optim import AdamW
 
-from mmpretrain.models import GroundingHead, VisionTransformer
+from mmpretrain.models import (BlipGrounding, GroundingHead, VisionTransformer,
+                               XBertEncoder, XBertLMHeadDecoder)
 
 med_config = {
     'architectures': ['BertModel'],
@@ -31,7 +32,7 @@ med_config = {
 }
 
 model = dict(
-    type='BlipGrounding',
+    type=BlipGrounding,
     visual_encoder=dict(
         type=VisionTransformer,
         arch='b',
@@ -40,18 +41,18 @@ model = dict(
         out_type='raw',
     ),
     text_encoder=dict(
-        type='XBertEncoder',
+        type=XBertEncoder,
         med_config=med_config,
     ),
     multimodal_encoder=dict(
-        type='XBertEncoder',
+        type=XBertEncoder,
         med_config=med_config,
     ),
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     head=dict(
         type=GroundingHead,
         decoder=dict(
-            type='XBertLMHeadDecoder',
+            type=XBertLMHeadDecoder,
             med_config=med_config,
         ),
         box_l1_loss_coeff=4.0,

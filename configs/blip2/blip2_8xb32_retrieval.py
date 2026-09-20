@@ -13,7 +13,8 @@ from torch.optim import AdamW
 
 from mmpretrain.datasets import CleanCaption, PackInputs
 from mmpretrain.engine import RetrievalTestLoop, RetrievalValLoop
-from mmpretrain.models import BEiTViT, ITMHead, LinearClsHead
+from mmpretrain.models import (BEiTViT, Blip2Retrieval, ITMHead, LinearClsHead,
+                               Qformer)
 
 
 def __iv_merge(base, child):
@@ -29,7 +30,7 @@ __base_test_dataloader = test_dataloader
 
 # model settings
 model = dict(
-    type='Blip2Retrieval',
+    type=Blip2Retrieval,
     tokenizer=dict(type='Blip2Tokenizer', name_or_path='bert-base-uncased'),
     vision_backbone=dict(
         type=BEiTViT,
@@ -49,7 +50,7 @@ model = dict(
         use_shared_rel_pos_bias=False,
         out_type='raw'),
     multimodal_backbone=dict(
-        type='Qformer',
+        type=Qformer,
         model_style='bert-base-uncased',
         vision_model_width=1408,
         add_cross_attention=True,

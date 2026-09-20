@@ -11,7 +11,7 @@ from mmengine.optim import CosineAnnealingLR
 from torch.optim import AdamW
 
 from mmpretrain.datasets import PackInputs
-from mmpretrain.models import BEiTViT
+from mmpretrain.models import BEiTViT, MiniGPT4, Qformer
 
 
 def __iv_merge(base, child):
@@ -41,7 +41,7 @@ test_dataloader = val_dataloader
 
 # model settings
 model = dict(
-    type='MiniGPT4',
+    type=MiniGPT4,
     vision_encoder=dict(
         type=BEiTViT,
         # eva-g without the final layer
@@ -64,7 +64,7 @@ model = dict(
         'https://download.openmmlab.com/mmpretrain/v1.0/minigpt4/minigpt-4_eva-g-p14_20230615-e908c021.pth'  # noqa
     ),
     q_former_model=dict(
-        type='Qformer',
+        type=Qformer,
         model_style='bert-base-uncased',
         vision_model_width=1408,
         add_cross_attention=True,

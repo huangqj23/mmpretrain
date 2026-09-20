@@ -11,7 +11,7 @@ from mmengine.optim import CosineAnnealingLR
 from torch.optim import AdamW
 
 from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
-from mmpretrain.models import BEiTViT, LinearClsHead
+from mmpretrain.models import BEiTViT, Blip2VQA, LinearClsHead, Qformer
 
 
 def __iv_merge(base, child):
@@ -27,7 +27,7 @@ __base_test_dataloader = test_dataloader
 
 # model settings
 model = dict(
-    type='Blip2VQA',
+    type=Blip2VQA,
     tokenizer=dict(
         type='AutoTokenizer', name_or_path='facebook/opt-2.7b',
         use_fast=False),
@@ -53,7 +53,7 @@ model = dict(
     text_backbone=dict(
         type='OPTForCausalLM', name_or_path='facebook/opt-2.7b'),
     multimodal_backbone=dict(
-        type='Qformer',
+        type=Qformer,
         model_style='bert-base-uncased',
         vision_model_width=1408,
         add_cross_attention=True,

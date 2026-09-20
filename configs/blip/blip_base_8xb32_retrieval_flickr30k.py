@@ -12,11 +12,12 @@ from torch.optim import AdamW
 
 from mmpretrain.engine import (RetrievalTestLoop, RetrievalValLoop,
                                WarmupParamHook)
-from mmpretrain.models import ITCHead, ITMHead, VisionTransformer
+from mmpretrain.models import (BlipRetrieval, ITCHead, ITMHead,
+                               VisionTransformer, XBertEncoder)
 
 # model settings
 model = dict(
-    type='BlipRetrieval',
+    type=BlipRetrieval,
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     vision_backbone=dict(
         type=VisionTransformer,
@@ -26,7 +27,7 @@ model = dict(
         out_type='raw',
     ),
     text_backbone=dict(
-        type='XBertEncoder',
+        type=XBertEncoder,
         med_config=dict(
             architectures=['BertModel'],
             attention_probs_dropout_prob=0.1,

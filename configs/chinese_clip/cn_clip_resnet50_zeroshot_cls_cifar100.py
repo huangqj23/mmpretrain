@@ -9,7 +9,8 @@ from mmengine.dataset import DefaultSampler
 
 from mmpretrain.datasets import CIFAR100, PackInputs
 from mmpretrain.evaluation import Accuracy
-from mmpretrain.models import MultiModalDataPreprocessor
+from mmpretrain.models import (BertModelCN, ChineseCLIP, FullTokenizer,
+                               ModifiedResNet, MultiModalDataPreprocessor)
 
 # data settings
 data_preprocessor = dict(
@@ -47,9 +48,9 @@ test_cfg = dict()
 
 # model settings
 model = dict(
-    type='ChineseCLIP',
+    type=ChineseCLIP,
     vision_backbone=dict(
-        type='ModifiedResNet',
+        type=ModifiedResNet,
         depth=50,
         base_channels=64,
         input_size=224,
@@ -57,7 +58,7 @@ model = dict(
         output_dim=1024,
     ),
     text_backbone=dict(
-        type='BertModelCN',
+        type=BertModelCN,
         config=dict(
             vocab_size=21128,
             pad_token_id=0,
@@ -74,7 +75,7 @@ model = dict(
             type_vocab_size=2,
             layer_norm_eps=1e-12)),
     tokenizer=dict(
-        type='FullTokenizer',
+        type=FullTokenizer,
         vocab_file=  # noqa
         'https://download.openmmlab.com/mmpretrain/v1.0/chinese_clip/vocab.txt'
     ),

@@ -2,7 +2,8 @@
 from mmcv.transforms import LoadImageFromFile, Resize
 from mmengine.dataset import DefaultSampler
 
-from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.datasets import (VSR, CleanCaption, PackInputs,
+                                 RandomResizedCrop)
 
 # data settings
 
@@ -48,7 +49,7 @@ train_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='VSR',
+        type=VSR,
         data_root='data/coco',
         data_prefix='',
         ann_file='annotations/train.json',
@@ -62,7 +63,7 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='VSR',
+        type=VSR,
         data_root='data/coco',
         data_prefix='',
         ann_file='annotations/val.json',
@@ -76,7 +77,7 @@ test_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='VSR',
+        type=VSR,
         data_root='data/coco',
         data_prefix='',
         ann_file='annotations/test.json',

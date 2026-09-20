@@ -6,6 +6,9 @@ with read_base():
     from .._base_.datasets.coco_vqa import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
+from mmpretrain.models import OFA
+from mmpretrain.models.multimodal.ofa.ofa_modules import OFAResNet
+
 
 def __iv_merge(base, child):
     """旧式继承的递归合并（支持 _delete_）。生成新对象、不修改 base 原对象 ——
@@ -20,12 +23,12 @@ __base_train_dataloader = train_dataloader
 
 # model settings
 model = dict(
-    type='OFA',
+    type=OFA,
     task='vqa',
     vocab_size=59457,
     embedding_dim=768,
     encoder_cfg=dict(
-        embed_images=dict(type='OFAResNet', depth=101),
+        embed_images=dict(type=OFAResNet, depth=101),
         num_layers=6,
         num_heads=12,
     ),

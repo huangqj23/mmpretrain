@@ -10,12 +10,12 @@ from torch.nn import LayerNorm
 
 from mmpretrain.datasets import PackInputs, ResizeEdge
 from mmpretrain.evaluation import COCOCaption
-from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
-                               VisionTransformer)
+from mmpretrain.models import (FlamingoLMAdapter, MultiModalDataPreprocessor,
+                               Otter, QuickGELU, VisionTransformer)
 
 # model settings
 model = dict(
-    type='Otter',
+    type=Otter,
     tokenizer=dict(type='LlamaTokenizer', name_or_path='huggyllama/llama-7b'),
     vision_encoder=dict(
         type=VisionTransformer,
@@ -36,7 +36,7 @@ model = dict(
             name_or_path='huggyllama/llama-7b',
             local_files_only=True),
         adapter=dict(
-            type='FlamingoLMAdapter',
+            type=FlamingoLMAdapter,
             vis_hidden_size=1024,
             cross_attn_every_n_layers=4,
             use_media_placement_augmentation=False,

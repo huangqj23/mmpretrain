@@ -9,7 +9,8 @@ from mmengine.dataset import DefaultSampler
 
 from mmpretrain.datasets import ImageNet, PackInputs
 from mmpretrain.evaluation import Accuracy
-from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
+from mmpretrain.models import (CLIPProjection, CLIPTransformer, CLIPZeroShot,
+                               MultiModalDataPreprocessor, QuickGELU,
                                VisionTransformer)
 
 # data settings
@@ -50,7 +51,7 @@ test_cfg = dict()
 
 # model settings
 model = dict(
-    type='CLIPZeroShot',
+    type=CLIPZeroShot,
     vision_backbone=dict(
         type=VisionTransformer,
         arch='large',
@@ -60,9 +61,9 @@ model = dict(
         layer_cfgs=dict(act_cfg=dict(type=QuickGELU)),
         pre_norm=True,
     ),
-    projection=dict(type='CLIPProjection', in_channels=1024, out_channels=768),
+    projection=dict(type=CLIPProjection, in_channels=1024, out_channels=768),
     text_backbone=dict(
-        type='CLIPTransformer',
+        type=CLIPTransformer,
         width=768,
         layers=12,
         heads=12,

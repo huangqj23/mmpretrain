@@ -2,8 +2,9 @@
 from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
 from mmengine.dataset import ConcatDataset, DefaultSampler
 
-from mmpretrain.datasets import (CleanCaption, PackInputs, RandAugment,
-                                 RandomResizedCrop)
+from mmpretrain.datasets import (COCOVQA, CleanCaption, PackInputs,
+                                 RandAugment, RandomResizedCrop,
+                                 VisualGenomeQA)
 from mmpretrain.evaluation import ReportVQA
 from mmpretrain.models import MultiModalDataPreprocessor
 
@@ -57,7 +58,7 @@ train_dataloader = dict(
         datasets=[
             # VQAv2 train
             dict(
-                type='COCOVQA',
+                type=COCOVQA,
                 data_root='data/coco',
                 data_prefix='train2014',
                 question_file=
@@ -67,7 +68,7 @@ train_dataloader = dict(
             ),
             # VQAv2 val
             dict(
-                type='COCOVQA',
+                type=COCOVQA,
                 data_root='data/coco',
                 data_prefix='val2014',
                 question_file=
@@ -77,7 +78,7 @@ train_dataloader = dict(
             ),
             # Visual Genome
             dict(
-                type='VisualGenomeQA',
+                type=VisualGenomeQA,
                 data_root='visual_genome',
                 data_prefix='image',
                 ann_file='question_answers.json',
@@ -93,7 +94,7 @@ test_dataloader = dict(
     batch_size=32,
     num_workers=8,
     dataset=dict(
-        type='COCOVQA',
+        type=COCOVQA,
         data_root='data/coco',
         data_prefix='test2015',
         question_file=

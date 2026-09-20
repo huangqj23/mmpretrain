@@ -2,7 +2,8 @@
 from mmcv.transforms import LoadImageFromFile, Resize
 from mmengine.dataset import DefaultSampler
 
-from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.datasets import (GQA, CleanCaption, PackInputs,
+                                 RandomResizedCrop)
 from mmpretrain.evaluation import GQAAcc
 
 # data settings
@@ -49,7 +50,7 @@ train_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='GQA',
+        type=GQA,
         data_root='data/gqa',
         data_prefix='images',
         ann_file='annotations/train_balanced_questions.json',
@@ -63,7 +64,7 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='GQA',
+        type=GQA,
         data_root='data/gqa',
         data_prefix='images',
         ann_file='annotations/testdev_balanced_questions.json',
@@ -77,7 +78,7 @@ test_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='GQA',
+        type=GQA,
         data_root='data/gqa',
         data_prefix='images',
         ann_file='annotations/testdev_balanced_questions.json',

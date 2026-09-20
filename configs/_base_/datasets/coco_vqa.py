@@ -2,7 +2,8 @@
 from mmcv.transforms import LoadImageFromFile, Resize
 from mmengine.dataset import DefaultSampler
 
-from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.datasets import (COCOVQA, CleanCaption, PackInputs,
+                                 RandomResizedCrop)
 from mmpretrain.evaluation import ReportVQA, VQAAcc
 
 # data settings
@@ -49,7 +50,7 @@ train_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='COCOVQA',
+        type=COCOVQA,
         data_root='data/coco',
         data_prefix='train2014',
         question_file=
@@ -65,7 +66,7 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='COCOVQA',
+        type=COCOVQA,
         data_root='data/coco',
         data_prefix='val2014',
         question_file='annotations/v2_OpenEnded_mscoco_val2014_questions.json',
@@ -80,7 +81,7 @@ test_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='COCOVQA',
+        type=COCOVQA,
         data_root='data/coco',
         data_prefix='test2015',
         question_file=  # noqa: E251

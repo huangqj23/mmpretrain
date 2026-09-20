@@ -9,11 +9,13 @@ from mmengine.optim import CosineAnnealingLR, OptimWrapper
 from mmengine.runner import EpochBasedTrainLoop
 from torch.optim import AdamW
 
-from mmpretrain.models import VisionTransformer
+from mmpretrain.models import BlipNLVR, VisionTransformer
+
+from mmpretrain.models.multimodal.blip.language_model import BertModel
 
 # model settings
 model = dict(
-    type='BlipNLVR',
+    type=BlipNLVR,
     vision_backbone=dict(
         type=VisionTransformer,
         arch='b',
@@ -23,7 +25,7 @@ model = dict(
     ),
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     multimodal_backbone=dict(
-        type='BertModel',
+        type=BertModel,
         config=dict(
             architectures=['BertModel'],
             attention_probs_dropout_prob=0.1,

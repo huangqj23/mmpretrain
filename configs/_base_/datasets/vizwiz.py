@@ -2,7 +2,8 @@
 from mmcv.transforms import LoadImageFromFile, Resize
 from mmengine.dataset import DefaultSampler
 
-from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.datasets import (CleanCaption, PackInputs, RandomResizedCrop,
+                                 VizWiz)
 from mmpretrain.evaluation import ReportVQA
 
 # data settings
@@ -49,7 +50,7 @@ train_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='VizWiz',
+        type=VizWiz,
         data_root='data/vizwiz/Images',
         data_prefix='',
         ann_file='Annotations/train.json',
@@ -63,7 +64,7 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='VizWiz',
+        type=VizWiz,
         data_root='data/vizwiz/Images',
         data_prefix='',
         ann_file='Annotations/val.json',
@@ -77,7 +78,7 @@ test_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='VizWiz',
+        type=VizWiz,
         data_root='data/vizwiz/Images',
         data_prefix='',
         ann_file='Annotations/test.json',

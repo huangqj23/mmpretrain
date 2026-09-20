@@ -6,7 +6,9 @@ with read_base():
     from .._base_.datasets.coco_vqa import *  # noqa: F401,F403
     from .._base_.default_runtime import *  # noqa: F401,F403
 
-from mmpretrain.models import MultiModalDataPreprocessor
+from mmpretrain.models import OFA, MultiModalDataPreprocessor
+
+from mmpretrain.models.multimodal.ofa.ofa_modules import OFAResNet
 
 
 def __iv_merge(base, child):
@@ -22,12 +24,12 @@ __base_train_dataloader = train_dataloader
 
 # model settings
 model = dict(
-    type='OFA',
+    type=OFA,
     task='vqa',
     vocab_size=59457,
     embedding_dim=1024,
     encoder_cfg=dict(
-        embed_images=dict(type='OFAResNet', depth=152),
+        embed_images=dict(type=OFAResNet, depth=152),
         num_layers=12,
         num_heads=16,
     ),

@@ -10,7 +10,7 @@ from torch.nn import LayerNorm
 
 from mmpretrain.datasets import PackInputs
 from mmpretrain.evaluation import COCOCaption
-from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
+from mmpretrain.models import (Llava, MultiModalDataPreprocessor, QuickGELU,
                                VisionTransformer)
 
 meta_prompt = 'You are LLaVA, a large language and vision assistant trained by UW Madison WAIV Lab.You are able to understand the visual content that the user provides, and assist the user with a variety of tasks using natural language.Follow the instructions carefully and explain your answers in detail.'  # noqa: E501
@@ -20,7 +20,7 @@ Describe the image in detail. ASSISTANT:'''
 
 # model settings
 model = dict(
-    type='Llava',
+    type=Llava,
     tokenizer=dict(
         type='AutoTokenizer',
         name_or_path='liuhaotian/LLaVA-Lightning-7B-delta-v1-1'),

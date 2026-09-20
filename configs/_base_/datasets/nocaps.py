@@ -2,7 +2,7 @@
 from mmcv.transforms import LoadImageFromFile, Resize
 from mmengine.dataset import DefaultSampler
 
-from mmpretrain.datasets import PackInputs
+from mmpretrain.datasets import NoCaps, PackInputs
 from mmpretrain.evaluation import NocapsSave
 from mmpretrain.models import MultiModalDataPreprocessor
 
@@ -29,7 +29,7 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=5,
     dataset=dict(
-        type='NoCaps',
+        type=NoCaps,
         data_root='data/nocaps/',
         data_prefix=dict(img_path='images/'),
         ann_file='annotations/nocaps_val_4500_captions.json',

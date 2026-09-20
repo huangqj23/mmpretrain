@@ -2,7 +2,8 @@
 from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
 from mmengine.dataset import DefaultSampler
 
-from mmpretrain.datasets import CleanCaption, PackInputs, RandomResizedCrop
+from mmpretrain.datasets import (CleanCaption, Flickr30kCaption, PackInputs,
+                                 RandomResizedCrop)
 from mmpretrain.evaluation import COCOCaption
 from mmpretrain.models import MultiModalDataPreprocessor
 
@@ -45,7 +46,7 @@ train_dataloader = dict(
     batch_size=32,
     num_workers=5,
     dataset=dict(
-        type='Flickr30kCaption',
+        type=Flickr30kCaption,
         data_root='data/flickr30k',
         ann_file='annotations/dataset_flickr30k.json',
         data_prefix='images',
@@ -60,7 +61,7 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=5,
     dataset=dict(
-        type='Flickr30kCaption',
+        type=Flickr30kCaption,
         data_root='data/flickr30k',
         ann_file='annotations/dataset_flickr30k.json',
         data_prefix='images',
@@ -82,7 +83,7 @@ test_dataloader = dict(
     batch_size=16,
     num_workers=5,
     dataset=dict(
-        type='Flickr30kCaption',
+        type=Flickr30kCaption,
         data_root='data/flickr30k',
         ann_file='annotations/dataset_flickr30k.json',
         data_prefix='images',

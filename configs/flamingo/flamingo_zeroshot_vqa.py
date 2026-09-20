@@ -8,9 +8,10 @@ from mmcv.transforms import CenterCrop, LoadImageFromFile
 from mmengine.dataset import DefaultSampler
 from torch.nn import LayerNorm
 
-from mmpretrain.datasets import PackInputs, ResizeEdge
+from mmpretrain.datasets import FlamingoEvalCOCOVQA, PackInputs, ResizeEdge
 from mmpretrain.evaluation import ReportVQA, VQAAcc
-from mmpretrain.models import (MultiModalDataPreprocessor, QuickGELU,
+from mmpretrain.models import (Flamingo, FlamingoLMAdapter,
+                               MultiModalDataPreprocessor, QuickGELU,
                                VisionTransformer)
 
 zeroshot_prompt = (
@@ -20,7 +21,7 @@ zeroshot_prompt = (
 
 # model settings
 model = dict(
-    type='Flamingo',
+    type=Flamingo,
     tokenizer=dict(
         type='LlamaTokenizer', name_or_path='decapoda-research/llama-7b-hf'),
     vision_encoder=dict(
@@ -42,7 +43,7 @@ model = dict(
             name_or_path='decapoda-research/llama-7b-hf',
             local_files_only=True),
         adapter=dict(
-            type='FlamingoLMAdapter',
+            type=FlamingoLMAdapter,
             vis_hidden_size=1024,
             cross_attn_every_n_layers=4,
             use_media_placement_augmentation=False),
@@ -79,7 +80,7 @@ val_dataloader = dict(
     batch_size=8,
     num_workers=8,
     dataset=dict(
-        type='FlamingoEvalCOCOVQA',
+        type=FlamingoEvalCOCOVQA,
         data_root='data/coco',
         data_prefix='val2014',
         question_file='annotations/v2_OpenEnded_mscoco_val2014_questions.json',
@@ -98,7 +99,7 @@ test_dataloader = dict(
     batch_size=8,
     num_workers=8,
     dataset=dict(
-        type='FlamingoEvalCOCOVQA',
+        type=FlamingoEvalCOCOVQA,
         data_root='data/coco',
         data_prefix='test2015',
         question_file=

@@ -3,9 +3,9 @@ from mmcv.transforms import LoadImageFromFile, RandomFlip, Resize
 from mmengine.dataset import DefaultSampler
 
 from mmpretrain.datasets import (AutoContrast, Brightness, CleanCaption,
-                                 Equalize, PackInputs, RandAugment,
-                                 RandomResizedCrop, Rotate, SequentialSampler,
-                                 Sharpness, Shear)
+                                 COCORetrieval, Equalize, PackInputs,
+                                 RandAugment, RandomResizedCrop, Rotate,
+                                 SequentialSampler, Sharpness, Shear)
 from mmpretrain.evaluation import RetrievalRecall
 from mmpretrain.models import MultiModalDataPreprocessor
 
@@ -79,7 +79,7 @@ train_dataloader = dict(
     batch_size=32,
     num_workers=16,
     dataset=dict(
-        type='COCORetrieval',
+        type=COCORetrieval,
         data_root='data/coco',
         ann_file='annotations/caption_karpathy_train2014.json',
         pipeline=train_pipeline),
@@ -92,7 +92,7 @@ val_dataloader = dict(
     batch_size=64,
     num_workers=16,
     dataset=dict(
-        type='COCORetrieval',
+        type=COCORetrieval,
         data_root='data/coco',
         ann_file='annotations/caption_karpathy_val2014.json',
         pipeline=test_pipeline,

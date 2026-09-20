@@ -8,13 +8,15 @@ from mmcv.transforms import CenterCrop, LoadImageFromFile
 from mmengine.dataset import DefaultSampler
 from torch.nn import LayerNorm
 
-from mmpretrain.datasets import ApplyToList, PackInputs, ResizeEdge
+from mmpretrain.datasets import (ApplyToList, FlamingoEvalCOCOCaption,
+                                 PackInputs, ResizeEdge)
 from mmpretrain.evaluation import COCOCaption
-from mmpretrain.models import QuickGELU, VisionTransformer
+from mmpretrain.models import (Flamingo, FlamingoLMAdapter, QuickGELU,
+                               VisionTransformer)
 
 # model settings
 model = dict(
-    type='Flamingo',
+    type=Flamingo,
     tokenizer=dict(
         type='LlamaTokenizer', name_or_path='decapoda-research/llama-7b-hf'),
     vision_encoder=dict(
@@ -36,7 +38,7 @@ model = dict(
             name_or_path='decapoda-research/llama-7b-hf',
             local_files_only=True),
         adapter=dict(
-            type='FlamingoLMAdapter',
+            type=FlamingoLMAdapter,
             vis_hidden_size=1024,
             cross_attn_every_n_layers=4,
             use_media_placement_augmentation=False),
@@ -79,7 +81,7 @@ val_dataloader = dict(
     batch_size=8,
     num_workers=8,
     dataset=dict(
-        type='FlamingoEvalCOCOCaption',
+        type=FlamingoEvalCOCOCaption,
         data_root='data/coco',
         ann_file='annotations/captions_train2014.json',
         data_prefix=dict(img_path='train2014'),

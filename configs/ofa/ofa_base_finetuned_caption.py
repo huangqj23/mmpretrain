@@ -9,7 +9,9 @@ with read_base():
 from mmcv.transforms import LoadImageFromFile, Resize
 
 from mmpretrain.datasets import PackInputs
-from mmpretrain.models import MultiModalDataPreprocessor
+from mmpretrain.models import OFA, MultiModalDataPreprocessor
+
+from mmpretrain.models.multimodal.ofa.ofa_modules import OFAResNet
 
 
 def __iv_merge(base, child):
@@ -25,12 +27,12 @@ __base_train_dataloader = train_dataloader
 
 # model settings
 model = dict(
-    type='OFA',
+    type=OFA,
     task='caption',
     vocab_size=59457,
     embedding_dim=768,
     encoder_cfg=dict(
-        embed_images=dict(type='OFAResNet', depth=101),
+        embed_images=dict(type=OFAResNet, depth=101),
         num_layers=6,
     ),
     decoder_cfg=dict(num_layers=6),

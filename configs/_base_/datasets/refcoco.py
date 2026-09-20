@@ -5,7 +5,7 @@ from mmdet.datasets.transforms import RandomCrop
 from mmengine.dataset import DefaultSampler
 
 from mmpretrain.datasets import (CleanCaption, ColorJitter, PackInputs,
-                                 RandomTranslatePad)
+                                 RandomTranslatePad, RefCOCO)
 from mmpretrain.evaluation import VisualGroundingMetric
 
 # data settings
@@ -72,7 +72,7 @@ train_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='RefCOCO',
+        type=RefCOCO,
         data_root='data/coco',
         data_prefix='train2014',
         ann_file='refcoco/instances.json',
@@ -87,7 +87,7 @@ val_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='RefCOCO',
+        type=RefCOCO,
         data_root='data/coco',
         data_prefix='train2014',
         ann_file='refcoco/instances.json',
@@ -103,7 +103,7 @@ test_dataloader = dict(
     batch_size=16,
     num_workers=8,
     dataset=dict(
-        type='RefCOCO',
+        type=RefCOCO,
         data_root='data/coco',
         data_prefix='train2014',
         ann_file='refcoco/instances.json',

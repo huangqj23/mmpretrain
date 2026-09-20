@@ -12,9 +12,10 @@ from mmengine.hooks import CheckpointHook
 from mmengine.optim import CosineAnnealingLR, LinearLR
 from torch.optim import AdamW
 
-from mmpretrain.datasets import CleanCaption, PackInputs
+from mmpretrain.datasets import CleanCaption, MiniGPT4Dataset, PackInputs
 from mmpretrain.evaluation import COCOCaption
-from mmpretrain.models import BEiTViT, MultiModalDataPreprocessor
+from mmpretrain.models import (BEiTViT, MiniGPT4, MultiModalDataPreprocessor,
+                               Qformer)
 
 data_preprocessor = dict(
     type=MultiModalDataPreprocessor,
@@ -47,7 +48,7 @@ train_dataloader = dict(
     batch_size=2,
     num_workers=4,
     dataset=dict(
-        type='MiniGPT4Dataset',
+        type=MiniGPT4Dataset,
         data_root='YOUR_DATA_DIRECTORY',
         ann_file='YOUR_DATA_FILE',
         pipeline=train_pipeline),
@@ -81,7 +82,7 @@ test_dataloader = dict(
 
 # model settings
 model = dict(
-    type='MiniGPT4',
+    type=MiniGPT4,
     vision_encoder=dict(
         type=BEiTViT,
         # eva-g without the final layer
@@ -104,7 +105,7 @@ model = dict(
         'https://download.openmmlab.com/mmpretrain/v1.0/minigpt4/minigpt-4_eva-g-p14_20230615-e908c021.pth'  # noqa
     ),
     q_former_model=dict(
-        type='Qformer',
+        type=Qformer,
         model_style='bert-base-uncased',
         vision_model_width=1408,
         add_cross_attention=True,

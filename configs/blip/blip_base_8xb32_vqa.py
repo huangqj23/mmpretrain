@@ -8,11 +8,12 @@ with read_base():
 from mmengine.optim import CosineAnnealingLR, OptimWrapper
 from torch.optim import AdamW
 
-from mmpretrain.models import VisionTransformer, VQAGenerationHead
+from mmpretrain.models import (BlipVQA, VisionTransformer, VQAGenerationHead,
+                               XBertEncoder, XBertLMHeadDecoder)
 
 # model settings
 model = dict(
-    type='BlipVQA',
+    type=BlipVQA,
     tokenizer=dict(type='BlipTokenizer', name_or_path='bert-base-uncased'),
     vision_backbone=dict(
         type=VisionTransformer,
@@ -21,7 +22,7 @@ model = dict(
         patch_size=16,
         out_type='raw'),
     multimodal_backbone=dict(
-        type='XBertEncoder',
+        type=XBertEncoder,
         med_config=dict(
             architectures=['BertModel'],
             attention_probs_dropout_prob=0.1,
@@ -44,7 +45,7 @@ model = dict(
     head=dict(
         type=VQAGenerationHead,
         decoder=dict(
-            type='XBertLMHeadDecoder',
+            type=XBertLMHeadDecoder,
             med_config=dict(
                 architectures=['BertModel'],
                 attention_probs_dropout_prob=0.1,
